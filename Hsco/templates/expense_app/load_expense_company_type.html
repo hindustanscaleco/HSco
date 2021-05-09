@@ -1,0 +1,40 @@
+<table>
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date</td>
+            <td style="border: 0px solid gray;">Expense ID </td>
+            <td style="border: 0px solid gray;"> Bill No</td>
+            <td style="border: 0px solid gray;">Vendor Name</td>
+            <td style="border: 0px solid gray;">Contact No.</td>
+            {% if request.user.is_authenticated %}
+            {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+            <td style="border: 0px solid gray;">Basic Amount</td>
+            <td style="border: 0px solid gray;">P & F</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Discount</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">CGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">SGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">IGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">TDS</td>
+            {% endif %}
+            {% endif %}
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Grand Total</td>
+        </tr>
+      <tr>
+      {% for expense in expense_list %}
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.entry_date|date:'Y-m-d'}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.id}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.bill_no}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.vendor.name}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.vendor.phone_no}}</td>
+        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.total_basic_amount}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.pf}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.discount_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.cgst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.sgst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.igst_per}}</td>
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.tds_per}}</td>
+        {% endif %}
+          <td onclick="location.href='/expense_details/{{expense.pk}}';">{{expense.total_amount}}</td>
+          </tr>
+      {% endfor %}
+    </table>

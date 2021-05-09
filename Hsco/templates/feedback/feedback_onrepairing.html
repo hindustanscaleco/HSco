@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+      {% load static %}
+
+	<title>Feedback</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+
+
+
+</head>
+<body>
+
+<style>
+
+* {
+    font-family: 'Montserrat';
+
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+  .star-rating s:hover,
+.star-rating s.active {
+    color: gold;
+}
+
+.star-rating s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating {
+    padding: 2px;
+}
+
+.star-rating s:hover:before,
+.star-rating s.rated:before,
+.star-rating s.active:before {
+    content: "\2605";
+}
+.star-rating s:before {
+    content: "\2606";
+}
+
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating2 s:hover,
+.star-rating2 s.active {
+    color: gold;
+}
+
+.star-rating2 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating2 {
+    padding: 2px;
+}
+
+.star-rating2 s:hover:before,
+.star-rating2 s.rated:before,
+.star-rating2 s.active:before {
+    content: "\2605";
+}
+.star-rating2 s:before {
+    content: "\2606";
+}
+
+
+.stars2-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars2-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars2-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars2-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating3 s:hover,
+.star-rating3 s.active {
+    color: gold;
+}
+
+.star-rating3 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating3 {
+    padding: 2px;
+}
+
+.star-rating3 s:hover:before,
+.star-rating3 s.rated:before,
+.star-rating3 s.active:before {
+    content: "\2605";
+}
+.star-rating3 s:before {
+    content: "\2606";
+}
+
+
+.stars3-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars3-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars3-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars3-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating4 s:hover,
+.star-rating4 s.active {
+    color: gold;
+}
+
+.star-rating4 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating4 {
+    padding: 2px;
+}
+
+.star-rating4 s:hover:before,
+.star-rating4 s.rated:before,
+.star-rating4 s.active:before {
+    content: "\2605";
+}
+.star-rating4 s:before {
+    content: "\2606";
+}
+
+
+.stars4-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars4-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars4-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars4-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+<style>
+    .star-rating5 s:hover,
+.star-rating5 s.active {
+    color: gold;
+}
+
+.star-rating5 s{
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating5 {
+    padding: 2px;
+}
+
+.star-rating5 s:hover:before,
+.star-rating5 s.rated:before,
+.star-rating5 s.active:before {
+    content: "\2605";
+}
+.star-rating5 s:before {
+    content: "\2606";
+}
+
+
+.stars5-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars5-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars5-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars5-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+</style>
+
+	<div class="container-contact100">
+            <form  class="well form-horizontal" ion="" method="POST"   style="padding:20px;  " enctype="multipart/form-data" novalidate >{% csrf_token %}
+
+		<div class="wrap-contact100">
+				<span class="contact100-form-title" style="    font-family: 'Montserrat';">
+					Feedback
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+		<div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>Where you satisfied with your communication with the backend team?</h5>
+<div style="display:inline-block;">{{ feedback_form.backend_team }}  </div>
+	<div class="star-rating"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+				</div>
+
+
+
+        <br>
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>How would you rate the speed of our performance?</h5>
+<div style="display:inline-block;">{{ feedback_form.onsite_worker }}  </div>
+	<div class="star-rating2"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+
+<br>
+
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
+
+ <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>Where you satisfied with your communication with the technician who worked on your machine?</h5>
+<div style="display:inline-block;">{{ feedback_form.speed_of_performance }}  </div>
+	<div class="star-rating3"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+				</div>
+
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
+                <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>How would you rate the overall interaction with us?</h5>
+<div style="display:inline-block;">{{ feedback_form.overall_interaction }}  </div>
+	<div class="star-rating4"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+				</div>
+
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
+                 <div class="col-md-4 inputGroupContainer">
+    <div class="form-group row">
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>How were the prices of the Repairing (as compare to others)?</h5>
+<div style="display:inline-block;">{{ feedback_form.price_of_reparing }}  </div>
+	<div class="star-rating5"><s><s><s><s><s></s></s></s></s></s></div>
+    </div>
+  </div>
+				</div>
+
+
+
+            <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <h5>Where did you hear about Hindustan Scale company?</h5>
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <select  name="about_hsco" class="form-control">
+  <option value="website">Website</option>
+  <option value="friend">Friend</option>
+  <option value="google">Google</option>
+  <option value="indiamart">India Mart</option>
+  <option value="repeatcustomer">Repeat Customer</option>
+  <option value="retailoutlet">Retail Outlet</option>
+</select>
+
+    </div>
+  </div>
+<h5>Any Suggestion:</h5>
+
+<div class="form-group row">
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<textarea placeholder="Suggestions" name="any_suggestion" maxlength="255"></textarea>
+  </div>
+  </div>
+  </div>
+
+
+
+  <div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" type="submit">
+							<span>
+								Submit
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+
+
+        </div>
+	</div>
+
+
+    </div>
+                                    </form>
+
+<script>
+
+$(function() {
+    $("#stars").val("0");
+        $("div.star-rating > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars").val(numStars);
+
+
+        });
+    $("#stars2").val("0");
+        $("div.star-rating2 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars2").val(numStars);
+
+
+        });
+     $("#stars3").val("0");
+        $("div.star-rating3 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars3").val(numStars);
+
+
+        });
+      $("#stars4").val("0");
+        $("div.star-rating4 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars4").val(numStars);
+
+
+        });
+$("#stars5").val("0");
+        $("div.star-rating5 > s").on("click", function(e) {
+
+        // remove all active classes first, needed if user clicks multiple times
+        $(this).closest('div').find('.active').removeClass('active');
+
+        $(e.target).parentsUntil("div").addClass('active'); // all elements up from the clicked one excluding self
+        $(e.target).addClass('active');  // the element user has clicked on
+
+
+            var numStars = $(e.target).parentsUntil("div").length+1;
+            $("#stars5").val(numStars);
+
+
+        });
+});
+
+</script>
+
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+</body>
+</html>

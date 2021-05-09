@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+<script>
+function myFunction() {
+
+
+    document.getElementById("myText1").disabled = false;
+    document.getElementById("myText2").disabled = false;
+    document.getElementById("myText3").disabled = false;
+}
+  </script>
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+          <br>
+        <center><h3>Expense Type Sub Master</h3></center>
+
+        <div class="container-fluid" >
+<br>
+
+
+    <form class="well form-horizontal" ion="" method="POST"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+
+<div id="loaded_customer">
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Expense Type Master*
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select id="myText1" disabled  name="expense_type_master" class="form-control" required>
+  <option value="{{sub_master.expense_type_master}}">{{sub_master.expense_type_master}}</option>
+  <option value="Purchase of Goods">Purchase of Goods</option>
+  <option value="Not Purchase">Not Purchase</option>
+</select>
+    </div>
+  </div>
+
+      <label class="col-md-2 control-label">Expense Type Sub Master*
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input id="myText2" disabled name="expense_type_sub_master" id="expense_type_sub_master" value="{{sub_master.expense_type_sub_master}}"  class="form-control"  type="text" required>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+       <label class="col-md-2 control-label">Notes
+</label>
+   <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <textarea  id="myText3" disabled name="notes" id="notes" class="form-control" >{{sub_master.notes|default_if_none:""}} </textarea>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<center>
+  <button onclick="myFunction()" name="edit" type="reset" value="Submit" class="btn btn-primary">Edit</button>
+  <button type="submit" name="update" value="Submit" class="btn btn-primary">Submit</button>
+  <button type="submit" name="delete" value="Submit" class="btn btn-primary">Delete</button>
+</center>
+
+
+
+  <br>
+</fieldset>
+</div>
+    </form>
+  <!--Product List-->
+
+
+                </div>
+              </div>
+            </div>
+
+<br>
+
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

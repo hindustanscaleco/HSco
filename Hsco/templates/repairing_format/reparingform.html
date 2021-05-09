@@ -1,0 +1,147 @@
+
+<html>
+<head>
+  <title>
+    HSCO
+  </title>
+  {% load static %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+
+  <style>
+      * {
+    font-family: 'Poppins';
+    font-size: 0.99em;
+
+  }
+
+  table {
+  border-collapse: collapse;
+  width: 85%;
+  font-size: 18px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+}
+
+
+ @media print and (width: 10.5cm) and (height: 14.8cm) {
+    @page {
+       margin: 3cm;
+    }
+ }
+
+
+  </style>
+
+</head>
+<body>
+
+<div  id="printableArea" style="margin-left: 25%; margin-right: 25%;">
+<div class="row" style="padding: 5px; border-bottom: 1px solid black;">
+    <div class="col-xl-8 col-md-8 "><h2 style="font-size: 20px; font-weight: 900;">HINDUSTAN SCALE COMPANY</h2>
+    <span style="font-size: 11px;"> A one stop shop for all your weighing needs </span> <br>
+<i class="fa fa-phone" style="font-size:13px"></i> <span style="font-size: 11px;"> &nbsp; +<b>91-7045922251</b></span><br>
+<i class="fa fa-envelope-o" style="font-size:13px"></i>  <span style="font-size: 11px;">&nbsp;<b>hsc@hindustanscale.com</b> &nbsp; </span> <br>
+      <i class="fa fa-globe" style="font-size:13px"></i> <span style="font-size: 11px;"> &nbsp;<b>www.hindustanscale.com</b> </b></span>
+</div>
+
+<div class="col-xl-4 col-md-4 ">
+
+<img src="{% static 'images/hsco_logo.jpg' %}" class="img-rounded" width="200" height="120" style="float: right;">
+
+
+</div>
+</div>
+
+  <div class="row" style="padding: 10px;">
+    <div class="col-xl-8 col-md-8 ">
+      <p style="float: left;">Sr. No.:  {{ data.repairing_no }} </p>
+    </div>
+    <div class="col-xl-4 col-md-4 ">
+      <p>Date: {{ data.entry_timedate }}</p>
+    </div>
+  </div>
+<center>
+<table>
+  <tr >
+    <td style="width: 45%;padding: 10px;">Name</td>
+    <td>
+      {{ data.second_person }}
+    </td>
+  </tr>
+
+    <tr>
+    <td  style="padding: 10px;">Make And Model</td>
+    <td>
+     {% for item in product_list %}
+        {{ forloop.counter }} )
+        {{ item.model }}
+        ,{{ item.sub_model }} <br>
+        {% endfor %}
+    </td>
+  </tr>
+</table>
+  <div style="padding-left: 50px; padding-right: 50px; text-align: left; font-size: 17px;">
+  <p>
+    <br>
+
+      1- दुरुस्तीसाठी कोणतीही हमी नाही. कार्यशाळेतून बाहेर जाण्यापूर्वी आपल्या पूर्ण समाधानानुसार स्केल तपासा.<br> <br>
+  2- <u>  कृपया तीन दिवसात स्केल गोळा करा. </u> त्या कालावधीनंतर आम्ही तशाच जबाबदार नाही<br> <br>
+  3- <u>  कृपया डिलिवरीच्या वेळी ही पावती घेऊन या. </u> प्राप्त झाल्यानंतर स्केल गोळा केल्यावर रु. 50 वर अतिरिक्त शुल्क आकारले जाईल<br> <br>
+
+  <br>
+<img src="{% static 'images/l.png' %}" style="width: 100%;">
+
+	<hr>
+
+<span style="font-size: 11px;">HINDUSTAN SCALE COMPANY, 186/188 Janjikar Street, Crawford Market, Mumbai - 400003</span>
+  </p>
+
+
+</div>
+
+</center>
+
+
+
+<script>
+  function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+<style>
+    * {
+    font-family: 'Poppins';
+
+}
+
+</style>
+
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+
+
+.divs{
+display:none;
+}
+
+.card-body{
+font-size: 12px;
+}
+</style>
+</head>
+
+<body id="page-top">
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+</style>
+
+                        <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+table {
+    table-layout:fixed;
+
+}
+td {
+    word-wrap:break-word;
+}
+            </style>
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+        <br>
+        <br>
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class=" horizontal-scrollable">
+
+                           {% if is_deleted %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{msg}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+          <!-- Page Heading -->
+
+           <div class="row">
+           <div class="col-xl-6 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Follow-Up History</h1>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+                </div>
+
+  <div class="row table-responsive" style="padding: 10px;">
+
+    <table class="table">
+        <tr style="background-color: gray; color: white; border: 0px;">
+            <th colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Sr. No.</center></th>
+            <th colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Time</center></th>
+            <th colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Mode</center></th>
+            <th colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Medium</center></th>
+            <th colspan="2" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Whatsapp Number</center></th>
+            <th colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Whatsapp Message</center></th>
+            <th colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Email Subject</center></th>
+            <th colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Email Message</center></th>
+            <th colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>SMS Content</center></th>
+            <th colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid white;"><center>Call Response</center></th>
+        </tr>
+    {% for item in obj_list %}
+          <script>
+    $(function(){
+      $("#includedContent{{forloop.counter}}").load('/media/{{item.followup_history_file}}');
+    });
+    </script>
+
+
+ {% ifchanged item.entry_timedate_time.date %}
+        <tr style="background-color: gray; color: white;">
+            <td colspan="21" style=" border: 1px solid white;"> {{ item.entry_timedate_time.date }}</td>
+        </tr>
+
+            {% endifchanged %}
+
+
+        <tr style="border-top: 5px solid #FC6E20; border-left: 5px solid #FC6E20; border-right:  5px solid #FC6E20;">
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{forloop.counter}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{ item.entry_timedate_time }}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {{form4.email_auto_manual}}</td>
+            <td colspan="1" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"> {% if item.is_email %} Email {% endif %} {% if item.is_whatsapp %}| Whatsapp {% endif %} {% if item.is_call %}| Call {% endif %} {% if item.is_sms %}| SMS {% endif %}</td>
+            <td colspan="2" style="border-radius: 0px 0px 0px 0px; border:1px solid gray; ;"> {{ item.wa_no }}</td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid gray; ">{{ item.wa_msg }}</td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.email_subject }}</td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.email_msg }}</td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.sms_msg }}{{item.sms_con}}</td>
+            <td colspan="3" style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">{{ item.call_response }}</td>
+
+        </tr>
+        <tr  style=" border-left: 5px solid #FC6E20; border-right:  5px solid #FC6E20;border-bottom: 5px solid #FC6E20;">
+            <td colspan="21">
+                <div id="includedContent{{forloop.counter}}"></div>
+
+            {% if not item.is_manual_mode %}
+            <span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>
+            {% endif %}
+                            {% if not item.is_auto_follow_deleted and not item.is_manual_mode %}
+
+
+                    <form action="" method='POST'>{% csrf_token %}
+                        <input type="hidden" name="delete_id" value="{{item.pk}}">
+                        <button type="submit" name="sub1" class="btn btn-primary">Cancel</button>
+                    </form>
+            {% endif %}
+            </td>
+
+        </tr>
+
+
+        </tr>
+{% endfor %}
+    </table>
+
+        </div>
+
+
+
+
+
+   </div>
+
+
+        </div>
+</div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

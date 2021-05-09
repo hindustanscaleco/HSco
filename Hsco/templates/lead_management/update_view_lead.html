@@ -1,0 +1,2543 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="">
+                                <br>
+                                <br>
+								<!--begin::Info-->
+
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1BC5BD;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0c7a75;
+}
+scrollbar-color: #87ceeb #ff5621;
+scrollbar-width: thin;
+</style>
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+
+        <!-- End of Topbar -->
+
+
+
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+          <script>
+$(document).ready(function(){
+
+    $(".editableBox").change(function(){
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa").change(function(){
+        $(".timeTextBoxa").val($(".editableBoxa option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxz").change(function(){
+        $(".timeTextBoxz").val($(".editableBoxz option:selected").html());
+    });
+});
+
+
+
+
+</script>
+  <script> function disable() {
+  document.getElementById("name").disabled = true;
+  }
+
+  function enable() {
+   document.getElementById("name").disabled = false;
+  }
+
+
+</script>
+
+          <script>
+function myFunction() {
+
+  var x = document.getElementById("Mytext1");
+  var y = document.getElementById("Mytext2");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+    document.getElementById("customer_name").disabled = false;
+    document.getElementById("company_name").disabled = false;
+    document.getElementById("contact_no").disabled = false;
+    document.getElementById("customer_email_id").disabled = false;
+    document.getElementById("address").disabled = false;
+    document.getElementById("customer_industry").disabled = false;
+    document.getElementById("customer_gst_no").disabled = false;
+    document.getElementById("Mytext1").style.display = "block";
+}
+</script>
+
+
+
+
+
+
+
+        <!-- Begin Page Content -->
+     <div class="container-fluid">
+
+         <div class="col-xl-12 col-lg-12">
+{% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+
+             {% endfor %}
+
+{% endif %}
+              {% if request.session.context_sess.error_exist %}
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{request.session.context_sess.error}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+                           {% if request.session.context_sess.success_exist %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{request.session.context_sess.success}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+               {% if request.session.context_sess.success_exist_2 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{request.session.context_sess.success_2}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+
+               {% if request.session.context_sess.success_exist_4 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Sent : </strong> {{request.session.context_sess.success_4}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+               {% if request.session.context_sess.success_exist_5 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Recorded : </strong> {{request.session.context_sess.success_5}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+                     {% if request.session.context_sess.success_exist_6 %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Message : </strong> {{request.session.context_sess.success_6}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+             <script>
+                 alert("If Product's Fields Selected Are More Than 3 or More Than 2 Products Selected Then SMS Cost May Increase");
+             </script>
+{% endif %}
+
+
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+
+
+          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Customer Details <span style="float:right;"> CRM No: {{customer_id.pk}}  </span> </h6>
+    </a>
+
+                <!-- Card Body -->
+                  {% if request.session.expand_customer %}
+                  <div class="card-body collapse show" id="collapseCardExample" >
+                  {% else %}
+                      <div class="card-body collapse" id="collapseCardExample" >
+                  {% endif %}
+
+
+    <div class="form-group row" style="display:none;">
+            <form  method='POST' enctype="multipart/form-data" target="_blank">{% csrf_token %}
+            <input name="tp" value="{{lead_id.pk}}">
+         <button name="submit56" id="submit56" type="submit" >Send</button>
+        </form>
+    </div>
+
+                          {% if request.session.context_sess.success_exist_2 %}
+<script>
+
+
+    function myFunction225(){
+    document.getElementById("submit56").click();
+    }
+myFunction225();
+
+
+</script>
+
+
+{% endif %}
+
+
+                     <form action="" method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
+
+
+                          <div class="form-group row">
+                              <label class="col-md-2 control-label">Customer Name: *</label>
+                                  <div class="col-md-3 inputGroupContainer">
+                                  <div class="input-group">
+                                  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+                                      {{ form.customer_name }}
+                          </div>
+                        </div>
+
+
+                                <label class="col-md-2 control-label">Company Name:</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
+                                  {{ form.company_name }}
+                            </div>
+                             </div>
+                          </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Customer Number: *</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-mobile faicons"></i></span>
+                                  {{ form.contact_no }}
+                            </div>
+                          </div>
+
+                                <label class="col-md-2 control-label">Customer Email ID: </label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-at faicons"></i></span>
+                                  {{ form.customer_email_id }}
+                   </div>
+                             </div>
+                          </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Address: *</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-home faicons" aria-hidden="true"></i></span>
+                                  {{ form.address }}
+                            </div>
+                            </div>
+
+                                <label class="col-md-2 control-label">Optional Email(Comma Separated): </label>
+                          <div class="col-md-3 inputGroupContainer">
+                          <div class="input-group">
+                          <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                            {{ form.optional_email }}
+                        </div>
+                        </div>
+
+                          </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Industry: *</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-industry faicons"></i></span>
+                                  {{ form.customer_industry }}
+                            </div>
+                             </div>
+
+                                <label class="col-md-2 control-label">Customer GST No</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-user faicons" aria-hidden="true"></i></span>
+                                  {{ form.customer_gst_no }}
+                            </div>
+                             </div>
+                          </div>
+
+
+
+<center>
+     <button name="submit" type="submit" id="Mytext1" class="btn btn-primary">Save</button>
+</center>
+
+                     </form>
+                          </div>
+
+
+              </div>
+            </div>
+
+                         <script>
+                                                         $(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'Lost')
+      {
+        $("#lost_reason_label").show();
+        $("#lost_reason_div").show();
+        $("#id_lost_reason").prop('required',true);
+      }
+      else
+      {
+        $("#lost_reason_label").hide();
+        $("#lost_reason_div").hide();
+                $("#id_lost_reason").prop('required',false);
+
+      }
+
+          if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+        $("#id_postpond_time_date").prop('required',true);
+        $("#id_postponed_reason").prop('required',true);
+        $("#postponed_date_lable").show();
+        $("#postponed_date").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+        $("#postponed_date_lable").hide();
+        $("#postponed_date").hide();
+        $("#id_postpond_time_date").prop('required',false);
+        $("#id_postponed_reason").prop('required',false);
+      }
+
+    });
+});
+                         </script>
+
+                                       <script>
+                                                         $(document).ready(function(){
+    $('#deal_stage').on('change', function() {
+      if ( this.value == 'Postponed')
+      {
+        $("#postponed_lost_reason_label").show();
+        $("#postponed_lost_reason_label_div").show();
+      }
+      else
+      {
+        $("#postponed_lost_reason_label").hide();
+        $("#postponed_lost_reason_label_div").hide();
+      }
+    });
+});
+                         </script>
+
+
+
+            <form  method='POST' enctype="multipart/form-data" >{% csrf_token %}
+
+           <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+             <a href="#collapseCardExample2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
+                 <h6 class="m-0 font-weight-bold text-primary">Deal Details Section<span style="float:right;">Purchase ID: {{lead_id.purchase_id.pk}} </span>
+             {% if lead_id.purchase_id.dispatch_id_assigned %}
+                     <span style="float:right;">Dispatch ID: {{lead_id.purchase_id.dispatch_id_assigned.pk}} &nbsp;&nbsp; | &nbsp;&nbsp; </span>
+                              {% endif %} </h6>
+    </a>
+                <!-- Card Body -->
+                  {% if request.session.expand_deal_detail %}
+                                  <div class="card-body collapse show" id="collapseCardExample2" >
+
+                  {% else %}
+                                    <div class="card-body collapse" id="collapseCardExample2" >
+
+                  {% endif %}
+                              <div class="form-group row">
+                                  <label class="col-md-2 control-label">Current Stage* : </label>
+                                  {% if lead_id.current_stage == 'Dispatch Done - Closed' %}
+                                  <div class="col-md-5">
+        {{lead_id.current_stage}}
+                                  </div>
+ {% else %}
+                                         <div class="col-md-5 inputGroupContainer">
+                                  <div class="input-group">
+<!--                                  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>-->
+                                {{ form2.current_stage }}
+                          </div>
+                        </div>
+ {% endif %}
+
+   <div class="col-md-5">
+            {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+{% if lead_id.is_entered_purchase %}
+        <a class="btn btn-primary" target="_blank" href='/update_customer_details/{{lead_id.purchase_id.pk}}' >Go To Purchase</a>
+
+ {% else %}
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Send To Purchase</button>
+
+ {% endif %}
+             {% if lead_id.is_entered_purchase %}
+             {% if lead_id.purchase_id.dispatch_id_assigned %}
+        <a class="btn btn-primary" target="_blank" href='/update_dispatch_details/{{lead_id.purchase_id.dispatch_id_assigned.pk}}' >Go To Dispatch</a>
+{% endif %}
+
+ {% endif %}
+
+
+ {% endif %}
+
+                        </div>
+
+                              </div>
+
+
+                              <div class="form-group row">
+
+                                <label class="col-md-2 control-label">New/Existing Customer : *</label>
+                              <div class="col-md-4 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.new_existing_customer }}
+                            </div>
+                             </div>
+
+                                   {% if lead_id.current_stage == 'Postponed' %}
+                              <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: block;">Postpond Date *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: block;">
+                                  {% else %}
+                                  <label class="col-md-2 control-label" id="postponed_lost_reason_label" style="display: none;">Postpond Date *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_lost_reason_label_div" style="display: none;">
+                                  {% endif %}
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postpond_time_date }}
+                            </div>
+                                  </div>
+                          </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Date of Initiation:</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons" aria-hidden="true"></i></span>
+                                {{ form2.date_of_initiation}}
+                            </div>
+                          </div>
+
+                                <label class="col-md-2 control-label">Channel*: </label>
+                             <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+        <select required name="channel" id="channel" class="form-control"  id="myText16" >
+
+    {% for item in channel_marketing %}
+          <option {% if lead_id.channel_id.pk == item.id %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+          </select>
+    </div>
+  </div>
+                          </div>
+
+
+                            <div class="form-group row">
+
+                                   <label class="col-md-2 control-label">Requirement* :</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-check-square faicons"></i></span>
+                                {{ form2.requirement }}
+                                  <br>
+
+
+                            </div>
+                          <span style="padding: 5px; color: Gray;"> Total Characters Left: <span id="RequirementcharNum" >-</span></span>
+
+                             </div>
+
+
+{% if lead_id.current_stage == 'Lost' %}
+                                <label class="col-md-2 control-label" id="lost_reason_label" >Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" >
+                                {% else %}
+                                <label class="col-md-2 control-label" id="lost_reason_label" style="display: none;">Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="lost_reason_div" style="display: none;">
+                                {% endif %}
+
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.lost_reason }}
+                            </div>
+                                  </div>
+
+
+                                  {% if lead_id.current_stage == 'Postponed' %}
+                                    <label class="col-md-2 control-label" id="postponed_date_lable" style="display: block;">Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: block;">
+                                  {% else %}
+                                <label class="col-md-2 control-label" id="postponed_date_lable" style="display: none;">Reason: *</label>
+                              <div class="col-md-3 inputGroupContainer" id="postponed_date" style="display: none;">
+                                  {% endif %}
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form2.postponed_reason }}
+                            </div>
+                                  </div>
+
+
+                          </div>
+
+<div class="form-group row">
+                         {% if request.user.role == 'Employee' %}
+
+                                <label class="col-md-2 control-label">Owner of Opportunity* :</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <select disabled required name="owner_of_opportunity"  class="form-control">
+      <option value="{{request.user.name}}">{{request.user.name}}</option>
+    </select>
+
+
+                            </div>
+                             </div>
+                     {% elif request.user.role == 'Admin' %}
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <select  required name="owner_of_opportunity"  class="form-control">
+                        <option value="{{lead_id.owner_of_opportunity.name}}">{{lead_id.owner_of_opportunity.name}}</option>
+
+                              <option value="{{request.user.profile_name}}">{{request.user.profile_name}}</option>
+                    {% for user in under_admin_users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </select>                           </div>
+                             </div>
+                        {% elif request.user.role == 'Manager' %}
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <select  required name="owner_of_opportunity"  class="form-control">
+              <option value="{{lead_id.owner_of_opportunity.name}}">{{lead_id.owner_of_opportunity.name}}</option>
+                    <option value="{{request.user.profile_name}}">{{request.user.profile_name}}</option>
+
+                    {% for user in under_manager_users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+    </select>                           </div>
+                             </div>
+                    {% elif request.user.role == 'Super Admin' %}
+                                <label class="col-md-2 control-label">Owner of Opportunity: *</label>
+                              <div class="col-md-5 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+      <select  required name="owner_of_opportunity" class="form-control">
+                <option value="{{lead_id.owner_of_opportunity.name}}">{{lead_id.owner_of_opportunity.name}}</option>
+
+                    {% for user in users %}
+      <option value="{{user.profile_name}}">{{user.profile_name}}</option>
+          {% endfor %}
+      </select>                            </div>
+                             </div>
+        {% endif %}
+
+                                <label class="col-md-2 control-label">Upload Requirement File :</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-file-word-o" aria-hidden="true"></i></span>
+                                {{ form2.upload_requirement_file}}
+                                  {% if lead_id.upload_requirement_file %}
+                                  <a href="{{ lead_id.upload_requirement_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+                                <p>Note: File size must be less than 5 mb </p>
+                            </div>
+                            </div>
+
+</div>
+
+<center>
+
+     <button type="submit" name="submit1" class="btn btn-primary">Save</button>
+
+</center>
+              </div>
+            </div>
+           </div>
+                     </form>
+
+
+          <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+              <a href="#collapseCardExample3" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
+      <h6 class="m-0 font-weight-bold text-primary">PI Section<span style="float:right;">Lead/PI ID: {{lead_id.id}} </span></h6>
+    </a>
+                <!-- Card Body -->
+                  {% if request.session.expand_pi_section %}
+                <div class="card-body collapse show" id="collapseCardExample3" >
+                    {% else %}
+                                    <div class="card-body collapse" id="collapseCardExample3" >
+
+                    {% endif %}
+                         <div class="row">
+                             <div class="col-xl-2 col-lg-2">
+</div>
+                         <a href="/select_product/{{lead_id.id}}"><input  type="button" class="btn btn-primary" value="Add Product"></a>
+<div class="col-xl-2 col-lg-2">
+</div>
+                             <a href="/lead_delete_product/{{lead_id.id}}">   <input type="button" class="btn btn-primary" value="Delete Product"></a>
+<div class="col-xl-2 col-lg-2">
+</div>
+                             <a href="/pi_section_history/{{lead_id.id}}"> <input type="button" class="btn btn-primary" value="History of Record"></a>
+                         </div>
+<br>
+
+                         <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: white;
+}
+</style>
+                 {% for product in lead_pi_products %}
+
+                          <div class="card shadow">
+
+<div class="card-body row table-responsive" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
+    <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
+    <table style="font-size: 14px;" class="tanle">
+  <tr>
+    <td>Product Code: {{ product.product_id.sub_sub_category }}</td>
+      <td rowspan="5">Product Image:
+          {% if product.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_image.url }}">
+          {% elif product.product_id.product_image %}
+          <img height="100px" width="100px" src="{{ product.product_id.product_image.url }}">
+      {% endif %}</td>
+
+  </tr><tr>
+    <td>HSN Code: {{ product.hsn_code }}</td>
+</tr>
+
+<tr>
+    <td>Quantity: {{ product.quantity }}</td>
+               </tr>
+
+<tr>
+    <td>Product Description: {{ product.product_desc }}</td>
+               </tr>
+
+<tr>
+    <td>Rate : {{ product.rate }}</td>
+
+  </tr>
+</table>
+              </div>
+
+                          </div>
+               {% endfor %}
+
+                         <br>
+                     <form  name="PIForm" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+
+                         <div class="row">
+                             <input style="display:None;" type="hidden" id="email_type_check" name="email_type_check" >
+                        {% if pi_id.show_external_pi_first == True %}
+                             <script>
+                                   $('#grand_total_id').attr('required', '');
+                                document.getElementById("email_type_check").value = 'external_pi' ;
+                                document.getElementById("select_pi_template_id").value = '' ;
+                             </script>
+                             <div style="display:None;" id="div_Internal" class="card shadow col-md-6">
+                        <br>
+                             <div class="row">
+                                 <div class="col-xl-9">
+                                    <center>System Generated PI</center>
+                                 </div>
+                                 <div class="col-xl-3">
+                                    <button onclick="show_external()" type="button"class="btn btn-primary">External PI</button>
+                                 </div>
+                             </div>
+
+ <hr>
+   <div class="form-group row">
+                              <label class="col-md-4 control-label">Discount:</label>
+
+                                  <div class="col-md-7 inputGroupContainer">
+                                  <div class="input-group">
+                                  <span class="input-group-addon icon-border"></span>
+                                {{ form3.discount }}
+                                {{ form3.discount_type }}
+
+                          </div>
+                        </div>
+   </div>
+                                <div class="form-group row">
+                                                                           <label class="col-md-4 control-label">Select GST Type :</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_gst_type }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+               {% if pi_id.select_gst_type !=  None  %}
+
+                         <center>
+<button type="button" onclick="pdf_download_manual()" name="download_pi"  class="btn btn-primary">Download PI</button>
+</center>
+{% endif %}
+
+                             <center>Note: For PI Preview Uncheck Email and click on submit button</center>
+                         </div>
+                                <div style="display:block;" id="div_External" class="card shadow col-md-6">
+<br>
+                                    <div class="row">
+                                 <div class="col-xl-8">
+                                    <center>External PI</center>
+                                 </div>
+                                 <div class="col-xl-4">
+                                    <button onclick="show_internal()" type="button" class="btn btn-primary">System Generated PI</button>
+                                 </div>
+                             </div>
+
+ <hr>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 control-label">Upload PI File:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
+                                  {% if pi_id.upload_pi_file %}
+                                  <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+
+                            </div>
+                                                                                                    <p>Note: File size must be less than 5 mb </p>
+
+                             </div>
+                            </div>
+
+                                <div class="form-group row">
+
+                                                                         <label class="col-md-4 control-label">Amount:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.grand_total|default_if_none:"" }}
+                                                              </div>
+                          </div>
+
+                            </div>
+
+                         </div>
+                             {% else %}
+                             <script>
+                                   $('#select_gst_type_id').attr('required', '');
+                                document.getElementById("email_type_check").value = 'internal_pi' ;
+
+                             </script>
+                         <div style="display:block;" id="div_Internal" class="card shadow col-md-6">
+                        <br>
+                             <div class="row">
+                                 <div class="col-xl-9">
+                                    <center>System Generated PI</center>
+                                 </div>
+                                 <div class="col-xl-3">
+                                    <button onclick="show_external()" type="button"class="btn btn-primary">External PI</button>
+                                 </div>
+                             </div>
+
+ <hr>
+
+   <div class="form-group row">
+                              <label class="col-md-4 control-label">Discount:</label>
+
+                                  <div class="col-md-7 inputGroupContainer">
+                                  <div class="input-group">
+                                  <span class="input-group-addon icon-border"></span>
+                                {{ form3.discount }}
+                                {{ form3.discount_type }}
+
+                          </div>
+                        </div>
+   </div>
+                                <div class="form-group row">
+                                                                           <label class="col-md-4 control-label">Select GST Type :</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_gst_type }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+
+                                                  <div class="form-group row">
+                                <label class="col-md-4 control-label">Select PI Template </label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.select_pi_template }}
+                                                              </div>
+                          </div>
+
+
+                          </div>
+                         <!--<center>-->
+                 <!--<button type="button" onclick="document.getElementById('primaryButton').click()" name="secondaryButton"  style="background-color: #FC6E20;" class="btn btn-primary">Save</button>-->
+<!--</center>-->
+               {% if pi_id.select_gst_type !=  None  %}
+
+      <center>
+<button type="button" onclick="pdf_download_manual()" name="download_pi" class="btn btn-primary">Download PI</button>
+</center>
+                                                     {% endif %}
+
+                             <center>Note: For PI Preview Uncheck Email and click on submit button</center>
+                         </div>
+                                <div style="display:None;" style="display:block;" id="div_External" class="card shadow col-md-6">
+<br>
+                                    <div class="row">
+                                 <div class="col-xl-8">
+                                    <center>External PI</center>
+                                 </div>
+                                 <div class="col-xl-4">
+                                    <button onclick="show_internal()" type="button" class="btn btn-primary">System Generated PI</button>
+                                 </div>
+                             </div>
+
+ <hr>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-4 control-label">Upload PI File:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.upload_pi_file }}
+                                  {% if pi_id.upload_pi_file %}
+                                  <a href="{{ pi_id.upload_pi_file.url }}" class="btn btn-primary">Old File</a>
+                                  {% endif %}
+
+                            </div>
+                                                                                                    <p>Note: File size must be less than 5 mb </p>
+
+                             </div>
+                            </div>
+
+                                <div class="form-group row">
+
+                                                                         <label class="col-md-4 control-label">Amount:</label>
+                              <div class="col-md-7 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-folder faicons"></i></span>
+                                {{ form3.grand_total }}
+                                                              </div>
+                          </div>
+
+                            </div>
+
+                         </div>
+                        {% endif %}
+                         </div>
+
+
+<div class="row">
+
+                         <div class="card shadow col-md-6">
+
+                            <div class="form-group row" id="myDiv_call" style="display:none;" >
+
+
+                                <label class="col-md-3 control-label">Call Response:</label>
+                              <div class="col-md-12 inputGroupContainer">
+                              <div class="input-group">
+                                {{ form3.call }}
+                   </div>
+                             </div>
+                          </div>
+                         </div></div>
+
+<br>
+
+                         <br>
+<div class="row">
+                                                         <label class="col-md-2 control-label">Medium of Selection:</label>
+
+    <label class="form-check-label">Email : &nbsp;&nbsp; {{ form3.email  }}</label>
+    <div class="col-xl-2 col-lg-2"></div>
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Call : &nbsp;&nbsp; {{ form3.call2  }}</label>
+</div>
+
+
+                         <center>
+     <button type="submit" name="submit2" id="primaryButton"  class="btn btn-primary">Submit</button>
+
+                             <!--<button type="submit" onclick="download_pdf()" class="btn btn-primary" style="background-color: #FC6E20;">PDF</button>-->
+                             {% if pi_id.first_submit == True  %}
+                             {% if pi_id.grand_total != 0.0  %}
+                             <button type="submit" onclick="download_image()" class="btn btn-primary" >Image</button>
+                             {% endif %}
+                             <a target="_blank" href="https://api.whatsapp.com/send?phone=91{{customer_id.contact_no}}&text=Hey, here is the PI"><button type="button" class="btn btn-primary">Whatsapp</button></a>
+                             {% endif %}
+
+</center>
+
+</form>
+                          </div>
+
+                  </div>
+                </div>
+
+
+
+        <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+         <a href="#collapseCardExample4" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample4">
+      <h6 class="m-0 font-weight-bold text-primary">Follow-up Section
+          {% if auto_manual_mode == 'Automatic' %}
+
+<span style="float:right;" class="m-0 alert alert-danger">Auto Follow-Up</span>
+           {% else %}
+          <span style="float:right;" class="m-0 alert alert-success">Manual Follow-Up</span>
+
+           {% endif %}</h6>
+
+
+    </a>
+                <!-- Card Body -->
+
+                {% if request.session.expand_followup %}
+                  <div class="card-body collapse show" id="collapseCardExample4">
+                  {% else %}
+                                      <div class="card-body collapse" id="collapseCardExample4" >
+
+                  {% endif %}
+                                                   <div class="row">
+                            <div class="row col-md-6"></div>
+                        <div class="row col-md-2">
+ <button type="reset" onclick="location.href='/select_product_followup/{{lead_id.pk}}'"
+         class="btn btn-primary">Add Product</button>
+
+                        </div>
+                                                         <div class="row col-md-2">
+ <button type="reset" onclick="location.href='/followup_delete_product/{{lead_id.pk}}'"
+         class="btn btn-primary">Delete Product</button>
+
+                        </div>
+                            <div class="row col-md-2">
+                        <a href="/lead_follow_up_histroy/{{hfu_id}}"><input type="button" class="btn btn-primary" value="History"></a> &nbsp
+
+
+                            </div>
+                            </div>
+
+<br>
+
+                      <div class="card" >
+                        <div class="card-body" style="padding: 10px;color: black; font-weight: 300; font-size: 14px;">
+                            <center><h4><b>Product Fields To Show</b></h4></center>
+                            <br>
+
+                            <form action="" method="post" >{% csrf_token %}
+
+<div style="margin-left:5%;">
+
+
+
+<div class="form-group row">
+    <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+
+            {% if 'scale_type' in hfu %}
+
+<input type="checkbox" class="custom-control-input " name="checks[]" value="scale_type" checked id="custoChec1" style="color: red;">
+
+
+              {% else %}
+          <input type="checkbox" class="custom-control-input" name="checks[]" value="scale_type" id="custoChec1">
+
+              {% endif %}
+
+           {% if 'scale_type' in hfu %}
+          <label class="custom-control-label col-md-6" for="custoChec1" style="color: green;">Type Of Scale</label>
+        {% else %}
+                      <label class="custom-control-label col-md-6" for="custoChec1">Type Of Scale</label>
+
+  {% endif %}
+        </div>
+        </div>
+
+       <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+{% if 'main_category' in hfu %}
+<input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" checked id="custCheck2">
+            <label class="custom-control-label col-md-6" for="custCheck2" style="color: green;">Main Model</label>
+
+{% else %}
+<input type="checkbox" class="custom-control-input" name="checks[]" value="main_category" id="custCheck2">
+<label class="custom-control-label col-md-6" for="custCheck2">Main Model</label>
+{% endif %}
+
+
+</div>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+
+       <div class="custom-control custom-checkbox">
+         {% if 'sub_category' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" checked id="cstoCheck6">
+             <label class="custom-control-label col-md-6" for="cstoCheck6" style="color: green;">Sub Model</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_category" id="cstoCheck6">
+             <label class="custom-control-label col-md-6" for="cstoCheck6">Sub Model</label>
+
+      {% endif %}
+</div>
+    </div>
+
+
+    <div class="col-md-3 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+     {% if 'sub_sub_category' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" checked id="custoCheck3">
+      <label class="custom-control-label col-md-12" for="custoCheck3" style="color: green;">Sub Sub Model</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="sub_sub_category" id="custoCheck3">
+      <label class="custom-control-label col-md-12" for="custoCheck3">Sub Sub Model</label>
+
+
+      {% endif %}
+</div>
+</div>
+</div>
+
+
+<div class="form-group row">
+
+  <div class="col-md-3 inputGroupContainer">
+
+        <div class="custom-control custom-checkbox">
+        {% if 'platform_size' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" checked id="custoCheck8">
+              <label class="custom-control-label col-md-12" for="custoCheck8" style="color: green;">Platform Size</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="platform_size" id="custoCheck8">
+              <label class="custom-control-label col-md-12" for="custoCheck8">Platform Size</label>
+
+
+      {% endif %}
+</div>
+</div>
+
+  <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+    {% if 'product_desc' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" checked id="custoCheck4">
+              <label class="custom-control-label col-md-12" for="custoCheck4" style="color: green;">Product Description</label>
+
+    {% else %}
+      <input type="checkbox" class="custom-control-input" name="checks[]" value="product_desc" id="custoCheck4">
+              <label class="custom-control-label col-md-12" for="custoCheck4">Product Description</label>
+
+
+    {% endif %}
+</div>
+
+  </div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+         {% if 'cost_price' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" checked id="custoCheck5">
+              <label class="custom-control-label col-md-6" for="custoCheck5" style="color: green;">Price</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="cost_price" id="custoCheck5">
+              <label class="custom-control-label col-md-6" for="custoCheck5">Price</label>
+
+
+      {% endif %}
+</div>
+</div>
+
+
+
+  <div class="col-md-3 inputGroupContainer">
+      <div class="custom-control custom-checkbox">
+         {% if 'product_id_id__product_image' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" checked id="custoCheck6">
+            <label class="custom-control-label col-md-12" for="custoCheck6" style="color: green;">Product Image</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_image" id="custoCheck6">
+            <label class="custom-control-label col-md-12" for="custoCheck6">Product Image</label>
+
+      {% endif %}
+</div>
+</div>
+</div>
+
+
+<div class="form-group row">
+
+  <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+        {% if 'hsn_code' in hfu %}
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" checked id="custoCheck2">
+                    <label class="custom-control-label col-md-12" for="custoCheck2" style="color: green;">HSN Code</label>
+
+        {% else %}
+        <input type="checkbox" class="custom-control-input" name="checks[]" value="hsn_code" id="custoCheck2">
+                    <label class="custom-control-label col-md-12" for="custoCheck2">HSN Code</label>
+
+
+        {% endif %}
+        </div>
+  </div>
+
+      <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+         {% if 'max_capacity' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" checked id="custoCheck56">
+              <label class="custom-control-label col-md-12" for="custoCheck56" style="color: green;">Max Capacity</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="max_capacity" id="custoCheck56">
+              <label class="custom-control-label col-md-12" for="custoCheck56">Max Capacity</label>
+
+
+      {% endif %}
+</div>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+      <div class="custom-control custom-checkbox">
+         {% if 'accuracy' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" checked id="custoCheck67">
+            <label class="custom-control-label col-md-12" for="custoCheck67" style="color: green;">Accuracy</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="accuracy" id="custoCheck67">
+            <label class="custom-control-label col-md-12" for="custoCheck67">Accuracy</label>
+
+      {% endif %}
+</div>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+       <div class="custom-control custom-checkbox">
+         {% if 'product_brochure' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" checked id="cstoCheck68">
+             <label class="custom-control-label col-md-12" for="cstoCheck68" style="color: green;">Product Brochure Link</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_brochure" id="cstoCheck68">
+             <label class="custom-control-label col-md-12" for="cstoCheck68">Product Brochure Link</label>
+
+      {% endif %}
+</div>
+
+  </div>
+</div>
+
+<div class="form-group row">
+  <div class="col-md-3 inputGroupContainer">
+        <div class="custom-control custom-checkbox">
+         {% if 'product_id_id__product_document' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" checked id="custoCheck52">
+              <label class="custom-control-label col-md-12" for="custoCheck52" style="color: green;">Product Document Link</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="product_id_id__product_document" id="custoCheck52">
+              <label class="custom-control-label col-md-12" for="custoCheck52">Product Document Link</label>
+
+
+      {% endif %}
+</div>
+</div>
+
+
+  <div class="col-md-3 inputGroupContainer">
+      <div class="custom-control custom-checkbox">
+         {% if 'carton_size' in hfu %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" checked id="custoCheck63">
+            <label class="custom-control-label col-md-12" for="custoCheck63" style="color: green;">Carton Size</label>
+
+      {% else %}
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="carton_size" id="custoCheck63">
+            <label class="custom-control-label col-md-12" for="custoCheck63">Carton Size</label>
+
+      {% endif %}
+</div>
+</div>
+  </div>
+
+                                <center>
+                                    <button class="btn btn-primary" type="submit" name="submit3">Save</button>
+                                </center>
+                                <hr>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <form action="" method='POST' enctype="multipart/form-data" >{% csrf_token %}
+<!--                        <div class="row">-->
+<!--                            <div class="row col-md-3"></div>-->
+<!--                        <div class="row col-md-6">-->
+
+<!--                        </div>-->
+<!--                            <div class="row col-md-3">-->
+
+<!--                         {% if auto_manual_mode == 'Automatic' %}-->
+
+<!--<span style="float:right;margin:10px;" class="alert alert-danger">Auto Follow-Up</span>-->
+<!--           {% endif %}-->
+<!--                            </div>-->
+<!--                            </div>-->
+
+                            <div class="">
+<div class="row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px; ">
+
+    <div style="min-height:100px;max-height:390px;" class="table-responsive">
+    <table class="table">
+        <tr>
+            <td style="min-width: 100px;">Product Selection</td>
+            <td style="min-width: 200px;">Scale Type</td>
+            <td style="min-width: 200px;">Main Model</td>
+            <td style="min-width: 200px;">Sub Model</td>
+            <td style="min-width: 200px;">Sub Sub Model</td>
+            <td style="min-width: 100px;">Hsn Code</td>
+            <td style="min-width: 200px;">Product Image</td>
+            <td style="min-width: 200px;">Max Capacity</td>
+            <td style="min-width: 200px;">Accuracy</td>
+            <td style="min-width: 200px;">Platform Size</td>
+            <td style="min-width: 200px;">Product Desc</td>
+            <td style="min-width: 200px;">Product Brochure</td>
+            <td style="min-width: 200px;">Product Document</td>
+            <td style="min-width: 100px;">Cost Price</td>
+            <td style="min-width: 100px;">Selling Price</td>
+            <td style="min-width: 100px;">Carton Size</td>
+
+
+        </tr>
+
+
+          {% for item in followup_products_list %}
+        <tr>
+
+
+            <td ><input style="margin:40%;" type="checkbox" name="checks_pro[]" value="{{item.pk}}" ></td>
+            <td>{{item.scale_type}}</td>
+            <td>{{item.main_category}}</td>
+            <td>{{item.sub_category}}</td>
+            <td>{{item.sub_sub_category}}</td>
+            <td>{{item.hsn_code}}</td>
+            <td>
+                 {% if item.product_id.product_image %}
+                  <img height="150" width="150" src="{{item.product_id.product_image.url}}">
+                 {% else %}
+                  N/A
+                {% endif %}
+            </td>
+            <td>{{item.max_capacity}}</td>
+            <td>{{item.accuracy}}</td>
+            <td>{{item.platform_size}}</td>
+            <td>{{item.product_desc}}</td>
+
+            <td>
+                {% if item.product_id.product_brochure %}
+                <a target="_blank" href="{{item.product_id.product_brochure.url}}"> View Brochure</a>
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+
+            <td>
+                                {% if item.product_id.product_document %}
+
+                <a target="_blank" href="{{item.product_id.product_document.url}}"> View Product Document</a>
+            {% else %}
+                N/A
+                {% endif %}
+            </td>
+            <td>{{item.cost_price}}</td>
+            <td>{{item.selling_price}}</td>
+            <td>{{item.carton_size}}</td>
+
+        </tr>
+           {% endfor %}
+
+    </table>
+    </div>
+
+              </div>
+                          </div>
+
+
+<br>
+
+<br>
+
+                        <div class="row col-md-12" style="margin-left:4%">
+
+
+                              <br>
+
+                                                                {% if history_follow.is_whatsapp %}
+
+    <div class="col-md-5 card shadow" id="my123">
+
+<div class="row">
+        <label class="col-md-3 control-label">Whatsapp:</label>
+
+                        {{ form6.wa_no }}
+
+                                <label class="col-md-3 control-label" style="float:left;">Content:</label>
+                                {{ form6.wa_msg }}  <br>
+    <div style="padding: 5px; color: black;"> Total Characters Left: <span id="WhatsappcharNum" >-</span></div>
+         <br>
+</div>
+
+
+</div>
+       {% else %}
+                             <div class="col-md-5 card shadow" id="my123" style="display: none;">
+
+
+
+    <label class="col-md-10 control-label">Whatsapp:</label>
+                                <br>
+                        {{ form6.wa_no }}
+                        <br>
+                                <label class="col-md-5 control-label" style="float:left;">Content:</label>
+                                {{ form6.wa_msg }}
+
+                                 <br>
+</div>
+       {% endif %}
+
+
+<div class="col-md-1"></div>
+                            {% if history_follow.is_email %}
+<div class="col-md-5 card shadow" id="myemail">
+<div class="row">
+                      <label class="col-md-4 control-label">Email Subject:</label>
+
+                                {{ form6.email_subject }}
+
+                           <label class="col-md-4 control-label">Email Message:</label>
+                                {{ form6.email_msg }}
+        <div style="padding: 5px; color: black;"> Total Characters Left: <span id="EmailcharNum" >-</span></div>
+
+
+</div>
+
+</div>
+                            {% else %}
+                            <div class="col-md-5 card shadow" id="myemail" style="display: none;">
+
+                         <label class="col-md-4 control-label">Email Subject:</label>
+    <br>
+                                {{ form6.email_subject }}
+                        <br>
+                           <label class="col-md-4 control-label">Email Message:</label>
+                                {{ form6.email_msg }}
+
+</div>
+                            {% endif %}
+    </div>
+                            <br>
+<div class="row col-md-12" style="margin-left:4%">
+                                {% if history_follow.is_call %}
+
+                            <div class="col-md-5 card shadow" id="mycall_follow_up" >
+                           <label class=" control-label">Call Response:</label>
+<br>
+                                {{ form6.call_response }}
+                           <div style="padding: 5px; color: black;"> Total Characters Left: <span id="CallcharNum" >-</span></div>
+
+                                <br>
+                            </div>
+    {% else %}
+       <div class="col-md-5 card shadow" id="mycall_follow_up" style="display: none;">
+                           <label class="col-md-4 control-label">Call Response:</label>
+<br>
+                                {{ form6.call_response }}
+           <br>
+                            </div>
+    {% endif %}
+
+
+
+
+                                <div class="col-md-1">
+                                </div>
+                                    {% if history_follow.is_sms %}
+
+                                    <div class="col-md-5 card shadow" id="mysms" >
+                                        <div class="row" >
+                                            <label class="col-md-4 control-label">SMS Content:</label>
+
+                                {{ form6.sms_msg }}
+
+                                  <div style="padding: 5px; color: black;"> Total Characters Left: <span id="SMScharNum" >-</span></div>
+
+                                        </div>
+
+
+                        </div>
+
+    {% else %}
+             <div class="col-md-5 card shadow" id="mysms" style="display: none;">
+                           <label class="col-md-4 control-label">SMS Content:</label>
+<br>
+                                {{ form6.sms_msg }}
+                 <br>
+                        </div>
+    {% endif %}
+                        </div>
+                        <br>
+                        <script>
+                            $(document).ready(function(){
+    $('#purpose').on('change', function() {
+      if ( this.value == 'Manual')
+      {
+        $("#div_call").show();
+          if(document.getElementById("is_call").checked == true){
+        $("#mycall_follow_up").show();
+        }
+      }
+      if ( this.value == 'Select Mode')
+      {
+        $("#div_call").show();
+        if(document.getElementById("is_call").checked == true){
+        $("#mycall_follow_up").show();
+        }
+      }
+      if ( this.value == 'Automatic')
+      {
+        $("#div_call").hide();
+
+        $("#mycall_follow_up").hide();
+      }
+    });
+});
+</script>
+
+<div class="row col-md-12">
+
+                            <label class="col-md-2 control-label">Medium of Selection *:</label>
+
+    <label class="form-check-label">Email : &nbsp; &nbsp; {{ form6.is_email  }}</label>
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">Whatsapp : &nbsp; &nbsp; {{ form6.is_whatsapp  }}</label>
+    <div class="col-xl-2 col-lg-2"></div>
+
+    {% if auto_manual_mode == 'Manual' %}
+       <div id="div_call" >
+    <label class="form-check-label">Call : &nbsp; &nbsp; {{ form6.is_call  }}</label>
+    </div>
+    {% else %}
+       <div id="div_call" style="display: none;">
+    <label class="form-check-label">Call : &nbsp; &nbsp; {{ form6.is_call  }}</label>
+    </div>
+    {% endif %}
+
+
+
+    <div class="col-xl-2 col-lg-2"></div>
+    <label class="form-check-label">SMS : &nbsp; &nbsp;{{ form6.is_sms  }}</label>
+</div>
+<br>
+<center>
+
+      {{form4.email_auto_manual}}
+</center>
+
+
+
+
+                         <br>
+                         <center>
+{% if auto_manual_mode == 'Manual' or auto_manual_mode == 'Select Mode' %}
+<button name="submit5" class="btn btn-primary" type="submit" onclick="save_alert_form();">Send</button>
+           {% endif %}
+                    </center>
+                          </form>
+
+
+
+
+<script>
+function yourFunction() {
+
+  var x = document.getElementById("my123");
+
+
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    $('#id_wa_no').attr('required', '');
+    $('#id_wa_msg').attr('required', '');
+  } else {
+    x.style.display = "none";
+    $('#id_wa_no').removeAttr('required');
+    $('#id_wa_msg').removeAttr('required');
+  }
+}
+</script>
+
+<script>
+function hisFunction() {
+  var x = document.getElementById("myemail");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    $('#id_email_subject').attr('required', '');
+    $('#id_email_msg').attr('required', '');
+  } else {
+    x.style.display = "none";
+        $('#id_email_subject').removeAttr('required');
+        $('#id_email_msg').removeAttr('required');
+  }
+}
+</script>
+
+<script>
+function herFunction() {
+  var x = document.getElementById("mycall_follow_up");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+        $('#id_call_response').attr('required', '');
+
+  } else {
+    x.style.display = "none";
+            $('#id_call_response').removeAttr('required');
+
+  }
+}
+</script>
+
+
+<script>
+function whosFunction() {
+  var x = document.getElementById("mysms");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+            $('#id_sms_msg').attr('required', '');
+
+  } else {
+    x.style.display = "none";
+                $('#id_sms_msg').removeAttr('required');
+
+  }
+}
+</script>
+                          </div>
+
+
+
+
+              </div>
+            </div>
+        </div>
+
+
+        {% if lead_id.current_stage == 'PO Issued - Payment Done - Dispatch Pending' or lead_id.current_stage == 'Dispatch Done - Closed' %}
+        <div class="col-xl-12 col-lg-12" id="payment_section" >
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+             <a href="#collapseCardExample5" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample5">
+      <h6 class="m-0 font-weight-bold text-primary">Payment Details Section</h6>
+    </a>
+                <!-- Card Body -->
+                  {% if request.session.expand_payment %}
+                <div class="card-body collapse show" id="collapseCardExample5" >
+                    {% else %}
+
+                <div class="card-body collapse" id="collapseCardExample5" >
+                      {% endif %}
+<form  method='POST' id="abc" enctype="multipart/form-data" >{% csrf_token %}
+
+
+                              <div class="form-group row">
+                              <label class="col-md-2 control-label">Payment Mode *
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="payment_mode" id="payment_mode_id"  onchange="show()"  required  class="form-control">
+    <option value="{{payment_id.payment_mode}}"> {{payment_id.payment_mode}} </option>
+    <option value="Cash">Cash</option>
+      <option  value="Credit">Credit</option>
+  <option  value="Cheque">Cheque</option>
+  <option  value="Razorpay">Razorpay</option>
+  <option  value="NEFT">NEFT</option>
+</select>
+    </div>
+  </div>
+        {% comment %} <label class="col-md-2 control-label">GST*
+</label> {% endcomment %}
+<div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+    {% comment %} {% if purchase_id_id.is_gst == True %}
+<input hidden type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"  checked   >
+  <label class="custom-control-label" for="gst_id"></label>
+    {% else %}
+    <input hidden type="checkbox" class="custom-control-input" id="gst_id"  name="gst_id"    >
+  <label class="custom-control-label" for="gst_id"></label>
+    {% endif %} {% endcomment %}
+  </div>
+</div>
+</div>
+
+<div id="payment_cheque2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" value="{{payment_id.bank_name}}" id="bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">Cheque No*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_no" id="cheque_no2" value="{{payment_id.cheque_no}}" placeholder="Cheque Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+
+</div>
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Cheque Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="cheque_date" id="cheque_date2" value="{{payment_id.cheque_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+<!--  <label class="col-md-2 control-label">Cheque Notes*-->
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+<!--    <textarea name="cheque_notes" id="cheque_notes"  rows="6" placeholder="Cheque Notes" class="form-control" >{purchase_id_id.cheque_notes}</textarea>-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>
+      </div>
+          <div id="payment_neft2" style="display: none;">
+            <div class="form-group row">
+
+<label class="col-md-2 control-label">Bank Name*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_bank_name" value="{{payment_id.neft_bank_name}}" id="neft_bank_name2" placeholder="Bank Name" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">NEFT Date*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="neft_date" id="neft_date2" value="{{payment_id.neft_date|date:'Y-m-d'}}" placeholder="Cheque Date" class="form-control"  type="date">
+    </div>
+  </div>
+
+
+
+</div>
+            <div class="form-group row">
+
+ <label class="col-md-2 control-label">Reference No
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="reference_no" id="reference_no2" value="{{payment_id.reference_no}}" placeholder="Reference Number" class="form-control"  type="text">
+    </div>
+  </div>
+
+</div>
+      </div>
+          <div id="payent_credit2" style="display: none;">
+                          <div class="form-group row">
+
+<label class="col-md-2 control-label">Authorised By*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_authorised_by" value="{{payment_id.credit_authorised_by}}" id="credit_authorised_by_id"  placeholder="Authorised By" class="form-control"  type="text">
+    </div>
+  </div>
+
+<label class="col-md-2 control-label">Pending Amount*
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="credit_pending_amount" id="credit_pending_amount_id" value="{{payment_id.credit_pending_amount}}" placeholder="Pending Amount" class="form-control" step="any" type="number">
+    </div>
+  </div>
+
+
+
+</div>
+</div>
+                              {% comment %} <label class="col-md-2 control-label">Payment Channel:</label>
+                                  <div class="col-md-3 inputGroupContainer">
+                                  <div class="input-group">
+                                {{ form5.payment_channel }}
+                          </div>
+                        </div>{% endcomment %}
+
+                            <div class="form-group row">
+
+                                <label class="col-md-2 control-label">Payment Receipt</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form5.payment_receipt }}
+                                   &nbsp &nbsp
+                                   {% if payment_id.payment_receipt %}
+                                  <a href="{{ payment_id.payment_receipt.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
+                            </div>
+                             </div>
+                          </div>
+
+{% comment %}
+                            <div class="form-group row">
+                                <label class="col-md-2 control-label">Payment Received Date*</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form5.payment_recived_date }}
+                            </div>
+                          </div>
+
+                                <label class="col-md-2 control-label">Upload PO File:</label>
+                              <div class="col-md-3 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form5.upload_pofile }}
+                                  &nbsp; &nbsp;
+
+                                  {% if payment_id.upload_pofile %}
+                                  <a href="{{ payment_id.upload_pofile.url }}" class="btn btn-primary">File</a>
+                                  {% endif %}
+                   </div>
+                             </div>
+                          </div>
+{% endcomment %}
+
+                            <div class="form-group row">
+
+                                   <label class="col-md-2 control-label">Notes</label>
+                              <div class="col-md-6 inputGroupContainer">
+                              <div class="input-group">
+                              <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+                                {{ form5.Payment_notes }}
+                            </div>
+                             </div>
+
+
+
+                          </div>
+
+
+
+
+
+
+
+<center>
+     <button type="submit" name="submit_payment" class="btn btn-primary">Save</button>
+</center>
+
+</form>
+                          </div>
+              </div>
+            </div>
+        {% endif %}
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+
+
+
+
+
+
+
+</div>
+
+
+               <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Select PI Products</h4>
+
+
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+        <div id="rec_data_quantity"></div>
+               <form method="POST" >{% csrf_token %}
+        <div class="row table-responsive" >
+
+
+
+            <table class="table">
+                <tr style="background-color: gray; color: white;">
+                    <td style="border: 1px solid gray;"><label class="checkbox">
+                        Select
+                    </label></td>
+                    <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;">Type Of Scale</td>
+                    <td style="border: 1px solid gray;">Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Sub Sub Category</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Quantity</td>
+                    <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">Godown</td>
+
+                </tr>
+
+
+                {% for lead in lead_pi_products %}
+                <td style="border: 1px solid gray;"><label class="checkbox">
+                    <input type="checkbox" onclick="check_required({{forloop.counter}});" id="check_box{{forloop.counter}}" value="{{lead.id}}" name="check[]" >
+                </label></td>
+                <td style="border-radius: 0px 0px 0px 0px; border: 1px solid gray;"><input id="type_of_scale" name="type_of_scale"  value="{{lead.product_id.scale_type}}" size="4" disabled></td>
+                <td style="border: 1px solid gray;"><input id="model_of_purchase" name="model_of_purchase"  value="{{lead.product_id.main_category}}" disabled size="4"></td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_model" name="sub_model"  value="{{lead.product_id.sub_category}}" disabled size="4"></td>
+                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="sub_sub_model" name="sub_sub_model"   value="{{lead.product_id.sub_sub_category}}" disabled size="4"></td>
+                                <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;"><input id="quantity" value="{{lead.quantity}}" disabled size="4"></td>
+
+                  <td style="border-radius: 0px 0px 0px 0px; border:1px solid gray;">
+                    <select id="select_{{forloop.counter}}" name="selected_dodown" onchange="check_stock_available(this,{{lead.product_id.id}})">
+                        <option value="">Select Godown</option>
+                        {% for item in work_area_godowns %}
+                        <option value="{{item.pk}}">{{item.name_of_godown}}</option>
+                        {% endfor %}
+                    </select>
+
+                </td>
+                </tr>
+                <script>
+  function check_stock_available(select, product__id) {
+    var product__id = product__id;
+    console.log(product__id);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/stock_does_not_exist/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'model_of_purchase': $('#model_of_purchase').val(),     // add the country id to the GET parameters
+          'type_of_scale': $("#type_of_scale").val(),      // add the country id to the GET parameters
+          'sub_model': $("#sub_model").val(),       // add the country id to the GET parameters
+          'sub_sub_model': $("#sub_sub_model").val(),      // add the country id to the GET parameters
+          'godown': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+          'quantity': $("#quantity").val(),     // add the country id to the GET parameters
+          'product_id': product__id,      // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data_quantity").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
+                {% endfor %}
+
+            </table>
+
+
+        </div>
+        <br>
+        <center>
+
+            <button type="submit" name="send_submit" class="btn btn-danger">SEND</button>
+        </center>
+    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<!--        Character count code-->
+          <script>
+      function WhatsappcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#WhatsappcharNum').text(1024 - len);
+        }
+      };
+
+
+            function EmailcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#EmailcharNum').text(1024 - len);
+        }
+      };
+
+
+
+            function CallcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#CallcharNum').text(1024 - len);
+        }
+      };
+
+
+            function SMScountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#SMScharNum').text(1024 - len);
+        }
+      };
+
+            function RequirementcountChar(val) {
+        var len = val.value.length;
+        if (len >= 1024) {
+          val.value = val.value.substring(0, 1024);
+        } else {
+          $('#RequirementcharNum').text(1024 - len);
+        }
+      };
+
+
+      function check_required(id){
+        var checkbox = document.getElementById("check_box"+id);
+        if (checkbox.checked){
+            $('#select_'+id).attr('required', '');
+        }else{
+        $('#select_'+id).removeAttr('required');
+      }
+      }
+    </script>
+
+
+<script>
+function show_external() {
+  var x = document.getElementById("div_External");
+  var y = document.getElementById("div_Internal");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+  $('#select_gst_type_id').removeAttr('required', '');
+    $('#grand_total_id').attr('required', '');
+    document.getElementById("email_type_check").value = 'external_pi' ;
+    document.getElementById("select_pi_template_id").value = '' ;
+
+}
+ function show_internal() {
+  var x = document.getElementById("div_Internal");
+  var y = document.getElementById("div_External");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+  $('#select_gst_type_id').attr('required', '');
+  $('#grand_total_id').removeAttr('required', '');
+  document.getElementById("email_type_check").value = 'internal_pi' ;
+
+}
+function download_image(){
+console.log("start");
+var popupwin2 = window.open('/download_pi_image/{{lead_id.id}}','anyname','width=1280,height=720,left=5,top=3');
+console.log("end");
+    setTimeout(function() { popupwin2.close();}, 2000);
+
+}
+</script>
+                         <script>
+function myFunction_call() {
+  var x = document.getElementById("myDiv_call");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+     $('#call').attr('required', '');
+
+  } else {
+    x.style.display = "none";
+   $('#call').removeAttr('required');
+  }
+}
+
+
+
+
+</script>
+
+        <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+
+      {% if request.session.download_pdf_exist %}
+
+<script>
+
+function pdf_download(){
+
+   setTimeout(function (){
+  template_type =  {{request.session.select_pi_template_session}};
+
+      if (template_type == '1') {
+
+         var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}/2','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+    else if (template_type == '2') {
+        var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}/2','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+
+}
+, 2000);
+   }
+pdf_download();
+
+
+
+
+</script>
+
+
+{% endif %}
+
+
+
+<script>
+
+function pdf_download_manual(){
+
+   setTimeout(function (){
+  template_type = document.forms["PIForm"]["select_pi_template"].value;
+
+      if (template_type == '1') {
+
+         var popupwin = window.open('/download_pi_pdf/{{lead_id.id}}/1','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+    else if (template_type == '2') {
+        var popupwin = window.open('/download_pi_second_pdf/{{lead_id.id}}/1','anyname','width=1280,height=720,left=5,top=3');
+
+    }
+
+}
+, 1000);
+   }
+
+
+</script>
+
+
+
+<script>
+
+                show();
+
+
+
+          function show(){
+              var mode = document.getElementById("payment_mode_id").value;
+              console.log(mode);
+              console.log("mode");
+              var x = document.getElementById("payment_cheque2");
+              var y = document.getElementById("payment_neft2");
+              var z = document.getElementById("payent_credit2");
+
+              if (mode == 'Cheque'){
+                  y.style.display = "none";
+                  z.style.display = "none";
+                  x.style.display = "block";
+
+                  $('#bank_name2').attr('required', '');
+                  $('#cheque_no2').attr('required', '');
+                  $('#cheque_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+              }
+
+             else if (mode == 'NEFT'){
+                  x.style.display = "none";
+                  z.style.display = "none";
+                  y.style.display = "block";
+
+                  $('#neft_bank_name2').attr('required', '');
+                  $('#neft_date2').attr('required', '');
+                  $('#bill_no').attr('required', '');
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '')
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else if (mode == 'Credit'){
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "block";
+
+                  $('#credit_authorised_by_id').attr('required', '');
+                  $('#credit_pending_amount_id').attr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+              else{
+                  if (mode == 'Razorpay'){
+                                      $('#bill_no').attr('required', '');
+
+                  }
+                  else{
+                                        $('#bill_no').removeAttr('required', '');
+
+                  }
+                  x.style.display = "none";
+                  y.style.display = "none";
+                  z.style.display = "none";
+
+                  $('#credit_authorised_by_id').removeAttr('required', '');
+                  $('#credit_pending_amount_id').removeAttr('required', '');
+
+                  $('#neft_bank_name2').removeAttr('required', '');
+                  $('#neft_date2').removeAttr('required', '');
+
+                  $('#bank_name2').removeAttr('required', '');
+                  $('#cheque_no2').removeAttr('required', '');
+                  $('#cheque_date2').removeAttr('required', '');
+              }
+
+
+
+          }
+</script>
+  <script>
+
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  x.style.display == "none";
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function myFunction2() {
+
+  var y = document.getElementById("myDIV2");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+function myFunction3() {
+
+  var y = document.getElementById("myDIV3");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+function myFunction4() {
+
+  var y = document.getElementById("myDIV4");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+function myFunction5() {
+
+  var y = document.getElementById("myDIV5");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+
+function myFunction6() {
+  var x = document.getElementById("myDIV6");
+  x.style.display == "none";
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+function change( el )
+{
+    if ( el.value === "+" )
+        el.value = "-";
+    else
+        el.value = "+";
+}
+
+
+  </script>
+  <script>
+
+  </script>
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

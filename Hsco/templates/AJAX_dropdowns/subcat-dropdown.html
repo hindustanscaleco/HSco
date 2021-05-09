@@ -1,0 +1,5 @@
+<option value="">Select Option</option>
+{% for items in subcat %}
+        <option value="{{ items.pk }}">{{ items.name }}</option>
+    {% endfor %}
+

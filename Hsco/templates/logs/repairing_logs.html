@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper" style="margin-top:5%;">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Log</h1>
+          </div>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+            <script>
+$( document ).ready(function() {
+        $('.divs').hide();
+
+});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <!--<div class="button dropdown">-->
+  <!--<select id="divselector" class="form-control">-->
+     <!--<option value="d0">Select Search Type</option>-->
+     <!--<option value="d1">Search By Date Range</option>-->
+     <!--<option value="d2">Search By Mobile Number</option>-->
+     <!--<option value="d3">Search By Email Id</option>-->
+     <!--<option value="d4">Search By Customer Name</option>-->
+     <!--<option value="d5">Search By Company Name</option>-->
+     <!--<option value="d6">Search By CRM No.</option>-->
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  <!--</select>-->
+<!--</div>-->
+<br>
+                </div>
+                <div  class="col-xl-8 col-md-8 col-mb-8">
+                           <form method="POST">
+
+
+
+<div class="output">
+  <div id="d1" class="divs d1 row">
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div class="col-xl-2 col-md-2 col-mb-2">
+                <button  class="btn btn-primary">Search</button></div>
+
+      </div>
+
+
+
+  <div id="d2" class="divs d2">
+      <input type="number" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button class="btn btn-primary">Search</button></div>
+
+
+  <div id="d3" class="divs d3">
+      <input type="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button class="btn btn-primary">Search</button></div>
+
+
+    <div id="d4" class="divs d4">
+      <input type="text" placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button class="btn btn-primary">Search</button></div>
+
+
+  <div id="d5" class="divs d5">
+      <input type="text" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button class="btn btn-primary">Search</button></div>
+
+
+    <div id="d6" class="divs d6">
+      <input type="text" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button class="btn btn-primary">Search</button></div>
+
+
+  <div id="d7" class="divs d7 row" style="width: 50%;">
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="text" placeholder="CRM No." class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="text" placeholder="CEM No." class="form-control">
+
+      </div>
+      <div class="col-xl-2 col-md-2 col-mb-2">
+                <button class="btn btn-primary">Search</button></div>
+
+      </div>
+</div>
+
+ </form>
+
+                </div>
+
+            </div>
+
+
+
+                <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+<div style="min-height: 26vw;" class="table-responsive">
+
+
+<table class="table">
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">TimeStamp</td>
+            <td style="border: 0px solid gray;">Entered By</td>
+            <td style="border: 0px solid gray;"> Action Type</td>
+            <td style="border: 0px solid gray;">Table Name</td>
+            <td style="border: 0px solid gray;"> Reference </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Action</td>
+        </tr>
+                    {% for log in repairing_logs %}
+    <tr>
+<td>{{log.entry_timedate}}</td>
+<td>{{log.entered_by}}</td>
+<td>{{log.action_type}}</td>
+<td>{{log.table_name}}</td>
+<td>{{log.reference}}</td>
+<td>{{log.action}}</td>
+        </tr>
+            {% endfor %}
+    </table>
+
+</div>
+<br>
+<br>
+            <div class="pagination">
+    <span class="step-links">
+        {% if repairing_logs.has_previous %}
+            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;
+            <a href="?page={{ repairing_logs.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;
+        {% endif %}
+
+        <span class="current">
+            Page {{ repairing_logs.number }} of {{ repairing_logs.paginator.num_pages }}.
+        </span>
+
+        {% if repairing_logs.has_next %}
+        &nbsp;
+            <a href="?page={{ repairing_logs.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;
+            <a href="?page={{ repairing_logs.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
+
+
+
+<br>
+<center>
+    <div class="row" style="width: 50%;">
+
+
+
+                <div class="col-xl-4 col-md-12 mb-12">
+              <div class="card border-left-primary shadow">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col ">
+<button onclick="location.href='/repairing_module_home/'" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go back</button>                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+        <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-4 col-md-12 mb-12">
+              <div class="card border-right-primary shadow">
+                <div class="card-body" style="padding: 12px;">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <button onclick="location.href='/repairing_report_module/'" class="btn btn-primary"><i class="fa fa-file" aria-hidden="true"></i>
+ Report</button>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+</center>
+
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

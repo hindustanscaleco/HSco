@@ -1,0 +1,27 @@
+
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Contact No</th>
+        <th> Email Id</th>
+        <th>Role</th>
+    </tr>
+
+    {% if deleted %}
+    <tr>
+        <th>List Of Deleted Users Under Your Work Area</th>
+    </tr>
+    {% endif %}
+
+    {% for list in list%}
+    <tr>
+        <td><a href="/employee_profile/{{list.pk}}"> {{list.name}} </a></td>
+        <td>{{list.mobile}}</td>
+        <td>{{list.email}}</td>
+        <td>{{list.role}}</td>
+    </tr>
+    {% endfor %}
+
+
+</table>

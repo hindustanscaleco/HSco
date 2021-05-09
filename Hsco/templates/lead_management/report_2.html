@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+  <!-- Page Wrapper -->
+  <div id="wrapper" style="margin-top:2%;">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+
+        <!-- End of Topbar -->
+
+
+
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+        <!-- Begin Page Content -->
+     <div class="">
+<center><h1>Lead Report</h1></center>
+<br>
+
+                     <form  method='POST' id="Customer_detail_form" enctype="multipart/form-data" >{% csrf_token %}
+      <div id="d1" class="divs d1 row">
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
+
+                         <div class="col-xl-12 col-lg-12">
+
+                             <div class="" id="myDIV">
+
+
+                                 <div class="form-group row">
+
+
+                                     <label class="col-md-2 control-label" id="label">Select All</label>
+
+                                     <div class="col-md-4 inputGroupContainer">
+                                         <div class="custom-control custom-checkbox">
+                                             <input type="checkbox" class="custom-control-input" name="checks[]"
+                                                    value="customer_name" id="customCheck01">
+                                             <label class="custom-control-label" id="customCheck01"
+                                                    for="customCheck01"></label>
+                                         </div>
+                                     </div>
+                                 </div>
+
+                                 <center><h6 class="m-0 font-weight-bold text-primary">Customer Details Section</h6>
+                                 </center>
+                                 <br>
+
+                                 <!-- Card Body -->
+                                 <div class=" row" id="myDIV">
+
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Customer Name :</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="customer_name" id="customCheck15">
+                                                 <label class="custom-control-label" for="customCheck15"></label>
+                                             </div>
+                                         </div>
+
+
+                                         <label class=" col-md-10 col-10 control-label">Company Name :</label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="company_name" id="customCheck16">
+                                                 <label class="custom-control-label" for="customCheck16"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Contact Number :</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="contact_no" id="customCheck17">
+                                                 <label class="custom-control-label" for="customCheck17"></label>
+                                             </div>
+                                         </div>
+
+
+                                         <label class=" col-md-10 col-10 control-label">Customer Email Id :</label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="customer_email_id"
+                                                        id="customCheck18">
+                                                 <label class="custom-control-label" for="customCheck18"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Address :</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="customer_industry"
+                                                        id="customCheck19">
+                                                 <label class="custom-control-label" for="customCheck19"></label>
+                                             </div>
+                                         </div>
+
+
+                                         <label class=" col-md-10 col-10 control-label">Industry :</label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="address" id="customCheck20">
+                                                 <label class="custom-control-label" for="customCheck20"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Customer GST No :</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="cust_detail[]" value="customer_gst_no" id="customCheck21">
+                                                 <label class="custom-control-label" for="customCheck21"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <h6 class="m-0 font-weight-bold text-primary col-md-12 col-12">
+                                         <center>
+                                         Deal Details Section
+                                        </center></h6>
+                                     <br>
+                                     <br>
+
+
+                                     <!--<div class="form-group row">-->
+
+                                     <!--<label class="col-md-2 control-label">Enquiry Number :-->
+
+
+                                     <!--</label>-->
+
+                                     <!--<div class="col-md-4 inputGroupContainer">-->
+                                     <!--<div class="custom-control custom-checkbox">-->
+                                     <!--<input type="checkbox" class="custom-control-input" name="deal_detail[]" value="" id="customCheck2">-->
+                                     <!--<label class="custom-control-label" for="customCheck2"></label>-->
+                                     <!--</div>-->
+                                     <!--</div>-->
+
+                                     <!--<label class="col-md-2 control-label">PI Number :-->
+
+                                     <!--</label>-->
+                                     <!--<div class="col-md-4 inputGroupContainer">-->
+                                     <!--<div class="custom-control custom-checkbox">-->
+                                     <!--<input type="checkbox" class="custom-control-input" name="deal_detail[]" value="LEAD.id" id="customCheck3">-->
+                                     <!--<label class="custom-control-label" for="customCheck3"></label>-->
+                                     <!--</div>-->
+                                     <!--</div>-->
+                                     <!--</div>-->
+                                     <div class="form-group row col-md-6 col-6">
+                                         <label class=" col-md-10 col-10 control-label">Current Stage :
+
+
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="current_stage" id="customCheck4">
+                                                 <label class="custom-control-label" for="customCheck4"></label>
+                                             </div>
+
+                                         </div>
+
+
+                                         <label class=" col-md-10 col-10 control-label">New/Existing Customer:
+
+
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="new_existing_customer"
+                                                        id="customCheck5">
+                                                 <label class="custom-control-label" for="customCheck5"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <div class="form-group row col-md-6 col-6">
+                                         <label class=" col-md-10 col-10 control-label">Date of Initiation :
+
+
+                                         </label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="date_of_initiation"
+                                                        id="customCheck8">
+                                                 <label class="custom-control-label" for="customCheck8"></label>
+                                             </div>
+                                         </div>
+
+                                         <label class=" col-md-10 col-10 control-label">Channel :
+
+
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="channel" id="customCheck9">
+                                                 <label class="custom-control-label" for="customCheck9"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="form-group row col-md-6 col-6">
+
+                                         <label class=" col-md-10 col-10 control-label">Requirement :
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="requirement" id="customCheck10">
+                                                 <label class="custom-control-label" for="customCheck10"></label>
+                                             </div>
+                                         </div>
+
+                                         <label class=" col-md-10 col-10 control-label">Upload Requirement :
+
+
+                                         </label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="upload_requirement_file"
+                                                        id="customCheck11">
+                                                 <label class="custom-control-label" for="customCheck11"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Owner of Opportunity
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="owner_of_opportunity_id"
+                                                        id="customCheck12">
+                                                 <label class="custom-control-label" for="customCheck12"></label>
+                                             </div>
+                                         </div>
+
+                                         <label class=" col-md-10 col-10 control-label">Reason for lost Stage :
+
+
+                                         </label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="lost_reason" id="customCheck6">
+                                                 <label class="custom-control-label" for="customCheck6"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">Reason of postpone stage :
+
+
+                                         </label>
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input"
+                                                        name="deal_detail[]" value="postponed_reason" id="customCheck7">
+                                                 <label class="custom-control-label" for="customCheck7"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                   <h6 class="m-0 font-weight-bold text-primary  col-md-12 col-12">
+                                       <center>
+                                       PI Section
+                                        </center>
+                                   </h6>
+                                     <br>
+                                     <br>
+
+                                     <!-- Card Body -->
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">History</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input" name="pi_history[]"
+                                                        value="pi_history" id="customCheck22">
+                                                 <label class="custom-control-label" for="customCheck22"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <h6 class="m-0 font-weight-bold text-primary  col-md-12 col-12"><center>Follow-up Section  </center></h6>
+
+                                     <br>
+                                     <br>
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">History</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input" name="follow_up[]"
+                                                        value="follow_up_history" id="customCheck23">
+                                                 <label class="custom-control-label" for="customCheck23"></label>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                     <h6 class="m-0 font-weight-bold text-primary col-md-12 col-12"><center>Payment Details Form</center></h6>
+
+                                     <br>
+                                     <br>
+
+                                     <div class="form-group row col-md-6 col-6">
+
+
+                                         <label class=" col-md-10 col-10 control-label">History</label>
+
+                                         <div class="col-md-2 col-2 inputGroupContainer">
+                                             <div class="custom-control custom-checkbox">
+                                                 <input type="checkbox" class="custom-control-input" name="pay_detail[]"
+                                                        value="payment_channel" id="customCheck24">
+                                                 <label class="custom-control-label" for="customCheck24"></label>
+                                             </div>
+                                         </div>
+
+                                     </div>
+                                                                          <div class="form-group row col-md-6 col-6">
+                                                                          </div>
+
+
+                                     <center>
+                                         <button type="submit"
+                                                 class="btn btn-primary">Submit
+                                         </button>
+                                     </center>
+                                     <br>
+
+                     </form>
+                          </div>
+              </div>
+            </div>
+
+
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+    <!-- Bootstrap core JavaScript-->
+
+  <!--<script src="vendor/chart.js/Chart.min.js"></script>-->
+
+  <!--&lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+  <!--<script src="js/demo/chart-area-demo.js"></script>-->
+  <!--<script src="js/demo/chart-pie-demo.js"></script>-->
+  <!--<script src="js/demo/chart-bar-demo.js"></script>-->
+
+
+
+
+
+    <script  src="{% static 'js/dashboard/upload-images.js' %}"></script>
+
+  <script>
+
+
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  x.style.display == "none";
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function myFunction2() {
+
+  var y = document.getElementById("myDIV2");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+function myFunction3() {
+
+  var y = document.getElementById("myDIV3");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+function myFunction4() {
+
+  var y = document.getElementById("myDIV4");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+function myFunction5() {
+
+  var y = document.getElementById("myDIV5");
+  y.style.display == "none";
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+}
+
+
+function myFunction6() {
+  var x = document.getElementById("myDIV6");
+  x.style.display == "none";
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+function change( el )
+{
+    if ( el.value === "+" )
+        el.value = "-";
+    else
+        el.value = "+";
+}
+
+
+
+        $("#customCheck01").change(function () {
+            $(".custom-control-input").prop('checked', $(this).prop("checked"));
+        });
+
+        $(".custom-control-input").change(function () {
+            if($(this).prop("checked")==false){
+            $("#customCheck01").prop("checked",false)
+            }
+
+            if($(".custom-control-input:checked").length == $(".custom-control-input").length){
+            $("#customCheck01").prop("checked",true)
+            }
+
+        });
+
+
+
+  </script>
+
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

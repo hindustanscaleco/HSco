@@ -1,0 +1,29 @@
+
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Group</th>
+    </tr>
+     {% if deleted %}
+    <tr>
+        <th>List Of Deleted Admins</th>
+    </tr>
+    {% endif %}
+
+    {% for list in admin_list%}
+    <tr>
+        <td><a href="/update_admin/{{list.id}}"> {{list.name}}</a></td>
+        <td>{{list.role}}</td>
+        <td>{{list.email}}</td>
+        <td>{{list.mobile}}</td>
+        <td>{{list.group}}</td>
+    </tr>
+    {% endfor %}
+
+
+</table>
+

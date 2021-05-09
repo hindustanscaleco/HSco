@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+<style>
+
+</style>
+
+ <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+  }
+  th {
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+    }
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+
+  }
+
+
+
+            </style>
+
+
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+          <br>
+          <br>
+        <div class="container-fluid" >
+         <center>  <h1>Stock Module Report</h1>  </center>
+
+
+<br>
+
+<script>
+
+    function get_subcat(item){
+    var arr=[];
+var a = document.getElementsByClassName(item);
+var d=0;
+for(i=0;i<a.length;i++){
+c=parseFloat(a[i].textContent);
+if (c > 0){
+    d=d+c;
+}
+}
+if (isNaN(d)){
+    document.getElementById(item).innerHTML =  '';
+
+    }
+else{
+    document.getElementById(item).innerHTML =  d;
+
+    }
+}
+
+</script>
+            <a id="shift2" href="#"><button class="btn btn-dark" onclick="yourFunction()" style="opacity: 0.9; position:fixed; bottom:100px;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></a>
+
+<br>
+<br>
+
+
+
+                <a id="shift" href="#"><button class="btn btn-dark" onclick="myFunction()" style="opacity: 0.9; position:fixed;  bottom:50px;">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i></button></a>
+
+    <form class="well form-horizontal" action="" method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+
+
+<fieldset>
+
+<div class="form-group row">
+     <label class="col-md-1 control-label">From(Month):
+
+
+</label>
+
+    <div class="col-md-2">
+   <div class="custom-control ">
+    <input type="text" class="form-control form-control-1 input-sm from" name="from_month" required>
+
+</div>
+  </div>
+
+
+
+    <label class="col-md-1 control-label">To(Month):
+
+
+
+</label>
+
+    <div class="col-md-2">
+<div class="custom-control">
+    <input type="text" class="form-control form-control-1 input-sm from" name="to_month" required>
+</div>
+  </div>
+
+<!--    Do not remove the datepicker script.-->
+
+
+<script>
+    var startDate = new Date();
+var fechaFin = new Date();
+var FromEndDate = new Date();
+var ToEndDate = new Date();
+
+
+
+
+$('.from').datepicker({
+    autoclose: true,
+    minViewMode: 1,
+    format: 'yyyy-mm'
+}).on('changeDate', function(selected){
+        startDate = new Date(selected.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        $('.to').datepicker('setStartDate', startDate);
+    });
+
+$('.to').datepicker({
+    autoclose: true,
+    minViewMode: 1,
+    format: 'yyyy-mm'
+}).on('changeDate', function(selected){
+        FromEndDate = new Date(selected.date.valueOf());
+        FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+        $('.from').datepicker('setEndDate', FromEndDate);
+    });
+
+
+</script>
+
+
+
+  <div class="col-md-2">
+  <select class="form-control btn btn-secondary" id="cars" name="select_type">
+    <option value="Day">Day Wise</option>
+    <option value="Month">Month Wise</option>
+  </select>
+
+  </div>
+<div class="col-md-2">
+  <input onclick="function hi(){$('#loader').show();};hi()" class="form-control btn btn-primary" value="Generate" type="submit">
+</div>
+
+  <div class="col-md-2">
+{% if select_type == 'Day' %}
+  <input onclick="tableToExcel(&#39;testTable1&#39;, &#39;W3C Example Table&#39;)" class="form-control btn btn-primary" value="Download" type="button">
+      {% else %}
+  <input onclick="tableToExcel(&#39;testTable2&#39;, &#39;W3C Example Table&#39;)" class="form-control btn btn-primary" value="Download" type="button">
+      {% endif %}
+  </div>
+</div>
+</fieldset>
+    </form>
+            <center>
+
+                <div id="loader" style="display:none;" class="spinner-border text-success"></div>
+
+            </center>
+            <hr>
+                {% if select_type == 'Day' %}
+
+<div class="col-md-12 table-responsive">
+<table class="table">
+        <td   bgcolor="green"><center>Purchase</center></td>
+        <td  bgcolor="yellow"><center>Sales</center></td>
+        <td  bgcolor="lightblue"><center>Transfer</center></td>
+        <td  bgcolor="orange"><center>Closing Stock</center></td>
+</table>
+</div>
+            {% endif %}
+
+
+
+
+    {% if select_type == 'Day' %}
+            <div class="ex1 table-responsive">
+              <table id="testTable1" class="table">
+
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+
+                    <td style=" width: 15%; border: 0px solid gray;"> Category </td>
+                    <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td colspan="30" style=" width: 15%; border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Date</td>
+                </tr>
+
+
+{% for outerloop in pro_list %}
+{% for item in outerloop %}
+
+              <tr class="">
+                                        <td style="width: auto;">{% ifchanged item.scale_type %}{{item.scale_type}}{% endifchanged %}</td>
+
+                    {% ifchanged item.main_category %}<td style="width: auto;" class="newclass" id="id_id{{item.scale_type}}_{{item.sub_sub_category}}">{{item.main_category}}  </td>{% else %}<td> </td>{% endifchanged %}
+                    {% ifchanged item.sub_category %}<td style="width: auto;">{{item.sub_category}}</td>{% else %}<td> </td>{% endifchanged %}
+                 {% if item.sub_sub_category != None %} <td style="width: auto;">{% ifchanged item.sub_sub_category %}{{item.sub_sub_category}}{% endifchanged %}</td>{% else %}<td> </td>{% endif %}
+                 {% if item.sub_sub_category != None %}
+                      {% ifchanged item.sub_sub_category %}
+                        <td style="width: auto;">{{item.opening_stock}} </td>
+                      {% endifchanged %}
+                  {% else %}
+                        {% ifchanged item.sub_category %}
+                          <td style="width: auto;">{{item.opening_stock}} </td>
+                      {% endifchanged %}
+                  {% endif %}
+                  {% if forloop.first %}
+                       {% for obj in item.gt_list %}
+
+                      <td style="width: auto;">{{obj.entry_timedate}} </td>
+                        {% endfor %}
+                  {% else %}
+                          <td>  </td>
+
+                  {% endif %}
+
+
+              </tr>
+                  {% if item.sub_sub_category != None %}
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+                  {% for obj in item.gt_list %}
+
+        <td class="purchase_day{{item.sub_sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+
+        {% endfor %}
+        <td id="purchase_day{{item.sub_sub_category}}" ></td>
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        {% for obj in item.gt_list %}
+        <td  class="sales_day{{item.sub_sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        {% endfor %}
+                <td id="sales_day{{item.sub_sub_category}}" >-</td>
+
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td class="transfer_day{{item.sub_sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+                    {% endfor %}
+                <td id="transfer_day{{item.sub_sub_category}}" ></td>
+
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td class="closing_stock_day{{item.sub_sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+{% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
+                    {% endfor %}
+
+    </tr>
+                  {% else %}
+                  <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+                  {% for obj in item.gt_list %}
+
+        <td class="purchase_day{{item.sub_category}}" style="background-color: green; cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','purchase')">{{obj.accept_goods_quantity}}</td>
+
+        {% endfor %}
+        <td id="purchase_day{{item.sub_category}}" ></td>
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        {% for obj in item.gt_list %}
+        <td  class="sales_day{{item.sub_category}}" style="background-color: yellow;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','sales')"> {{obj.sales_quantity}}</td>
+        {% endfor %}
+                <td id="sales_day{{item.sub_category}}" >-</td>
+
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td class="transfer_day{{item.sub_category}}" style="background-color: lightblue;cursor: pointer;" onclick="sales_popup(event,'{{obj.entry_timedate|date:'Y-m-d'}}','{{item.pk}}','transfer')">{{obj.goods_request_quantity}}</td>
+                    {% endfor %}
+                <td id="transfer_day{{item.sub_category}}" ></td>
+
+    </tr>
+    <tr >
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+         {% for obj in item.gt_list %}
+        <td class="closing_stock_day1{{item.sub_sub_category}}" style="background-color: orange;cursor: pointer;">{{obj.closing_stock}}</td>
+        {% if forloop.last %}
+                <td >{{obj.closing_stock}}</td>
+{% endif %}
+                    {% endfor %}
+
+    </tr>
+                  {% endif %}
+                  <script>
+        get_subcat("purchase_day{{item.sub_category}}");
+        get_subcat("sales_day{{item.sub_category}}");
+        get_subcat("transfer_day{{item.sub_category}}");
+
+
+</script>
+
+<script>
+        get_subcat("purchase_day{{item.sub_sub_category}}");
+        get_subcat("sales_day{{item.sub_sub_category}}");
+        get_subcat("transfer_day{{item.sub_sub_category}}");
+
+
+</script>
+ {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
+
+{% endfor %}
+{% endfor %}
+           </table>
+            </div>
+{% else %}
+            <div class="ex1 table-responsive">
+              <table id="testTable2" class="table">
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Scale Type  </td>
+
+                    <td style=" width: 15%; border: 0px solid gray;"> Category </td>
+                    <td style=" width: 18%; border: 0px solid gray;"> Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sub Sub Category</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Opening Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Purchase</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Transferred Unit</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Sale</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Faulty Stock</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Adjustments</td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Losses </td>
+                    <td style=" width: 20%; border: 0px solid gray;"> Closing Stock</td>
+                </tr>
+{% for outerloop in pro_list %}
+{% for item in outerloop %}
+{% ifchanged item.scale_type %}
+                  <tr  class="">
+                      <td style="width: auto;">{{item.scale_type}}</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td id="scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="purchase_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="transferred_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="sale_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="faulty_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="adjust_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="losses_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                      <td id="closing_scale{{item.scale_type}}" style="width: auto;">&nbsp;</td>
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.main_category %}
+                  <tr  class="">
+                                                              <td style="width: auto;">&nbsp;</td>
+
+            <td style="width: auto;" class="newclass" id="id_id{{item.scale_type}}{{item.main_category}}">{{item.main_category}} </td>
+
+
+                                        <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td class="scale{{item.scale_type}}" id="subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="purchase_scale{{item.scale_type}}" id="purchase_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="transferred_scale{{item.scale_type}}" id="transferred_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="sale_scale{{item.scale_type}}" id="sale_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="faulty_scale{{item.scale_type}}" id="faulty_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="adjust_scale{{item.scale_type}}" id="adjust_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="losses_scale{{item.scale_type}}" id="losses_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+                      <td class="closing_scale{{item.scale_type}}" id="closing_subcat{{item.scale_type.id}}_{{item.main_category.id}}" style="width: auto;">&nbsp;</td>
+
+                  </tr>
+{% endifchanged %}
+{% ifchanged item.sub_category %}
+          <tr  class="">
+                                                      <td style="width: auto;">&nbsp;</td>
+                                                      <td style="width: auto;">&nbsp;</td>
+
+    <td style="width: auto;">{{item.sub_category}} </td>
+          <td style="width: auto;">&nbsp;</td>
+          <td class="subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="purchase_subcat{{item.scale_type.id}}_{{item.main_category.id}}"  id="purchase{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="transferred_subcat{{item.scale_type.id}}_{{item.main_category.id}}"  id="transferred{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="sale_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="sale{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="faulty_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="faulty{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="adjust_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="adjust{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="losses_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="losses{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+          <td class="closing_subcat{{item.scale_type.id}}_{{item.main_category.id}}" id="closing{{item.sub_category}}" style="width: auto;">&nbsp;</td>
+                  </tr>
+{% endifchanged %}
+                  {% if item.sub_sub_category != None %}
+              <tr style="cursor: pointer;" class="">
+ <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+                      <td style="width: auto;">&nbsp;</td>
+
+
+                  {% if item.sub_sub_category != None %}<td style="width: auto;">{{item.sub_sub_category}}</td>{% else %}<td style="width: auto;"></td>{% endif %}
+                <td class="{{item.sub_category}}" style="width: auto;">{% if item.opening_stock != 0 %} {{item.opening_stock}} {% endif %}</td>
+
+        <td class="purchase{{item.sub_category}}" style="width: auto;">{{item.accept_goods_quantity_sum}}</td>
+        <td class="transferred{{item.sub_category}}" style="width: auto;">{{item.goods_request_quantity_sum}}</td>
+        <td class="sale{{item.sub_category}}" style="width: auto;">{{item.sales_quantity_sum}} </td>
+        <td class="faulty{{item.sub_category}}" style="width: auto;"> {{item.faulty_quantity_sum}} </td>
+        <td class="adjust{{item.sub_category}}" style="width: auto;"> {{item.adjustment_quantity_sum}} </td>
+        <td class="losses{{item.sub_category}}" style="width: auto;"> {{item.loss_quantity_sum}}</td>
+        <td class="closing{{item.sub_category}}" style="width: auto;">{{item.closing_stock}}</td>
+
+              </tr>
+                  {% endif %}
+<script>
+        get_subcat("{{item.sub_category}}");
+        get_subcat("purchase{{item.sub_category}}");
+        get_subcat("transferred{{item.sub_category}}");
+        get_subcat("sale{{item.sub_category}}");
+        get_subcat("faulty{{item.sub_category}}");
+        get_subcat("adjust{{item.sub_category}}");
+        get_subcat("losses{{item.sub_category}}");
+        get_subcat("closing{{item.sub_category}}");
+
+</script>
+
+                  <script>
+        get_subcat("subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("purchase_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("transferred_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("sale_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("faulty_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("adjust_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("losses_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+        get_subcat("closing_subcat{{item.scale_type.id}}_{{item.main_category.id}}");
+
+</script>
+                  <script>
+        get_subcat("scale{{item.scale_type}}");
+        get_subcat("purchase_scale{{item.scale_type}}");
+        get_subcat("transferred_scale{{item.scale_type}}");
+        get_subcat("sale_scale{{item.scale_type}}");
+        get_subcat("faulty_scale{{item.scale_type}}");
+        get_subcat("adjust_scale{{item.scale_type}}");
+        get_subcat("losses_scale{{item.scale_type}}");
+        get_subcat("closing_scale{{item.scale_type}}");
+
+</script>
+ {% if forloop.last %}
+                  <script>
+                      $("#loader").hide();
+                  </script>
+                  {% endif %}
+{% endfor %}
+{% endfor %}
+           </table>
+            </div>
+    {% endif %}
+<!--</div>-->
+        </div>
+
+
+
+
+
+<br>
+
+      </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+
+    </div>
+  </div>
+<script>
+    function sales_popup(event,date2,item,type){
+          $.ajax({
+        url: "/load_popup_details/",
+        data: {
+          'date2': date2,
+          'item': item,
+          'type': type
+
+        },
+        success: function (data) {
+            $("#id_subcat22").html(data);
+            $('#myModal').modal('toggle');
+        }
+      });
+      event.stopPropagation();
+    }
+
+
+
+</script>
+
+
+               <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+
+
+               <div id="id_subcat22">
+
+               </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+
+$('.item-content').hide();
+$(document).on('click','.item-title', function(e){
+   e.preventDefault();
+   $(this).next('.item-content').toggle();
+    $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle')
+
+});
+
+
+ $(function() {
+    $("#sortable tbody").sortable({
+      cursor: "move",
+      placeholder: "sortable-placeholder",
+      helper: function(e, tr)
+      {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function(index)
+
+        {
+
+        $(this).width($originals.eq(index).width());
+
+        });
+
+        return $helper;
+
+      }
+
+    }).disableSelection();
+
+  });
+
+</script>
+
+<script>
+    function hideDiv(x) {
+
+}
+
+
+
+  function fafaToggle(x) {
+  x.classList.toggle("fa-angle-right");
+    var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  //Fixing jQuery Click Events for the iPad
+  var ua = navigator.userAgent,
+    event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+  if ($('.table').length > 0) {
+    $('.table .header').on(event, function() {
+      $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+        return this.style.display === 'table-row' ? 'none' : 'table-row';
+      });
+    });
+  }
+})
+
+
+
+
+
+
+</script>
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+<script>
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+</script>
+
+<script type="text/javascript">
+
+var okay=document.getElementsByClassName("newclass");
+var a=[];
+
+for(i=0;i<okay.length;i++){
+b=okay[i].id;
+if (a.includes(b) === false){
+    a.push(b);
+    }
+}
+
+var b=0;
+
+function myFunction() {
+  var c=b++;
+  var c="#"+a[c];
+      if(c=="#undefined"){
+        alert("Can't Scroll further")
+    }
+    document.getElementById("shift").href = c;
+
+
+}
+    function yourFunction() {
+  var d=b--;
+  var c="#"+a[d];
+      if(c=="#undefined"){
+        alert("Can't Scroll further")
+    }
+    document.getElementById("shift2").href = c;
+}
+</script>
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

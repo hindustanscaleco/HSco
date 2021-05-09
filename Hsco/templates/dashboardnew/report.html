@@ -1,0 +1,408 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HSCO</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/dashboard/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	{% include 'base_templates/sidebar.html' %}
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+	{% include 'base_templates/navbar_for_dashboard.html' %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+         <center>  <h1>Report Custom Form</h1>  </center>
+
+
+
+
+
+<br>
+
+
+    <form class="well form-horizontal" ion=" " method="post"  id="contact_form" style="padding:20px;">{% csrf_token %}
+       <div id="d1" class="divs d1 row">
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date1" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input type="date" name="date2" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      </div><br>
+<fieldset>
+
+
+      <div class="form-group row">
+        <label class="col-md-2 control-label">Entry Date and Time
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="feedback_form_filled" id="customCheck22">
+  <label class="custom-control-label" for="customCheck20"></label>
+</div>
+  </div>
+      </div>
+
+<div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Name of customer
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="best_employee" value="customer_name" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+</div>
+  </div>
+
+   <label class="col-md-2 control-label">Company name
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="company_name" id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+</div>
+  </div>
+  </div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Address
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="address" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1"></label>
+</div>
+
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">Contact Number
+
+
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="contact_no" id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+</div>
+  </div>
+  </div>
+
+
+
+<div class="form-group row">
+
+    <label class="col-md-2 control-label">Customer Email Id
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="customer_email_id" id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Date of purchase
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="date_of_purchase" id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+</div>
+  </div>
+
+</div>
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Bill No
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="bill_no" id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+</div>
+  </div>
+
+    <label class="col-md-2 control-label">Upload PO File
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name=""  value="" id="customCheck23">
+  <label class="custom-control-label" for="customCheck23"></label>
+</div>
+  </div>
+
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">PO Number
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]"  value="po_number" id="customCheck13">
+  <label class="custom-control-label" for="customCheck13"></label>
+</div>
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">Photo of LR number
+
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="photo_lr_no" id="customCheck14">
+  <label class="custom-control-label" for="customCheck14"></label>
+</div>
+  </div>
+  </div>
+
+
+
+<div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Channel of sales
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="channel_of_sales" id="customCheck15">
+  <label class="custom-control-label" for="customCheck15"></label>
+</div>
+  </div>
+
+  <label class="col-md-2 control-label">Industry
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="industry" id="customCheck16">
+  <label class="custom-control-label" for="customCheck16"></label>
+</div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Value of goods
+</label>
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="value_of_goods" id="customCheck17">
+  <label class="custom-control-label" for="customCheck17"></label>
+</div>
+  </div>
+
+  <label class="col-md-2 control-label">Channel of dispatch
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="channel_of_dispatch" id="customCheck18">
+  <label class="custom-control-label" for="customCheck18"></label>
+</div>
+  </div>
+
+</div>
+
+
+
+
+  <div class="form-group row">
+    <label class="col-md-2 control-label">Notes
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="notes" id="customCheck19">
+  <label class="custom-control-label" for="customCheck19"></label>
+</div>
+  </div>
+
+
+  <label class="col-md-2 control-label">Feedback Form
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="feedback_form_filled" id="customCheck20">
+  <label class="custom-control-label" for="customCheck20"></label>
+</div>
+  </div>
+</div>
+
+
+
+</fieldset>
+
+<center>            <button type="submit" id="export" name="export" class="btn btn-dark">Export to Excel</button>
+
+	<button style="background-color: #FC6E20;" type="submit" value="submit" class="btn btn-primary">Save</button>
+
+</center>
+</form>
+</div>
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+
+
+
+<br>
+
+
+
+
+
+
+
+</div>
+    </div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+
+</body>
+
+</html>

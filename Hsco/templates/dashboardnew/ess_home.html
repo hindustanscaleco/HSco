@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+<style>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+  .cardText{
+  font-size: 13px;
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" >
+                                  {% if request.user.role != 'Super Admin' %}
+
+
+            <form action="" method="POST"> {% csrf_token %}
+
+
+<center>
+  <div style="width: 98%;" class="card shadow">
+
+<br>
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Apply For Leave</h3>
+
+<br>
+
+      {% if success %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Applied Successfully!!! </strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+      {% endif %}
+
+{% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Employee' %}
+
+
+       <div class="form-group row">
+
+               <label class="col-md-2 control-label">Days *
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input type="number" id="num_of_days" onInput="change_date()" name="days" class="form-control" placeholder="Holiday" required>
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">Reason *
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input type="text" name="reason" class="form-control" placeholder="Reason" required>
+
+
+     </div>
+  </div>
+
+      </div>
+
+      <div class="form-group row">
+
+        <label class="col-md-2 control-label">From Date *
+
+
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+   <input id="from_date" type="date" min="16/05/2020" required name="from" class="form-control" >
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">To Date *
+
+
+</label>
+  <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+   <input type="date" id="to_date" required name="to" class="form-control" > &nbsp;
+
+
+     </div>
+  </div>
+
+</div>
+
+
+<center>
+       <button style="background-color: #FC6E20;font-size: 14px;" class="btn btn-primary">Submit</button>
+
+</center>
+      <br>
+
+      {% endif %}
+  </div>
+
+<br>
+
+
+
+</center>
+                   </form>
+                    {% endif %}
+
+<br>
+
+     <style>
+
+         .border-approve {
+         border: 3px solid #00FF00;
+         }
+
+         .border-disapprove {
+         border: 3px solid red;
+         }
+         .border-process {
+         border: 3px solid orange;
+         }
+
+       .no_button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+
+     </style>
+
+
+
+                                  {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+
+            <div class="row">
+                <div class="col-xl-12 col-md-12 mb-12">
+
+                    <center>
+                        <h3 style="color: black;" class="col-xl-12 col-md-12">Approve Leaves</h3>
+                    </center>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+
+                {% for item in leave_req_list %}
+                <table class="table">
+                    {% if item.is_approved %}
+                    <tr style="border: 1px solid green;">
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </th>
+                        <th>{{item.user_id.name}}</th>
+                        <th>{{item.reason}}</th>
+
+                        {% if is_employee_of_month %}
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+                    {% elif item.in_process %}
+
+                    <tr style="border: 1px solid green;">
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}  </th>
+                        <th> {{item.user_id.name}}</th>
+                        <th>{{item.reason}}</th>
+
+                        {% if is_employee_of_month %}
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+
+                     <form method="post">{% csrf_token %}
+                        <button name="list[]" value="no" id="no"
+                                type="submit" class="no_button"><i class="fa fa-times" aria-hidden="true"
+                                                                   style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i>
+                        </button>
+                        &nbsp; <input type="hidden" name="user_id" value="{{item.pk}}">
+
+                        <button name="list[]" value="yes" onclick="myFunction()" type="submit"
+                                class="no_button"><i class="fa fa-check" aria-hidden="true"
+                                                     style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
+                        </button>
+                    </form>
+
+                    {% elif not item.is_approved %}
+                    <tr>
+                        <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                        <th>{{item.user_id.name}} </th>
+                        <th>{{item.reason}}</th>
+                         {% if is_employee_of_month %}
+                            <th> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></th>
+                        {% endif %}
+                    </tr>
+                    <div class="col-xl-2 col-md-1 mb-1">
+                        <form method="post">{% csrf_token %}
+                            &nbsp; <input type="hidden" name="user_id" value="{{item.pk}}">
+
+                            <button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i
+                                    class="fa fa-check" aria-hidden="true"
+                                    style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </table>
+                {% endfor %}
+
+            </div>
+
+                        {% endif %}
+
+
+
+
+{% if user.role != 'Super Admin' %}
+             <p style="font-size: 25px; text-align: center; color: black;">Leaves Applied</p>
+            {% for item in leave_list %}
+            <table class="table">
+                {% if item.is_approved %}
+
+                <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% elif item.in_process %}
+
+                 <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% elif not item.is_approved %}
+
+                 <tr style="border: 1px solid green;">
+                    <th>{{item.requested_leave_date_from}} - {{item.requested_leave_date_to}}</th>
+                    <th>{{item.user_id.name}}</th>
+                    <th>
+                        {% if is_employee_of_month %}
+                            <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                        {% endif %}
+                    </th>
+                    <th>{{item.reason}}</th>
+                </tr>
+
+                {% endif %}
+
+
+            </table>
+            {% endfor %}
+
+
+
+{% endif %}
+
+
+
+<script>
+    function myFunction(){
+        document.getElementById('timer').style.color = '#ADFF2F'
+        document.getElementById('no').style.display = 'none'
+
+    }
+        </script>
+            </div>
+
+</div>
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+
+
+
+<br>
+
+
+
+
+
+
+
+</div>
+    </div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+<script>
+var today = new Date().toISOString().split('T')[0];
+document.getElementById("to_date").setAttribute('min', today);
+function change_date(){
+var num_of_days = document.getElementById("num_of_days").value;
+var targetDate = new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * num_of_days);
+var targetDate2 = new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * num_of_days*2);
+document.getElementById("from_date").setAttribute('min', targetDate.toISOString().split('T')[0]);
+document.getElementById("to_date").setAttribute('min', targetDate2.toISOString().split('T')[0]);
+
+
+}
+
+</script>
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

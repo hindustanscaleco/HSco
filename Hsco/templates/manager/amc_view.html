@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper" style="margin-top:5%;">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">AMC Module</h1>
+              &nbsp;
+                           <div class="row no-gutters align-items-right">
+
+     {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+<a style="padding: 2px; " href="/add_amc_after_sales/"><button  class="btn btn-primary">Add AMC Details</button></a>
+
+
+ <a style="padding: 2px;" href="/amc_logs/"> <button  class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/report_amc/"> <button  class="btn btn-primary">Report</button></a>
+{% else %}
+ <a style="padding: 2px;" href="/add_amc_after_sales/"><button  class="btn btn-primary">Add AMC Details</button></a>
+{% endif %}
+{% endif %}
+                </div>
+          </div>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+    .divs{
+display:none;
+}
+
+</style>
+
+<script>
+$( document ).ready(function() {
+        $('.divs').hide();
+
+});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+</script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d1">Search By Date Range</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d4">Search By Customer Name</option>
+     <option value="d5">Search By Company Name</option>
+     <option value="d6">Search By CRM No.</option>
+     <option value="d7">Search By AMC No.</option>
+  </select>
+</div>
+
+<br>
+                </div>
+
+
+                <div  class="col-xl-8 col-md-8 col-mb-8">
+
+
+
+
+<div class="output">
+    <form method="POST">{% csrf_token %}
+  <div id="d1" class="divs d1 row">
+
+      <fieldset>
+
+<div class="form-group row">
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" required placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div class="col-xl-2 col-md-2 col-mb-2">
+                <button  name="submit1" class="btn btn-primary">Search</button></div>
+
+      </div>
+      </fieldset></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+  <div id="d2" class="divs d2">
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit2" class="btn btn-primary">Search</button></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+  <div id="d3" class="divs d3">
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit3" class="btn btn-primary">Search</button></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+    <div id="d4" class="divs d4">
+      <input type="text" name="customer" placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit4" class="btn btn-primary">Search</button></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit5" class="btn btn-primary">Search</button></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+    <div id="d6" class="divs d6">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit6" class="btn btn-primary">Search</button></div>
+    </form>
+    <form method="POST">{% csrf_token %}
+            <div id="d7" class="divs d7">
+      <input type="text" name="amc_no" placeholder="AMC No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit7" class="btn btn-primary">Search</button></div>
+
+    </form>
+</div>
+
+
+                </div>
+
+            </div>
+
+
+ <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+
+
+<div class="row table-responsive" id="id_manager_view" style="min-height: 14vw;">
+
+
+    <table class="table">
+        <tr style="background-color: gray; color: white;">
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;"> AMC No </center></td>
+                    <td style="border: 0px solid gray;"> Customer Name </center></td>
+                    <td style="border: 0px solid gray;"> Email ID </td>
+                    <td style="border: 0px solid gray;"> Company </td>
+                    <td style="border: 0px solid gray;"> Contact No. </td>
+                    <td style="border: 0px solid gray;"> Entered By </td>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"> Contract End </td>
+</tr>
+
+
+
+             <center><p>{{search_msg}}</p></center>
+                  {% for list in amc_list %}
+
+                <tr style="cursor: pointer; " onclick="location.href='/update_amc_form/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+                    <td> {{ list.amc_no }}</td>
+                    <td> {{list.second_person}}</td>
+                    <td>{% if list.company_email != None and list.company_email != '' %}{{list.company_email}}{% else %}{% endif %} </td>
+                    <td>{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %} </td>
+                    <td>{{ list.second_contact_no }} </td>
+                    <td>{{list.user_id.profile_name}}</td>
+
+                    <td>{{ list.contract_end_date }} </td>
+                    <!--<div class="col-xl-2 col-md-1 mb-1"><center> 25% </center></div>|-->
+                    <!--<div class="col-xl-2 col-md-1 mb-1"><center>  20%</center></div>|-->
+                    <!--<div class="col-xl-2 col-md-1 mb-1"><center>-->
+                        <!--<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
+                        <!--<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
+                        <!--<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
+                        <!--<i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>-->
+                        <!--<i class="fa fa-star" aria-hidden="true"></i> </center>-->
+
+
+                    <!--</div>-->
+
+
+
+</tr>
+                  {% endfor %}
+</table>
+</div>
+            <br>
+            <br>
+<!--    <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if amc_list.has_previous %}-->
+<!--            <a href="?page=1">&laquo; first</a>-->
+<!--            <a href="?page={{ amc_list.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ amc_list.number }} of {{ amc_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if amc_list.has_next %}-->
+<!--            <a href="?page={{ amc_list.next_page_number }}">next</a>-->
+<!--            <a href="?page={{ amc_list.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--    </div>-->
+
+</div>
+
+
+
+
+
+      </div>
+
+        <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

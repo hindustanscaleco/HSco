@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+
+
+                <div class="col-md-12">
+                      <center>
+<h1 class="h3 mb-0 text-gray-800 ">Transaction Status</h1>
+</center>
+</div>
+            </div>
+            {% if messages %}
+
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                             {% for message in messages %}
+
+  <strong>Status : </strong> {{ message }}
+                         {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endif %}
+
+
+
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+
+  div.ex1 {
+  width: 100%;
+  height: 400px;
+  overflow: scroll;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+
+
+<br>
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+    <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
+                               <form method="POST">{% csrf_token%}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit5" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d6" class="divs d6">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+                       <form method="POST">{% csrf_token%}
+
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Sales No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit7" class="btn btn-primary">Search</button></div>
+</form>
+</div>
+                </div>
+
+
+
+            </div>
+
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.card + .card {
+    margin:0px;
+    box-shadow: 0 8px 6px -6px #e47312;
+    box-shadow: inset 0 0 4px #e47312;
+
+
+
+
+
+
+</style>
+
+                                                <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+<br>
+            <div class="row">
+                <div class="card col-md-12">
+                    <div class="card-body col-md-12">
+                        <div class="row">
+                            <div class="col-xl-4">
+
+                                {% if  good_request.outside_workstation == False %}
+                                <b>Own WorkStation</b>
+                                {% else %}
+                                <b>Outside Workstation</b>
+                                {% endif %}
+                </div>
+                            <div class="col-xl-4">Transaction ID: <b>{{good_request.id}}</b>
+                </div>
+                            <div class="col-xl-4">Transaction Status: <b>{{good_request.status}}</b>
+                </div>
+                    </div>
+
+                        <hr>
+        <form method="POST" >{%csrf_token%}
+                        <div class="row">
+                                                           <div class="col-xl-8 col-md-8">
+                        Current Stage:           &nbsp &nbsp      <div class="btn-group">
+<select class="btn btn-success" name="status"  id="c5aasrs">
+{% if good_request.status == 'Mismatch occured' %}
+          <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+
+    {% if good_request.req_from_godown.godown_admin.id == request.user.id  or request.user.role == 'Super Admin' %}
+      <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+    {% endif %}
+{% else %}
+    {% if request.user.role == 'Super Admin' %}
+              <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+      {% if good_request.status == 'Confirmation of goods transformation' %}
+              <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+      {% else %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+      {% endif %}
+
+    {% else %}
+          <option class="btn btn-success" value="{{good_request.status}}">{{good_request.status}}</option>
+        {% if request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+            {% elif request.user.id == good_request.req_to_godown.goddown_assign_to.id  and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+        {% elif not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+          <option class="btn btn-success" value="Confirmation of goods transformation">Confirmation of goods transformation</option>
+                {% endif %}
+
+
+                {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+          <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+            {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+          <option class="btn btn-success" value="Confirms the transformation">Confirms the transformation</option>
+                {% endif %}
+    {% endif %}
+{% endif %}
+</select>
+                                                           </div></div>
+                                                           <div class="col-xl-1 col-md-1">
+    <center>
+ <button name="submit2" type="submit" class="btn btn-danger" >Save</button></a>
+<!--<button type="button" class="btn btn-danger" style="background-color:#FC6E20;">Edit</button>-->
+</center>
+    </div>
+                        </div>
+        </form>
+                        <br>
+                        <br>
+
+                            <div class="row ex1 table-responsive" id="abhish123">
+
+    <table class="table">
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Type Of Scale</td>
+            <td style="border: 0px solid gray;">Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sub Sub Model</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Requested</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Sent</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Received</td>
+
+            {% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+        {% if request.user.role == 'Employee' or request.user.role == 'Manager'  %}
+            {% if request.user.id != good_request.req_from_godown.goddown_assign_to.id %}
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
+            {% endif %}
+
+        {% elif request.user.role == 'Admin' or request.user.role == 'Super Admin' %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Godown</td>
+        {% endif %}
+    {% endif %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Request Type</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Number</td>
+                        {% if good_request.status != 'Pending From Target'  %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">Faulty</td>
+            {% endif %}
+
+            {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+            {% elif request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+            {% else %}
+            {% endif %}
+
+            {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+            {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+            {% else %}
+            {% endif %}
+            {% if  request.user.role == 'Super Admin' %}
+<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+        {% elif request.user.role == 'Manager' or request.user.role == 'Employee' %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+         <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+Submit
+
+                </td>
+            {% endif %}
+        {% endif %}
+
+        </tr>
+        {% for list in requested_goods %}
+        <form method="POST" >{%csrf_token%}
+        <tr>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">{{list.godown_product_id.product_id.scale_type}}</td>
+            <td style="border: 0px solid gray;">{{list.godown_product_id.product_id.main_category}}<input hidden name="product_id" value="{{list.id}}"> </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_category}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.godown_product_id.product_id.sub_sub_category}}</td>
+            {% if list.req_type == 'Individual' %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_quantity}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_quantity}}</td>
+            {% endif %}
+{% if list.req_type == 'Carton' %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.req_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.sent_carton_count}}</td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">{{list.received_carton_count}}</td>
+            {% endif %}
+    {% if good_request.req_to_godown == 'None' or good_request.req_to_godown == '' or good_request.req_to_godown == None %}
+        {% if request.user.role == 'Employee' or request.user.role == 'Manager'  %}
+            {% if request.user.id != good_request.req_from_godown.goddown_assign_to.id %}
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_employee %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+            {% endif %}
+
+        {% elif request.user.role == 'Admin'  %}
+           <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_admin %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+        {% elif request.user.role == 'Super Admin' %}
+           <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+               <div class="btn-group">
+                <select class="form-control" name="req_to_godown" >
+                    {% for godown in godown_assign_superadmin %}
+                        <option class="form-control" value="{{godown.id}}">{{godown.name_of_godown}}</option>
+                    {% endfor %}
+                </select>
+               </div>
+           </td>
+        {% endif %}
+    {% endif %}
+
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+
+                <div class="btn-group">
+<select class="btn btn-success" name="req_type" id="caasrs">
+  <option class="btn btn-success" value="{{list.req_type}}">{{list.req_type}}</option>
+</select>
+</div>
+
+
+            </td>
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                 <center>
+                <input type="number" value="0" name="number" class="form-control" step="0.01" style="height:40px; width:60px;">
+</center>
+            </td>
+            {% if good_request.status != 'Pending From Target'  %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                 <center>
+                <input type="number" value="0" name="faulty" class="form-control"  step="0.01" style="height:40px; width:60px;">
+</center>
+            </td>
+            {% endif %}
+
+            {% if request.user.id == good_request.req_to_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% elif request.user.id == good_request.req_to_godown.godown_admin.id and good_request.goods_sent == False %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% else %}
+            {% endif %}
+
+            {% if request.user.id == good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% elif request.user.id == good_request.req_from_godown.godown_admin.id and good_request.goods_sent == True %}
+                <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% else %}
+            {% endif %}
+        {% if request.user.role == 'Super Admin' %}
+<td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+        {% elif request.user.role == 'Manager' or request.user.role == 'Employee' %}
+            {% if not good_request.req_to_godown and request.user.id != good_request.req_from_godown.goddown_assign_to.id and good_request.goods_sent == False %}
+            <td style="border-radius: 0px 0px 0px 0px; border:0px solid gray;">
+                    <button name="submit1" type="submit" class="btn btn-danger">Submit</button>
+
+                </td>
+            {% endif %}
+        {% endif %}
+
+        </tr>
+        </form>
+        {% endfor %}
+    </table>
+                            </div>
+                        <br>
+                        <br>
+                        <div class="row">
+
+    </div>
+
+                </div></div>
+            </div>
+
+
+
+
+
+<br>
+<br>
+
+
+
+
+
+    <br>
+<br>
+<br>
+<br></div>
+
+
+
+
+
+
+  </div>
+
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+
+
+             <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_subcat").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_users/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

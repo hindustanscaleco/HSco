@@ -1,0 +1,1347 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+  .cardText{
+  font-size: 13px;
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+          <br>
+          <br>
+        <div class="container-fluid" >
+<center>
+  <div style="width: 70%;" class="row">
+    <h3 style="color: black;" class="col-xl-12 col-md-12">Employee Profile</h3>
+<br>
+<br>
+  </div>
+   {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+             {% endfor %}
+
+{% endif %}
+<br>
+
+
+
+</center>
+<br>
+
+           <div class="row">
+
+
+              <div class="col-xl-8 col-md-8 mb-5">
+             <div style="border: 1px solid #C0C0C0  ; border-radius: 10px;">
+  <form class="well form-horizontal" action="" onsubmit="return isOneChecked();" method="POST" id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Name
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="name" placeholder="Full Name"  class="form-control" value="{{user_id.profile_name}}" type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Email
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="email" placeholder="Email" class="form-control" value="{{user_id.email}}" type="text">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Mobile
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input type="text" class="form-control" value="{{user_id.mobile}}" name="mobile" placeholder="Mobile">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Role
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" class="form-control" value="{{user_id.role}}" disabled name="role" placeholder="Role">
+
+    <!--<select disabled  name="{{role}}" class="form-control">-->
+  <!--<option value="super_admin">Super Admin</option>-->
+  <!--<option value="admin">Admin</option>-->
+  <!--<option value="manager">Manager</option>-->
+  <!--<option value="employee">Employee</option>-->
+<!--</select>-->
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <!--<label class="col-md-2 control-label">Group-->
+  <!--</label>-->
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>-->
+  <!--<input  name="group" placeholder="Group" disabled class="form-control" value="{{user_id.group}}"  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+    <label class="col-md-2 control-label">Is deleted
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+      <input  name="group" placeholder="Group" disabled class="form-control" value="{% if user_id.is_deleted %}YES {% else %} NO{% endif %}" type="text">
+    <!--<select name="{{user_id.is_deleted}}" disabled class="form-control">-->
+         <!--<option value="No">No</option>-->
+  <!--<option value="Yes">Yes</option>-->
+
+<!--</select>-->
+  </div>
+</div>
+</div>
+
+
+    <!--<label class="col-md-2 control-label">Quantity-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="quantity" placeholder="Quantity" class="form-control" value=""  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Modules Assigned
+  </label>
+
+          <div class="col xl-6">
+  <div class="form-group row">
+
+
+  <label class="col-md-2 control-label ">Sales Module</label>
+{% if 'Customer Module' in user_id.modules_assigned %}
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Customer Module" checked id="customCheck1"   >
+
+  <label class="custom-control-label"  for="customCheck1"></label>
+  </div>
+</div>
+{% endif %}
+
+{% if "'Repairing Module'" in user_id.modules_assigned %}
+    <label class="col-md-2 control-label">Repairing Module
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Repairing Module" checked id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+  </div>
+
+</div>
+      {% endif %}
+
+</div>
+
+
+
+<div class="form-group row">
+{% if 'Restamping Module' in user_id.modules_assigned %}
+  <label class="col-md-2 control-label">Restamping Module
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Restamping Module" checked id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+  </div>
+</div>
+{% endif %}
+
+    {% if 'Dispatch Module' in user_id.modules_assigned %}
+    <label class="col-md-2 control-label">Dispatch Module
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Dispatch Module" checked id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+
+</div>
+    {% endif %}
+</div>
+
+
+
+<div class="form-group row">
+    {% if 'AMC Module' in user_id.modules_assigned %}
+  <label class="col-md-2 control-label">AMC Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]"  disabled value="AMC Module" checked id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+  </div>
+    {% endif %}
+    {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+    <label class="col-md-2 control-label">Onsite Repairing Module
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Onsite Repairing Module" checked id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+  </div>
+</div>
+    {% endif %}
+</div>
+
+
+<div class="form-group row">
+    {% if 'Lead Module' in user_id.modules_assigned %}
+  <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Lead Module" checked id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+ {% endif %}
+
+ {% if 'Stock Module' in user_id.modules_assigned %}
+
+            <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Stock Module" checked id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+     {% endif %}
+
+</div>
+        <div class="form-group row">
+                {% if 'Career Module' in user_id.modules_assigned %}
+
+             <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Career Module" checkedc id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+                 {% endif %}
+
+        </div>
+
+
+
+        <div class="form-group row">
+    {% if 'Indiamart Leads' in user_id.modules_assigned %}
+  <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Indiamart Leads" checked id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+  </div>
+ {% endif %}
+
+{% if 'Hsco Website Leads' in user_id.modules_assigned %}
+            <label class="col-md-2 control-label">Hsco Website Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" disabled value="Hsco Website Leads" checked id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+  </div>
+     {% endif %}
+
+</div>
+
+
+
+  </div>
+
+
+
+</div>
+
+  <div class="form-group row">
+
+
+
+  <label class="col-md-2 control-label">Date of joining *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="date_of_joining" required placeholder="PO Number" disabled class="form-control" value="{{user_id.date_of_joining|date:'Y-m-d'}}"  type="date">
+    </div>
+  </div>
+
+
+
+
+
+  <label class="col-md-2 control-label">Bank Name
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{user_id.bank_name}}"  type="text">
+    </div>
+  </div>
+  </div>
+
+  <div class="form-group row">
+
+
+
+    <label class="col-md-2 control-label">Account no
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="account_no" placeholder="Account no" class="form-control" value="{{user_id.account_number}}"  type="text">
+    </div>
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">Branch Name
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{user_id.branch_name}}"  type="text">
+    </div>
+  </div>
+  </div>
+
+  <div class="form-group row">
+
+
+    <label class="col-md-2 control-label">IFSC Code
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{user_id.ifsc_code}}" >
+    </div>
+  </div>
+
+
+
+   <label class="col-md-2 control-label">Photo
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input  name="photo" placeholder="Photo" class="form-control" type="file">
+
+
+    </div>
+      {% if user_id.photo %}
+      <img src="{{user_id.photo.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
+      {% endif %}
+  </div>
+</div>
+
+
+    <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{% if user_id.pancard == None %}{% else %}{{user_id.pancard}}{% endif %}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{% if user_id.aadhar_card == None %}{% else %}{{user_id.aadhar_card}}{% endif %}" >
+
+  </div>
+    </div>
+</div>
+
+      <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="upload_pancard" placeholder="Upload Pan Card" class="form-control" type="file">
+
+
+    </div>
+      {% if user_id.upload_pancard %}
+      <img src="{{user_id.upload_pancard.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
+      {% endif %}
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input name="upload_aadhar_card" placeholder="Upload Pan Card" class="form-control" type="file">
+
+
+  </div>
+       {% if user_id.upload_aadhar_card %}
+      <img src="{{user_id.upload_aadhar_card.url}}" width="150" height="150">
+      <br>
+      NOTE: Right click on image to download
+      {% endif %}
+    </div>
+</div>
+
+
+  <br>
+</fieldset>
+      <center>
+          <button class="btn btn-primary" name="submit1" type="submit"> Submit</button>
+      </center>
+    </form>
+
+
+<script>
+$('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+
+
+function isOneChecked(){
+    var panVal = $('#pancard').val();
+    var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+if(panVal == ""){
+
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+       alert("Invalid Aadhar Card Number");
+       return false;
+  } else {
+       return true;
+  }
+}else{
+return true;
+}
+
+
+}
+else{
+
+if(regpan.test(panVal)){
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+}else{
+return true;
+}
+
+
+} else {
+   alert("Invalid Pancard Number");
+   return false;
+}
+
+}
+
+
+}
+
+
+</script>
+
+             </div>
+              </div>
+
+
+             <div class="col-xl-4 col-md-4 mb-12">
+
+
+              <div style="border: 1px solid #C0C0C0 ; border-radius: 10px;">
+                  <center>
+
+                      {% if user_id.photo %}
+                    <img src="{{user_id.photo.url }}" style="height:200px; width:250px; padding: 5px;">
+                      {% else %}
+                                          <img src="" style="padding: 5px;">
+{% endif %}
+                      <div>
+                          <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                          <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                          <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                          <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+                          <i class="fa fa-star" aria-hidden="true"></i>
+
+                      </div>
+                  </center>
+
+              </div>
+
+<br>
+                 {% if request.user.is_authenticated  %}
+                                  {% if  user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                 {% if user.pk != user_id.pk %}
+            <form method="post"> {% csrf_token %}
+                 <div style="border: 1px solid #C0C0C0  ; border-radius: 10px; padding: 5px;">
+                  <center>
+                      <p>Warning Or Defects</p>
+<select name="type" class="form-control">
+  <option value="Warning">Warning</option>
+  <option value="Defects">Defects</option>
+</select>
+<br>
+<textarea name="content" class="form-control" rows="7"></textarea>
+<br>
+                      <button type="submit" name="submit3" class="btn btn-primary" style="width: 50%;">Submit</button>
+
+                  </center>
+
+              </div>
+</form>
+{% endif %}
+{% endif %}
+                 {% endif %}
+              </div>
+
+
+
+            </div>
+
+             <div class="col-xl-12 col-md-12 mb-5">
+             <div style="border: 1px solid #C0C0C0  ; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;" >Salary Slip</p>
+
+
+                 <br>
+                 <div>
+
+                     <form method="post">{% csrf_token %}
+
+ <div class="form-group row">
+
+                       <label class="col-md-3 control-label">Check Salary Slip by month and year*:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="salary_date" placeholder="Sales Target" class="form-control" required type=month  >
+    </div>
+  </div>
+                         <br>  <button class="btn btn-primary" name="submit2" type="submit" >Submit</button>
+ </div>
+                     </form>
+
+                     {% if  salary_slip %}
+
+                     Salary Slip For Month "{{salary_date}}" Found!! Click button to download.
+        <a href="{{salary_slip.url}}" download> <button style=" width: 15%; "  class="form-control"> Download </button></a>
+<br>
+
+                     {% endif %}
+
+
+{% if user.role == 'Super Admin' or valid_Manager or valid_user %}
+
+                     <hr>
+                                                               <br>
+
+                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                         <div class="form-group row">
+
+<label class="col-md-1 control-label">Salary Slip*
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input required  name="upload_slip" placeholder="Salary Slip" class="form-control"  type="file">
+    </div>
+  </div>
+
+                         <label class="col-md-2 control-label">Salary Slip Month & Year*:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="salary_date"  required class="form-control"  type=month >
+    </div>
+  </div>  <br>  <button  name="submit6" type="submit" class="btn btn-primary">Upload</button>
+                         </div>      </form>
+{% endif %}
+
+                 </div>
+                     </center>
+             </div><br>
+
+                 {% if user.role == 'Super Admin' or valid_Manager or valid_user %}
+                                               <div style="border: 1px solid #C0C0C0  ; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Target for Employee:</p>
+
+                 <br>
+                 <div>
+                     <form method="post">{% csrf_token %}
+<div class="form-group row">
+    {% if 'Customer Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Sales Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="sales_target_given" placeholder="Sales Target" class="form-control" value="0.0"  type=number step="0.2">
+    </div>
+  </div>
+    {% endif %}
+
+        {% if 'Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="reparing_target_given" placeholder="Repairing Target" class="form-control" value="0.0" type=number step=any>
+    </div>
+  </div><br><br>
+
+        {% endif %}
+
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Onsite Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="onsitereparing_target_given" placeholder="Onsite Repairing Target" class="form-control" value="0.0" type=number step=any>
+    </div>
+  </div>
+        {% endif %}
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Restamping Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="restamping_target_given" placeholder="Restamping Target" class="form-control" value="0.0" type=number step=any>
+    </div>
+  </div><br><br>
+        {% endif %}
+
+</div>
+                         <center>
+        <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+ <button  class="form-control" type="submit" name="submit4" style="width: 50%;"> DONE </button>
+</div>
+  </div>
+</center>
+</form>
+
+                 </div>
+                     </center>
+             </div>
+                 {% endif %}
+
+                 <br>
+                                               <div style="border: 1px solid #C0C0C0  ; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Target for Current Month:</p>
+
+                 <br>
+                 <div>
+<div class="form-group row">
+
+    {% if 'Customer Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Sales Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+  {{this_month_target.sales_target_given}}
+    </div>
+  </div>
+    {% endif %}
+
+        {% if 'Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+        {{this_month_target.reparing_target_given}}
+
+    </div>
+  </div><br><br>
+
+        {% endif %}
+
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+ <label class="col-md-3 control-label">Onsite Repairing Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+              {{this_month_target.onsitereparing_target_given}}
+
+    </div>
+  </div>
+        {% endif %}
+            {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+    <label class="col-md-3 control-label">Restamping Target:
+</label>
+    <div class="col-md-3 inputGroupContainer">
+  <div class="input-group">
+                    {{this_month_target.restamping_target_given}}
+
+    </div>
+  </div><br><br>
+        {% endif %}
+
+</div>
+
+
+                 </div>
+                     </center>
+             </div><br>
+{% if user.role == 'Super Admin' or valid_user %}
+                              <div style="border: 1px solid #C0C0C0 ; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Employee of the Month:</p>
+
+                 <br>
+                 <div>
+                     <form method="post">{% csrf_token %}
+<div class="form-group row">
+     <label class="col-md-4 control-label">Employee of the Month for: <span id="date"></span>
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="yes" id="customCheck21">
+  <label class="custom-control-label" for="customCheck21"></label>
+</div>
+  </div>
+
+        <div class="col-md-4 inputGroupContainer">
+   <div class="custom-control custom-checkbox">
+ <button  class="form-control" type="submit" name="submit5" style="width: 50%;"> DONE </button>
+</div>
+  </div>
+
+</div>
+</form>
+
+                 </div>
+                     </center>
+             </div>
+                 {% endif %}
+
+
+
+                 <br>
+                              <div style="border: 1px solid #C0C0C0 ; border-radius: 10px; color: black; padding: 10px;">
+                 <center>
+                     <p style="font-size: 25px;">Previously Employee of the month declared on :</p>
+                     {% for list in emp_of_month_list%}
+{{list.entry_timedate}}<br>
+{% endfor %}
+                 <br>
+
+                     </center>
+             </div>
+
+             </div>
+
+
+     <style>
+
+         .border-approve {
+         border: 3px solid #00FF00;
+         }
+
+         .border-disapprove {
+         border: 3px solid red;
+         }
+         .border-process {
+         border: 3px solid orange;
+         }
+
+       .no_button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+
+     </style>
+
+
+
+                  <p style="font-size: 25px; text-align: center; color: black;">Leaves Applied</p>
+
+
+<div class="col-xl-12 col-md-12 mb-12" style=" height: 200px; overflow: scroll;">
+
+              <div class="card shadow">
+
+                <div class="card-body row" style="padding: 5px;color: black; font-weight: 600; font-size: 14px;">
+
+{% for item in leave_list %}
+
+               <div class="col-xl-12 col-md-12 mb-12">
+                 {% if item.is_approved %}
+              <div class="card shadow border-approve">
+                    <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+{{item.reason}}
+                        </div>
+                    </div>
+                </div>
+                  {% elif item.in_process %}
+                  <div class="card shadow border-process">
+                        <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;  {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}</div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                            {{item.reason}}
+                               <!--<form method="post">{% csrf_token %}-->
+                      <!--<button name="list[]" value="no" id="no" type="submit"  class="no_button"><i class="fa fa-times" aria-hidden="true" style="color: red; border: 1px solid red; padding-left:8px; padding-right: 8px; padding-top: 6px; padding-bottom:6px; border-radius: 25px;"></i></button>-->
+<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
+
+                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
+                    <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+                     {% elif not item.is_approved %}
+                      <div class="card shadow border-disapprove">
+                            <div class="card-body row" id="timer" style="padding: 5px;color: black; font-weight: 600; font-size: 14px; height: 35px;">
+                    <div class="col-xl-3 col-md-3 mb-1 cardText"><center> {{item.requested_leave_date_from}} - {{item.requested_leave_date_to}} </center></div>|
+                    <div class="col-xl-4 col-md-4 mb-1 cardText"><center> {{item.user_id.name}} </center></div>|
+                    <div class="col-xl-1 col-md-1 mb-1"> &nbsp;
+                        {% if is_employee_of_month %}
+                        <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+
+                        {% endif %}
+
+                    </div>
+                        <div class="col-xl-2 col-md-1 mb-1">
+                             {{item.reason}}
+                             <!--<form method="post">{% csrf_token %}-->
+<!--&nbsp; <input type="hidden"  name="user_id" value="{{item.pk}}">-->
+
+                        <!--<button name="list[]" value="yes" onclick="myFunction()" type="submit" class="no_button"><i class="fa fa-check" aria-hidden="true" style="color: #66ff33; border: 1px solid #66ff33; padding: 6px; border-radius: 25px;"></i></button>-->
+                    <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+                      {% endif %}
+
+
+                </div>
+
+                    {% endfor %}
+                </div>
+              </div>
+</div>
+
+          {% if 'Customer Module' in user_id.modules_assigned %}
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Sales Feedback</h4>
+                </div>
+
+            <div class="row">
+{% for feedback_form in feeback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-6">
+
+
+                        <b>Knowledge : </b>{% for avg in feedback_form.knowledge_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.knowledge_of_person %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+                  <b>Timeliness : </b>{% for avg in feedback_form.timeliness_of_person|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.timeliness_of_person %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}  <br>
+                  <b>Price Of Product : </b>{% for avg in feedback_form.price_of_product|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_product %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+            <br>
+            <br>
+{% endif %}
+ {% if 'Repairing Module' in user_id.modules_assigned %}
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Reparing Feedback</h4>
+                </div>
+
+            <div class="row">
+{% for feedback_form in rep_feedback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-9">
+
+
+                        <b>Backend Team : </b>{% for avg in feedback_form.backend_team|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.backend_team %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+        <b>Onsite Worker : </b>{% for avg in feedback_form.onsite_worker|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.onsite_worker %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}  <br>
+                  <b> Speed Performance: </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.speed_of_performance %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}  <br>
+                  <b>Price Of Repairing : </b>{% for avg in feedback_form.price_of_reparing|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_reparing %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+<br>
+<br>
+{% endif %}
+             {% if 'Onsite Repairing Module' in user_id.modules_assigned %}
+            <div class="card-header py-3">
+                  <h4 class="m-0 font-weight-bold text-primary" > Detailed Onsite Reparing Feedback</h4>
+                </div></center>
+
+            <div class="row">
+{% for feedback_form in onsite_rep_feedback %}
+                        <div class="col-xl-6 col-md-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary" >Feedback {{ feedback_form.id }}</h6>
+                </div>
+                <div class="card-body">
+      <div class="row">
+    <div class="col-lg-9">
+
+
+                        <b>Satisfied with communication : </b>{% for avg in feedback_form.satisfied_with_communication|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.satisfied_with_communication %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+                  <b>Speed of Performance : </b>{% for avg in feedback_form.speed_of_performance|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.speed_of_performance %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}  <br>
+                  <b>Price Of Repairing : </b>{% for avg in feedback_form.price_of_reparing|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.price_of_reparing %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %}   <br>
+                  <b>Over All Interaction : </b>{% for avg in feedback_form.overall_interaction|rjust:'5'  %}
+{% if forloop.counter <= feedback_form.overall_interaction %}
+                  <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+              {% else %}
+                  <i class="fa fa-star" aria-hidden="true"></i>
+              {% endif %}
+                    {% endfor %} <br>
+                  <b>About HSCO : </b>{{feedback_form.about_hsco}} <br>
+                  <b>Any Other Suggestions: </b>{{feedback_form.any_suggestion}} <br>
+<!--
+                      <b>Ratings : <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i>
+-->
+
+
+    </div>
+      </div>
+
+
+
+
+            </div>
+              </div>
+                        </div>
+{% endfor %}
+                </div>
+
+{% endif %}
+
+
+
+</div>
+
+<!--<p>"Below Provide Various button to send various SMS and E-mail  like-->
+<!--1) Scale Submit sms-->
+<!--2) Estimate informed sms-->
+<!--3) Repairing done sms-->
+<!--4) Late mark sms-->
+<!--5) Final Deleviry sms"-->
+<!--</p>-->
+
+<script>
+    window.onload = function() {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
+    var date = new Date();
+
+    document.getElementById('date').innerHTML = months[date.getMonth()] + ' ' + date.getFullYear();
+};
+</script>
+
+
+<br>
+
+
+
+
+
+
+
+</div>
+    </div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

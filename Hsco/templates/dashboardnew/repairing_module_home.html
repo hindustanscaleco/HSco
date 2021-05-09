@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+<style>
+    .container-fluid {
+font-size: 14px;
+}
+
+</style>
+  <!-- Page Wrapper -->
+  <div id="wrapper "  style="margin-top: 5vh;">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+
+        <div id="content">
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="">
+
+            <div class="row">
+          <div class="col-xl-6 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Reparing Module</h1>
+
+
+                </div>
+              </div>
+            </div>
+                                 <div class="col-xl-6 col-md-9 mb-9">
+
+
+                <div class="card-body" style="padding: 2px;">
+                    <div class="row no-gutters align-items-right" >
+
+     {% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+<a style="padding: 2px; " href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>
+
+<form method="POST" ion="">{%csrf_token%}
+ <a href="#"><button style="margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+</form>
+ <a style="padding: 2px;" href="/repairing_logs/"> <button class="btn btn-primary">Log</button></a>
+ <a style="padding: 2px;" href="/repairing_report_module/"> <button class="btn btn-primary">Report</button></a>
+ <a style="padding: 2px;" href="/repairing_analytics/"><button class="btn btn-primary">Analytics</button></a>
+{% else %}
+ <a style="padding: 2px;" href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>
+{% endif %}
+{% endif %}
+
+
+
+
+
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+
+<br>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+            <style>
+
+</style>
+            <script>
+$( document ).ready(function() {
+        $('.divs').hide();
+
+});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+
+
+            <style>
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+  color: black;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+  font-size: 13px;
+}
+.divs{
+display:none;
+}
+
+
+
+
+</style>
+            <div class="row" >
+
+                <div  class="col-xl-3 col-md-3 col-mb-3" >
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d1">Search By Date Range</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d4">Search By Customer Name</option>
+     <option value="d5">Search By Company Name</option>
+     <option value="d6">Search By CRM No.</option>
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  </select>
+</div>
+                </div>
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+
+<div class="output">
+                               <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+                               <form method="POST">{% csrf_token%}
+  <div id="d2" class="divs d2">
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button></div>
+                               </form>
+
+                               <form method="POST">{% csrf_token%}
+
+  <div id="d3" class="divs d3">
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit3" class="btn btn-primary">Search</button></div>
+</form>
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d4" class="divs d4">
+      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit4" class="btn btn-primary">Search</button></div>
+</form>
+                               <form method="POST">{% csrf_token%}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit5" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d6" class="divs d6">
+      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <!--<form method="POST">{% csrf_token%}-->
+
+  <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm1" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-0 col-md-0 col-mb-0">-->
+                <!--<p style="font-weight: 600;">_</p>-->
+
+      <!--</div>-->
+
+      <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+                <!--<input name="crm2" type="text" placeholder="CRM No." class="form-control">-->
+
+      <!--</div>-->
+      <!--<div class="col-xl-2 col-md-2 col-mb-2">-->
+                <!--<button style="background-color: #FC6E20;" class="btn btn-primary">Search</button></div>-->
+
+      <!--</div>-->
+                               <!--</form>-->
+</div>
+
+
+                </div>
+
+
+
+             <div class="col-xl-3 col-md-2 col-mb-8 row" style="color: black;">
+
+{% if request.user.is_authenticated %}
+{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
+                     <div class="col-xl-12 col-md-2 col-mb-8 row">
+                         <div class="col-xl-4 col-md-2 col-mb-8">
+    <p> Manager</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         <label class="switch ">
+  <input name="Employee" type="checkbox" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                     </div>
+                     <div class="col-xl-5 col-md-2 col-mb-8">
+                         <p> Employee</p>
+                     </div>
+                     </div>
+{% else %}
+
+                     {% endif %}
+                     {% endif %}
+
+
+
+</div>
+                </div>
+
+
+
+
+      <br>
+   <div class="row" style="">
+
+
+        <div style="cursor: pointer; " onclick="choice1('Scale is collected but estimate is not given')" class="col-xl-2 col-md-3 col-6">
+              <div class="card shadow" style="  ">
+                <div class="card-body row" style="color: black; font-weight: 600; font-size: 16px; height: 130px;">
+                  <center> Scale is collected but estimate is not given.  <br> ({{rep1}}) </center>
+
+                    </div>
+
+                </div>
+              </div>
+
+        <div style="cursor: pointer; " onclick="choice1('Estimate is given but Estimate is not confirmed')" class="col-sm-6 col-xl-2 col-6 ">
+              <div class="card shadow" style="">
+                <div class="card-body row" style=" color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+                 <center> Estimate is given but Estimate is not confirmed. &nbsp;<br> ({{rep2}})</center>
+
+
+                    </div>
+
+                </div>
+              </div>
+
+            <div style="cursor: pointer; " onclick="choice1('Estimate is confirmed but not repaired')" class="col-xl-2 col-md-3 col-6">
+              <div class="card shadow" style="">
+                <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> Estimate is confirmed  but not repaired. &nbsp; ({{rep3}}) </p></center>
+
+                    </div>
+
+                </div>
+              </div>
+
+
+
+       <div style="cursor: pointer; " onclick="choice1('Finally Collected')" class="col-xl-2 col-md-3 col-6">
+           <div class="card shadow" style=" ">
+               <div class="card-body row" style="padding-left: 45px;color: black; font-weight: 600; font-size: 16px;  height: 130px;">
+
+                   <center><p> <br>
+                       Finally Collected.&nbsp;<br> ({{rep5}})</p></center>
+
+               </div>
+
+           </div>
+       </div>
+
+       <div  class="col-xl-2 col-md-3 col-12">
+           <div onclick="choice1('Repaired but not collected')" class="card shadow" style=" cursor: pointer; ">
+               <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 14px;  height: 1%;">
+                   <center>
+                       <p>
+                          Resolved but not collected.({{rep4}})
+                        </p>
+                   </center>
+               </div>
+           </div>
+           <div onclick="choice1('4days')" class="card shadow" style="cursor: pointer; float:left; width:49%;  ">
+               <div class="card-body row" style=" color: black; font-weight: 600; font-size: 14px;  height: 15px;">
+                   <center>
+                       <p>
+                          4 Days ({{rep4_4d}})
+                        </p>
+                   </center>
+
+               </div>
+
+           </div>
+           <div onclick="choice1('10days')" class="card shadow" style="cursor: pointer; float:right; width:49%; ">
+               <div class="card-body row" style="padding-left: 25px;color: black; font-weight: 600; font-size: 14px;  height: 12px;">
+
+                   <center>
+                       <p>
+
+                          10 Days  ({{rep4_10d}})
+                        </p>
+                   </center>
+
+               </div>
+
+           </div>
+       </div>
+   </div>
+
+
+
+
+
+    <!--<form  method='POST' id="FilterForm" data-url="{% url 'load_reparing_stages_list' %}" enctype="multipart/form-data">{% csrf_token %}-->
+
+
+<!--<div style="color:black; font-size: 15px; border: 1px solid black; border-radius: 5px; padding: 15px;" class="row">-->
+
+    <!--&lt;!&ndash;<div class="col-xl-4 col-md-2 col-mb-2">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Scale is collected but estimate is not given" checked> Scale is collected but estimate is not given. &nbsp; &nbsp; <br>&ndash;&gt;-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Estimate is given but Estimate is not confirmed"> Estimate is given but Estimate is not confirmed. &nbsp; &nbsp; <br>&ndash;&gt;-->
+         <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Estimate is confirmed but not repaired"> Estimate is confirmed but not repaired. &nbsp; &nbsp;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+
+    <!--<div class="col-xl-4 col-md-4 col-mb-4">-->
+<!--<select id="display_limita2" class="form-control">-->
+    <!--<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+  <!--<option value="Scale is collected but estimate is not given">Scale is collected but estimate is not given.</option>-->
+  <!--<option value="Estimate is given but Estimate is not confirmed">Estimate is given but Estimate is not confirmed.</option>-->
+  <!--<option value="Estimate is confirmed but not repaired">Estimate is confirmed but not repaired.</option>-->
+  <!--<option value="Repired but not collected">Repaired but not collected.</option>-->
+  <!--<option value="Finally Collected">Finally Collected.</option>-->
+<!--</select>-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Repaired but not collected"> Repaired but not collected. &nbsp; &nbsp; <br>&ndash;&gt;-->
+  <!--&lt;!&ndash;<input type="checkbox" name="checks[]" value="Finally Collected">  &nbsp; &nbsp;&ndash;&gt;-->
+    <!--</div>-->
+
+
+     <!--<div class="col-xl-3 col-md-2 col-mb-2">-->
+<!--<select name="display_limit" class="form-control" onchange="choice1(this)">-->
+  <!--<option value="-&#45;&#45;&#45;&#45;">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+  <!--<option value="All">All</option>-->
+  <!--<option value="3">3 Days</option>-->
+  <!--<option value="10">10 Days</option>-->
+<!--</select>-->
+
+    <!--</div>-->
+
+
+<!--</div>-->
+    <!--</form>-->
+
+
+<br>
+
+
+
+                <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+ <center><p>{{search_msg}}</p></center>
+
+                <div id="id_manager_view"  class="table-responsive">
+
+<!--<div class="" id="id_subcat" style="min-height: 15vw;">-->
+<table class="table">
+                    <tr style="background-color: gray; color: white;">
+
+                    <td style=" width: 8%; border-radius: 15px 0px 0px 0px; border: 0px solid gray;">  Date </center> </td>
+                    <td style=" width: 15%; border: 0px solid gray;">Repairing No. </td>
+                    <td style=" width: 18%; border: 0px solid gray;">Customer Name</td>
+                    <td style=" width: 20%; border: 0px solid gray;">Company Name</td>
+                    <td style=" width: 15%; border: 0px solid gray;">Contact No.</td>
+
+                    <td style=" width: 12%; border: 0px solid gray;"><center class=""> Entered By </center> </td>
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;"><center> Taken By </center> </td>
+                    {% else %}
+                    {% endif %}
+                </tr>
+
+<br>
+
+
+                {% for list in repair_list %}
+              <tr style="cursor: pointer; " onclick="location.href='/update_repairing_details/{{list.id}}';" class="col-xl-12 col-md-12 mb-12">
+
+
+
+                                        <td style="width: 8%;">{{list.entry_timedate|date:'Y-m-d'}}</td>
+
+                    <td style="width: 15%;">{{list.repairing_no}}  </td>
+                    <td style="width: 18%;">{{list.second_person}}</td>
+                    <td style="width: 20%;">{% if list.second_company_name != None and list.second_company_name != '' %}{{list.second_company_name}}{% else %}{% endif %}</td>
+                    <td style="width: 15%;">{{list.second_contact_no}} </center> </td>
+
+                    <td style="width: 12%;">{{list.entered_by}}</td>
+
+                    {% if user.role == 'Manager' or user.role == 'Admin' or user.role == 'Super Admin'  %}
+                    <td> {{list.taken_by}}  </td>
+                    {% endif %}
+
+
+                {% endfor %}
+              </tr>
+
+           </table>
+<!--</div>-->
+        </div>
+                        <br>
+            <br>
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if repair_list.has_previous %}-->
+<!--            <a href="?page=1">&laquo; first</a>-->
+<!--            <a href="?page={{ repair_list.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ repair_list.number }} of {{ repair_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if repair_list.has_next %}-->
+<!--            <a href="?page={{ repair_list.next_page_number }}">next</a>-->
+<!--            <a href="?page={{ repair_list.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
+        </div>
+
+        </div>
+        </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+  <!-- End of Page Wrapper -->
+    </div></div>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+   <script>
+
+        function choice1(select) {
+        //alert(document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value);
+    // var strUser = document.getElementById("display_limit2").options[document.getElementById("display_limit2").selectedIndex].value;
+
+    $.ajax({
+        url: "/load_reparing_stages_list/",
+        data: {
+          'selected_stage': select,
+
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+
+    </script>
+               <script>
+
+        function toggleCheckbox(select) {
+value = select.checked;
+
+    $.ajax({
+        url: "/load_dispatch_done/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/load_reparing_manager/",
+        data: {
+          'loc_id':value,
+        },
+        success: function (data) {
+           $("#id_manager_view").html(data);
+        }
+      });
+}
+
+    </script>
+
+
+
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+        <script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+        <script src="{% static 'js/scripts.bundle.js' %}"></script>
+        <!--end::Global Theme Bundle-->
+        <!--begin::Page Vendors(used by this page)-->
+        <script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+        <!--end::Page Vendors-->
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="{% static 'js/pages/widgets.js' %}"></script>
+                <!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

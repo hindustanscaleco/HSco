@@ -1,0 +1,641 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+        {% load mathfilters %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+
+<style>
+    * {
+    font-family: 'Poppins';
+}
+
+</style>
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+          <br>
+          <br>
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+           <div class="col-xl-4 col-md-3 mb-3 ">
+
+
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+<h1 class="h3 mb-0 text-gray-800 ">Bill Module</h1>
+                </div>
+              </div>
+            </div>
+
+
+
+                <div class="col-xl-5 col-md-5 mb-5"></div>
+                 <div class="col-xl-3 col-md-3 mb-3">
+                <div class="card-body" style="padding: 2px;">
+                  <div class="row no-gutters align-items-right">
+     {% if request.user.is_authenticated %}
+ {% comment %} <a style="padding: 2px;" href="/report_bill_form/"><button class="btn btn-primary">Report</button></a> {% endcomment %}
+
+{% endif %}
+                </div>
+              </div>
+
+            </div>
+
+                </div>
+<form method="POST" autocomplete="off">{% csrf_token %}
+
+            <div class="row" style="float:right ; text-align:right;">
+            <div class="col-xl-4 col-md-4">
+                        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
+ <button onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
+ {% endif %}
+ </div>
+  <div id="div_bill_no" style="display:none;" class="col-xl-3 col-md-3">
+  <input name="new_bill_no" type="number" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" />
+
+  </div>
+  <div id="div_company_type" style="display:none;" class="col-xl-3 col-md-3">
+<select name="company_type" id="company_type_id" required class="form-control">
+  <option value="Sales">Sales</option>
+  <option value="Scale">Scale</option>
+</select>
+  </div>
+  <div id="div_bill_submit" style="display:none;" class="col-xl-2 col-md-5">
+  <button  type="submit" name="increase_bill_no" class="btn btn-primary">Submit</button>
+  </div>
+
+ </div>
+
+ </form>
+
+<br>
+<br>
+<br>
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+            <div class="row">
+
+                <div  class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+  <select id="divselector" class="form-control">
+     <option value="d0">Select Search Type</option>
+     <option value="d1">Search By Date Range</option>
+     <option value="d2">Search By Mobile Number</option>
+     <option value="d3">Search By Email Id</option>
+     <option value="d4">Search By Customer Name</option>
+     <option value="d5">Search By Company Name</option>
+     <option value="d6">Search By Sales ID</option>
+     {% comment %} <option value="d7">Search By ID</option> {% endcomment %}
+     <!--<option value="d7">Search By CRM Number Range</option>-->
+  </select>
+</div>
+
+<br>
+                </div>
+
+
+                <div  class="col-xl-6 col-md-6 col-mb-8">
+
+
+<div class="output">
+                                                              <form method="POST" autocomplete="off">{% csrf_token%}
+  <div id="d1" class="divs d1 row">
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
+
+      </div>
+                               </form>
+
+
+  <div id="d2" class="divs d2">
+      <form method="POST" >{% csrf_token%}
+      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+
+
+
+
+  <div id="d3" class="divs d3">
+      <form method="POST">{% csrf_token%}
+      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+
+      <button name="submit3" class="btn btn-primary">Search</button>
+          </form>
+  </div>
+
+
+
+    <div id="d4" class="divs d4">
+        <form method="POST">{% csrf_token%}
+      <input type="text" name="name"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit4" class="btn btn-primary">Search</button>
+    </form>
+    </div>
+
+                               <form method="POST">{% csrf_token%}
+  <div id="d5" class="divs d5">
+      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit5" class="btn btn-primary">Search</button></div>
+</form>
+
+                               <form method="POST">{% csrf_token%}
+
+    <div id="d6" class="divs d6">
+      <input type="text" name="id" placeholder="Sales ID" class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button  name="submit6" class="btn btn-primary">Search</button></div>
+</form>
+                       {% comment %} <form method="POST">{% csrf_token%}
+
+    <div id="d7" class="divs d7">
+      <input type="text" name="purchase_no" placeholder="Purchase No." class="form-control" style="width: 25%;float: left;">
+      &nbsp; &nbsp;
+      <button name="submit7" class="btn btn-primary">Search</button></div>
+</form> {% endcomment %}
+</div>
+
+                </div>
+
+            </div>
+                <form>
+                  <div class="row">
+                    {% comment %} <div class="col-md-2">
+                      <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <input type="date" class="form-control">
+                    </div> {% endcomment %}
+                    <div class="col-md-3">
+                      <select class="form-control" name="dropdown" onchange="filterby_company(this)" id="cars">
+                        <option value="">Select Our Company</option>
+                        <option value="Sale">Sales</option>
+                        <option value="Scale">Scales</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+
+
+                <div class="row" id="date_year" style="display:none;">
+
+                       <div  class="col-xl-2 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_year" class="form-control">
+     <option value="2020">2020</option>
+     <option value="2021">2021</option>
+     <option value="2022">2022</option>
+
+                    </select>
+                    </div>
+                    </div>
+<br>
+                    <div class="col-xl-3 col-md-3 col-mb-3">
+                    <div class="button dropdown">
+                    <select id="selected_month" onchange="toggleCheckbo(this)" class="form-control">
+     <option value="0">Select Month</option>
+     <option value="1">January</option>
+     <option value="2">February</option>
+     <option value="3">March</option>
+     <option value="4">April</option>
+     <option value="5">May</option>
+     <option value="6">June</option>
+     <option value="7">July</option>
+     <option value="8">August</option>
+     <option value="9">September</option>
+     <option value="10">October</option>
+     <option value="11">November</option>
+     <option value="12">December</option>
+                    </select>
+                    </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+</style>
+
+                        <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div >
+     <center><p>{{search_msg}}</p></center>
+     {% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+
+             {% endfor %}
+
+{% endif %}
+        <div class="row table-responsive" id="bill_table_list">
+
+    <table class="table">
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date</td>
+            <td style="border: 0px solid gray;">Sales ID </td>
+            <td style="border: 0px solid gray;">Invoice No</td>
+            <td style="border: 0px solid gray;">Company Name</td>
+            <td style="border: 0px solid gray;">Contact No.</td>
+            {% if request.user.is_authenticated %}
+            {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+            <td style="border: 0px solid gray;">Basic Amount</td>
+            <td style="border: 0px solid gray;">P & F</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">CGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">SGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">IGST</td>
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">TDS</td>
+            {% endif %}
+            {% endif %}
+            <td style="border-radius: 0px 0px 0px 0px; border: 0px solid gray;">Grand Total</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Actions</td>
+        </tr>
+        {% for item in bills_list %}
+<!--      <tr onclick="location.href='/showBill/{{item.user_id}}';">-->
+      <tr>
+          <td>{{item.entry_date}}</td>
+          <td>{{item.purchase_id.purchase_no}}</td>
+          <td>{{item.purchase_id.bill_no}}</td>
+          <td>{{item.purchase_id.second_company_name}}</td>
+          <td>{{item.purchase_id.second_contact_no}}</td>
+          <td>{{item.purchase_id.total_amount}}</td>
+          <td>{{item.purchase_id.total_pf}}</td>
+          {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
+            <td>{{item.purchase_id.tax_amount|div:2}} </td>
+            <td>{{item.purchase_id.tax_amount|div:2}} </td>
+            <td></td>
+          {% else %}
+          <td></td>
+            <td></td>
+            <td>{{item.purchase_id.tax_amount}}</td>
+
+          {% endif %}
+          <td></td>
+          <td>{{item.purchase_id.grand_total}}</td>
+
+          <td>
+          <form method="POST">{% csrf_token %}
+            <input type="hidden" name="bill_id" value={{item.id}}>
+              <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}" class="btn btn-primary"><span><i class="fa fa-print" aria-hidden="true"></i></span></a>
+              <a target="_blank" href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}" class="btn btn-primary"><span><i class="fa fa-download" aria-hidden="true"></i></span></a>
+              <a href="/update_customer_details/{{item.purchase_id.id}}"><span><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+              <button type="submit"  name="delete_bill" class="btn btn-primary"><span><i  class="fa fa-trash" aria-hidden="true"></i></span></button>
+          </form>
+          </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+        </div>
+
+
+
+
+<br>
+
+
+
+        </div>
+              </div>
+
+</div>
+<br>
+
+  </div>
+
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+  <script>
+  function increase_billno(){
+    var bill_no = document.getElementById("div_bill_no");
+    var bill_submit = document.getElementById("div_bill_submit");
+    var div_company_type = document.getElementById("div_company_type");
+    if (bill_no.style.display == "none"){
+    bill_no.style.display = "block";
+    bill_submit.style.display = "block";
+    div_company_type.style.display = "block";
+    }
+    else{
+    bill_no.style.display = "none";
+    bill_submit.style.display = "none";
+    div_company_type.style.display = "none";
+    }
+  }
+  function filterby_company(select) {
+//$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/showBillModule/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'company_type': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#bill_table_list").html(data);
+
+        }
+      });
+}
+  </script>
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

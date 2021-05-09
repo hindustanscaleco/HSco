@@ -1,0 +1,272 @@
+{% include 'session_security/all.html' %}
+
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <script>function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}</script>
+
+<style>
+  .sidecolor {
+    background-color: #FC6E20;
+    background-size: cover;
+    height:auto;
+}
+<!--*{-->
+
+<!--zoom: 99%;-->
+
+<!--}-->
+</style>
+
+    <ul class="navbar-nav sidecolor sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-icon rotate-n-0">
+          <i class="fas fa-fw fa-chart-area"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">HSCo</div>
+      </a>
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+       <!--Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="/">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>HOME</span></a>
+      </li>
+
+
+<hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Heading -->
+      <!--<div class="sidebar-heading">-->
+        <!--Modules-->
+      <!--</div>-->
+
+
+            {% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
+
+        <li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/quick_purchase_entry/"><span style="color: black;">Rush Hour Entry</span></a>
+        {% else %}<a class="nav-link" href="/quick_purchase_entry/"><span style="color: black;">Rush Hour Entry</span></a> {% endif %}
+          <!-- <i class="fas fa-fw fa-plus"></i> -->
+
+          <!--<i class="fas fa-fw fa-plus"></i>-->
+      </li>
+
+      <li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/customer_employee_sales_graph/{{request.user.id}}"><span>Sales</span></a>
+        {% else %}<a class="nav-link" href="/view_customer_details/"><span>Sales</span></a> {% endif %}
+          <!-- <i class="fas fa-fw fa-plus"></i> -->
+
+          <!--<i class="fas fa-fw fa-plus"></i>-->
+      </li>
+                            {% endif %}
+
+            {% if request.user.is_authenticated and "'Repairing Module'" in user.modules_assigned %}
+
+        <li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/repairing_employee_graph/{{request.user.id}}"><span>Repairing</span></a>
+        {% else %}<a class="nav-link" href="/repairing_module_home/"><span>Repairing</span></a>{% endif %}
+          <!--<i class="fas fa-clipboard-list"></i>-->
+
+      </li>
+                                    {% endif %}
+
+                    {% if request.user.is_authenticated and 'Restamping Module' in user.modules_assigned %}
+
+
+
+
+<li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/restamping_employee_graph/{{request.user.id}}"><span>Restamping</span></a>
+        {% else %}<a class="nav-link" href="/restamping_manager/"><span>Restamping</span></a>{% endif %}
+          <!--<i class="fas fa-clipboard-list"></i>-->
+
+      </li>
+                            {% endif %}
+
+      <!-- Divider -->
+                    {% if request.user.is_authenticated and 'Dispatch Module' in user.modules_assigned %}
+
+       <li class="nav-item ">
+        {% if request.user.role == 'Employee' %}<a class="nav-link" href="/dispatch_employee_graph/{{request.user.id}}"><span>Dispatch</span></a>
+        {% else %}<a class="nav-link" href="/dispatch_view/"><span>Dispatch</span></a>{% endif %}
+          <!--<i class="fas fa-clipboard-list"></i>-->
+
+      </li>
+                    {% endif %}
+
+                            {% if request.user.is_authenticated and 'AMC Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/amc_views/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>AMC</span></a>
+      </li>
+                    {% endif %}
+
+
+                    {% if request.user.is_authenticated and 'Onsite Repairing Module' in user.modules_assigned %}
+
+          <li class="nav-item ">
+      {% if request.user.role == 'Employee' %}<a class="nav-link" href="/onsitevisit_app_graph/{{request.user.id}}"><span>Onsite Repairing</span></a>
+        {% else %}<a class="nav-link" href="/onsite_views/"><span>Onsite Repairing</span></a>{% endif %}
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
+
+      </li>
+                    {% endif %}
+            {% if request.user.is_authenticated and 'Lead Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/lead_home/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Lead Module</span></a>
+      </li>
+                    {% endif %}
+
+         {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/stock_godown_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Stock Module</span></a>
+      </li>
+                    {% endif %}
+          {% if request.user.is_authenticated and 'Stock Module' in user.modules_assigned %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/career_module_list/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Career Module</span></a>
+      </li>
+                    {% endif %}
+                     {% if request.user.is_authenticated  %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/expense_dashboard/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Expense Module</span></a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="/showBillModule/">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Bills</span></a>
+      </li>
+                    {% endif %}
+
+  <li class="nav-item ">
+        <a class="nav-link" href="/chat_with_user/">
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
+          <span>Notif. & Declaration</span></a>
+      </li>
+
+{% if user.product_master_access %}
+<li class="nav-item ">
+        <a class="nav-link" href="/product_master_list/">
+          <!--<i class="fas fa-fw fa-chart-area"></i>-->
+          <span>Product Master</span></a>
+      </li>
+{% endif %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Employee Self Service</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              {% if request.user.is_authenticated %}
+                          {% if request.user.role != 'Super Admin' %}
+
+                          <a class="collapse-item" href="/employee_profile/{{request.user.id}}">My Profile</a>
+                          <a class="collapse-item" href="/ess_home/">Leaves Section</a>
+                           {% endif %}
+              {% endif %}
+            <!--<a class="collapse-item" href="/employee_profile/">Profile</a>-->
+              {% if request.user.is_authenticated %}
+
+              {% if user.role == 'Admin' or user.role == 'Super Admin' or user.role == 'Manager'  %}
+            <a class="collapse-item" href="/ess_all_user/">All Employee</a>
+              {% endif %}
+                            {% if user.role == 'Super Admin' %}
+                                                      <a class="collapse-item" href="/ess_home/">Approve Leaves</a>
+
+              {% endif %}
+
+              {% endif %}
+            <!--<a class="collapse-item" href="/add_ess_details/">ESS form</a>-->
+
+
+          </div>
+        </div>
+      </li>
+            {% if request.user.is_authenticated and user.role == 'Super Admin' %}
+              <li class="nav-item">
+        <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Super Admin</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/admin_list/">Add Admin</a>
+            <a class="collapse-item" href="/manager_list/">Add Manager</a>
+            <!--<a class="collapse-item" href="/assign_man_to_admin/">Assign Manager to Adm..</a>-->
+
+
+
+          </div>
+        </div>
+      </li>
+            {% elif request.user.is_authenticated and user.role == 'Admin' %}
+                      <li class="nav-item">
+        <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Admin</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/manager_list/">Add Manager</a>
+            <!--<a class="collapse-item" href="/assign_emp_to_manager/">Assign Emp to Manager</a>-->
+            <a class="collapse-item" href="/employee_list/">Add Employee</a>
+
+
+          </div>
+        </div>
+      </li>
+            {% elif request.user.is_authenticated and user.role == 'Manager' %}
+
+                              <li class="nav-item"      >
+        <a class="nav-link collapsed" href="/ess_form/" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+          <!--<i class="fas fa-clipboard-list"></i>-->
+          <span>Manager</span>
+        </a>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/employee_list/">Add Employee</a>
+            <a class="collapse-item" href="/assign_module_to_emp/">Assign Module to Emp</a>
+
+
+
+          </div>
+        </div>
+      </li>
+            {% endif %}
+
+     <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+
+
+   <!--Crafted By Ambrosial Technologies-->
+   <!--visit www.theambrosial.com for more information-->

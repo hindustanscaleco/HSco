@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FC6E20;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000;
+}
+scrollbar-color: #87ceeb #ff5621;
+scrollbar-width: thin;
+</style>
+
+                <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+
+            </script>
+ <style>
+
+
+</style>
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+            <style>
+
+.divs{
+display:none;
+}
+.bg{
+<!--background-image:url("{% static 'images/bg-1.jpg' %}");-->
+}
+</style>
+<style type="text/css">
+  .container{max-width:1170px; margin:auto;}
+img{ max-width:100%;}
+.inbox_people {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 40%; border-right:1px solid #c4c4c4;
+}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+}
+.top_spac{ margin: 20px 0 0;}
+
+
+.recent_heading {float: left; width:40%;}
+.srch_bar {
+  display: inline-block;
+  text-align: right;
+  width: 60%; padding:
+}
+.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+
+.recent_heading h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: auto;
+}
+.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+
+.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+.chat_ib h5 span{ font-size:13px; float:right;}
+.chat_ib p{ font-size:14px; color:#989898; margin:auto}
+.chat_img {
+  float: left;
+  width: 11%;
+}
+.chat_ib {
+  float: left;
+  padding: 0 0 0 15px;
+  width: 88%;
+}
+
+.chat_people{ overflow:hidden; clear:both;}
+.chat_list {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 18px 16px 10px;
+}
+
+
+.active_chat{ background:#ebebeb;}
+
+.incoming_msg_img {
+  display: inline-block;
+  width: 6%;
+}
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+ }
+ .received_withd_msg p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.received_withd_msg { width: 57%;}
+.mesgs {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 100%;
+}
+
+ .sent_msg p {
+  background: rgb(212,143,31); none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  width:100%;
+}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  float: right;
+  width: 46%;
+}
+.input_msg_write input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
+
+.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.msg_send_btn {
+  background: rgb(212,143,31) none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.messaging { padding: 0 0 50px 0;}
+.msg_history {
+  height: 516px;
+  overflow-y: auto;
+}
+</style>
+</head>
+
+<body id="page-top" style=" overflow-x: hidden;" >
+
+
+  <!-- Page Wrapper -->
+  <div class="bg" id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper"  class="bg d-flex flex-column" style=" background-color: white;">
+
+      <!-- Main Content -->
+      <div id="content" >
+ <!-- Topbar -->
+        <!-- End of Topbar -->
+
+
+
+        <!-- Begin Page Content -->
+
+        <div class=" container-fluid " style="padding-left: 40px; padding-top:10px;">
+
+    <script>
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+</script>
+          <!-- Page Heading -->
+
+<!--                 <h3 class="h3 mb-0" style="font-size: 25px; color: black;">CHAT </h3>-->
+<br>
+
+<div class="container">
+<div class="messaging" >
+
+    {% if request.user.role == 'Super Admin' %}
+
+<div class="card shadow row">
+    <br>
+    <center>
+            <h5 style="color:black;">{{to_id_name}}'s Replying Status :</h5>
+
+
+    </center>
+
+                      <br>
+                  <div class=" col-xl-12 col-md-2 col-mb-8 row">
+
+                      <div class="col-xl-3 col-md-2 col-mb-8"></div>
+                         <div class="col-xl-2 col-md-2 col-mb-8">
+    <p> ON</p>
+                     </div>
+                     <div class="col-xl-3 col-md-2 col-mb-8">
+                         {% if can_reply_to_sa %}
+                         <label class="switch ">
+  <input name="deleted" type="checkbox" id="checker" onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                         {% else %}
+                                              <label class="switch ">
+  <input name="deleted" type="checkbox" id="checker" checked onchange="toggleCheckbox2(this)">
+  <span class="slider round"></span>
+</label>
+                         {% endif %}
+
+                     </div>
+                     <div class="col-xl-2 col-md-2 col-mb-8">
+                         <p>OFF</p>
+
+                     </div>
+                     </div>
+
+</div>
+{% endif %}
+
+        <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
+          <div id="messag" class="msg_history">
+            {% if user.role == 'Super Admin' %}
+            {% for msg in msg_list1 %}
+
+               {% ifchanged msg.entrytimedate.date %}
+<hr>
+            <h5 style=" border: 0px solid gray;">
+                {% if todays_date.date == msg.entrytimedate.date %}
+                Today
+                {% else %}
+                {{ msg.entrytimedate |date:'D d M Y' }}
+                {% endif %}
+
+            </h5>
+<hr>
+
+            {% endifchanged %}
+
+{% if not msg.is_superadmin %}
+            <div class="incoming_msg">
+              <div class="incoming_msg_img">
+                <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
+
+
+
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>{{msg.message}}</p>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
+              </div>
+            </div>
+
+            {% else %}
+
+               {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}
+                </div>
+              </div>
+
+{% else %}
+
+
+
+
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>{{msg.message}}</p>
+                  <span class="time_date"> {{msg.entrytimedate.time}}
+                      <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+
+                  </span> </div>
+            </div>
+                        {% endif %}
+                        {% endif %}
+
+            {% endfor %}
+                        {% endif %}
+
+
+
+                  {% if user.role == 'Admin' %}
+            {% for msg in msg_list1 %}
+                         {% ifchanged msg.entrytimedate.date %}
+<hr>
+            <h5 style=" border: 0px solid gray;">
+                {% if todays_date.date == msg.entrytimedate.date %}
+                Today
+                {% else %}
+                {{ msg.entrytimedate |date:'D d M Y' }}
+                {% endif %}
+
+            </h5>
+<hr>
+
+            {% endifchanged %}
+{% if not msg.is_admin %}
+
+                {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+
+            <div class="incoming_msg">
+              <div class="incoming_msg_img">
+                <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>{{msg.message}}</p>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
+              </div>
+            </div>
+
+            {% endif %}
+            {% else %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>{{msg.message}}</p>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+                    <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+                </span> </div>
+            </div>
+                        {% endif %}
+                        {% endif %}
+
+            {% endfor %}
+                        {% endif %}
+
+                    {% if user.role == 'Manager' %}
+            {% for msg in msg_list1 %}
+                         {% ifchanged msg.entrytimedate.date %}
+<hr>
+            <h5 style=" border: 0px solid gray;"> {{ msg.entrytimedate |date:'D d M Y' }}</h5>
+<hr>
+
+            {% endifchanged %}
+{% if not msg.is_manager %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+
+            <div class="incoming_msg">
+              <div class="incoming_msg_img">
+                <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>{{msg.message}}</p>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
+              </div>
+            </div>
+
+            {% endif %}
+            {% else %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>{{msg.message}}</p>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+                    <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+
+                </span> </div>
+            </div>
+                        {% endif %}
+                        {% endif %}
+
+            {% endfor %}
+                        {% endif %}
+
+
+              {% if user.role == 'Employee' %}
+            {% for msg in msg_list1 %}
+                         {% ifchanged msg.entrytimedate.date %}
+<hr>
+            <h5 style=" border: 0px solid gray;"> {{ msg.entrytimedate |date:'D d M Y' }}</h5>
+<hr>
+
+            {% endifchanged %}
+{% if not msg.is_employee %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body">
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+            <div class="incoming_msg">
+              <div class="incoming_msg_img">
+                <img src='{% static "images/chatuser.png" %}' alt="Student"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>{{msg.message}}</p>
+                  <span class="time_date"> {{msg.entrytimedate.time}}</span></div>
+              </div>
+            </div>
+
+            {% endif %}
+            {% else %}
+
+                              {% if msg.is_defect or msg.is_warning %}
+                       <div class="card bg-danger text-white shadow mb-4 col-lg-7" >
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                      {% if msg.is_defect %}
+                      Defect
+                      {% endif %}
+                          {% if msg.is_warning %}
+                      Warning
+                      {% endif %}
+                  </h6>
+                </div>
+                <div class="card-body" >
+{{msg.message}}                </div>
+              </div>
+
+{% else %}
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>{{msg.message}}</p>
+                <span class="time_date"> {{msg.entrytimedate.time}}
+
+                        <span style="float:right;">
+                      {% if msg.is_viewed %}
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 226 226"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#7cfc00"><path d="M171.33625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-50.70875,-50.70875c-1.80094,-1.80094 -4.69656,-1.80094 -6.4975,0c-1.80094,1.80094 -1.80094,4.69656 0,6.4975l54.24,54.24c0.91812,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594zM221.05625,40.53875c-0.19422,0.03531 -0.38844,0.08828 -0.565,0.14125c-1.02406,0.24719 -1.92453,0.8475 -2.5425,1.695l-109.75125,131.645l-11.5825,-11.44125c-1.09469,-1.34187 -2.84266,-1.95984 -4.53766,-1.57141c-1.67734,0.38844 -3.00156,1.71266 -3.39,3.39c-0.38844,1.695 0.22953,3.44297 1.57141,4.53766l14.9725,15.11375c0.91813,0.91813 2.18937,1.4125 3.47828,1.32422c1.30656,-0.08828 2.50719,-0.72391 3.30172,-1.74797l113,-135.6c1.25359,-1.4125 1.50078,-3.44297 0.61797,-5.12031c-0.88281,-1.65969 -2.70141,-2.61312 -4.57297,-2.36594z"></path></g></g></svg>
+                      {% endif %}
+
+                  </span>
+                </span> </div>
+            </div>
+                        {% endif %}
+                        {% endif %}
+
+            {% endfor %}
+                        {% endif %}
+
+
+
+
+
+
+
+          </div>
+{% if not request.user.role == 'Super Admin' %}
+            {% if to_role == 'Super Admin' %}
+            {% if can_reply_to_sa  %}
+          <div class="type_msg">
+            <div class="input_msg_write">
+              <form method="post" enctype="multipart/form-data">{% csrf_token %}
+              <input type="text" required class="write_msg" name="message" placeholder="Type a message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true" style="color: white;"></i></button>
+                </form>
+            </div>
+          </div>
+            {% endif %}
+            {% else %}
+            <div class="type_msg">
+            <div class="input_msg_write">
+              <form method="post" enctype="multipart/form-data">{% csrf_token %}
+              <input type="text" required class="write_msg" name="message" placeholder="Type a message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true" style="color: white;"></i></button>
+                </form>
+            </div>
+          </div>
+            {% endif %}
+            {% else %}
+                 <div class="type_msg">
+            <div class="input_msg_write">
+              <form method="post" enctype="multipart/form-data">{% csrf_token %}
+              <input type="text" required class="write_msg" name="message" placeholder="Type a message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true" style="color: white;"></i></button>
+                </form>
+            </div>
+          </div>
+            {% endif %}
+        </div>
+
+
+{% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+{% if not dont_show %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="mesgs" style="border: 2px solid gray; border-radius: 5px;">
+        <label style="margin-left:2%;font-size:20px;color:black;">Defects
+            <input name="defectnwarn" value="defect" onclick="myFunction3();" type="radio">
+        </label>
+
+         <label style="margin-left:43%;font-size:20px;color:black;">Warning
+            <input name="defectnwarn" value="warning" type="radio" onclick="myFunction4();">
+        </label>
+
+          <div class="type_msg" id="defect_rad" style="display:none;">
+            <div class="input_msg_write">
+              <input type="text" class="write_msg" id="msg_con" name="message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true" style="color: white;"></i></button>
+            </div>
+          </div>
+
+
+
+        </div>
+    </form>
+{% endif %}
+{% endif %}
+
+
+
+      </div>
+
+<script>
+        function toggleCheckbox2(select) {
+value = !select.checked;
+
+    $.ajax({
+        url: "/change_replying_status_ajax/{{to_id_id}}",
+        data: {
+          'loc_id':value,
+
+        },
+        success: function (data) {
+           alert(data['msg']);
+        }
+      });
+}
+
+
+window.onload = function() {
+  var objDiv = document.getElementById("messag");
+objDiv.scrollTop = objDiv.scrollHeight;
+};
+    function myFunction3() {
+
+  var y = document.getElementById("defect_rad").style.display = "block";
+var z=document.getElementById("msg_con");
+    z.placeholder = "Enter Defect"
+    z.required = true;
+
+}
+
+    function myFunction4() {
+
+ var y = document.getElementById("defect_rad").style.display = "block";
+var z=document.getElementById("msg_con");
+z.placeholder = "Enter Warning"
+    z.required = true;
+
+
+}
+</script>
+
+    </div>
+
+        </div>
+
+
+
+</div>
+        <br>
+<br>
+ </div>
+
+<br>
+            <hr>
+
+
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+
+
+
+  <!-- End of Page Wrapper -->
+
+
+
+</div>
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

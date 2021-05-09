@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content" style="background-color: white;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+
+        <div class="container-fluid" >
+
+{% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
+
+
+             {% endfor %}
+
+{% endif %}
+            <br>
+
+
+
+    <form class="well form-horizontal" action="" method="POST" autocomplete="off" onsubmit="return isOneChecked();"  id="contact_form" style="padding:20px;" enctype="multipart/form-data" novalidate>{% csrf_token %}
+<fieldset>
+
+<div class="form-group row">
+  <label class="col-md-2 control-label ">Name
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="name" placeholder="Full Name"  class="form-control" value="{{admin_id.profile_name}}" type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Email
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="email" placeholder="Email" class="form-control" value="{{admin_id.email}}" type="text">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Mobile
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input type="text" class="form-control" value="{{admin_id.mobile}}" name="mobile" placeholder="Mobile">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Role
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+     <select   class="form-control" disabled>
+  <option value="Admin">Admin</option>
+</select>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">Group
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input  name="group" placeholder="Group" class="form-control" value="{{admin_id.group}}"  type="text">
+    </div>
+  </div>
+
+     <label class="col-md-2 control-label">Is deleted
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <input  name="is_deleted" placeholder="Is deleted" class="form-control" type="checkbox" {% if manager_id.is_deleted == True %} checked {% endif %} >
+  </div>
+  </div>
+</div>
+
+
+    <!--<label class="col-md-2 control-label">Quantity-->
+
+<!--</label>-->
+
+    <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>-->
+  <!--<input  name="quantity" placeholder="Quantity" class="form-control" value=""  type="text">-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+
+
+
+
+
+
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label">Modules Assigned
+  </label>
+
+    <div class="col xl-12">
+  <div class="form-group row">
+
+
+  <label class="col-md-2 control-label ">Sales Module</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+
+    <input type="checkbox" class="custom-control-input" name="checks[]"  value="Customer Module" {% if 'Customer Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck1"   >
+
+  <label class="custom-control-label"  for="customCheck1"></label>
+  </div>
+</div>
+
+
+
+    <label class="col-md-2 control-label">Repairing Module
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Repairing Module" {% if "'Repairing Module'" in admin_id.modules_assigned %}checked{% endif %} id="customCheck2">
+  <label class="custom-control-label" for="customCheck2"></label>
+  </div>
+
+
+</div>
+</div>
+
+
+
+<div class="form-group row">
+
+  <label class="col-md-2 control-label">Restamping Module
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Restamping Module" {% if 'Restamping Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck3">
+  <label class="custom-control-label" for="customCheck3"></label>
+  </div>
+</div>
+
+    <label class="col-md-2 control-label">Dispatch Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Dispatch Module" {% if 'Dispatch Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck4">
+  <label class="custom-control-label" for="customCheck4"></label>
+  </div>
+
+</div>
+</div>
+
+
+
+<div class="form-group row">
+  <label class="col-md-2 control-label">AMC Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="AMC Module" {% if 'AMC Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck5">
+  <label class="custom-control-label" for="customCheck5"></label>
+  </div>
+  </div>
+    <label class="col-md-2 control-label">Onsite Repairing Module
+
+
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Onsite Repairing Module" {% if 'Onsite Repairing Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck6">
+  <label class="custom-control-label" for="customCheck6"></label>
+  </div>
+</div>
+</div>
+
+
+        <div class="form-group row">
+  <label class="col-md-2 control-label">Lead Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Lead Module" {% if 'Lead Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck7">
+  <label class="custom-control-label" for="customCheck7"></label>
+  </div>
+  </div>
+
+            <label class="col-md-2 control-label">Stock Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Stock Module" {% if 'Stock Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck8">
+  <label class="custom-control-label" for="customCheck8"></label>
+  </div>
+  </div>
+</div>
+        <div class="form-group row">
+             <label class="col-md-2 control-label">Career Module
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Career Module" {% if 'Career Module' in admin_id.modules_assigned %}checked{% endif %} id="customCheck9">
+  <label class="custom-control-label" for="customCheck9"></label>
+  </div>
+  </div>
+        </div>
+
+               <div class="form-group row">
+  <label class="col-md-2 control-label">Indiamart Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Indiamart Leads" {% if 'Indiamart Leads' in admin_id.modules_assigned %}checked{% endif %} id="customCheck10">
+  <label class="custom-control-label" for="customCheck10"></label>
+  </div>
+  </div>
+
+            <label class="col-md-2 control-label">Hsco Website Leads
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="checks[]" value="Hsco Website Leads" {% if 'Hsco Website Leads' in admin_id.modules_assigned %}checked{% endif %} id="customCheck11">
+  <label class="custom-control-label" for="customCheck11"></label>
+  </div>
+  </div>
+</div>
+         <div class="form-group row">
+             <label class="col-md-2 control-label">Product Master
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+ <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="product_master" value="True" {% if admin_id.product_master_access == True %}checked{% endif %} id="customCheck12">
+  <label class="custom-control-label" for="customCheck12"></label>
+  </div>
+  </div>
+         </div>
+  </div>
+
+
+</div>
+
+  <div class="form-group row">
+
+
+    <label class="col-md-2 control-label">Average Rating
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+    <input type="text" name="average_rating" id="fileToUpload" placeholder="Average Rating" class="form-control" value="{{admin_id.average_rating}}">
+    </div>
+  </div>
+
+
+
+
+
+  <label class="col-md-2 control-label">Bank Name
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bank_name" placeholder="Bank Name" class="form-control" value="{{admin_id.bank_name}}"  type="text">
+    </div>
+  </div>
+  </div>
+
+  <div class="form-group row">
+
+
+
+    <label class="col-md-2 control-label">Account no
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="account_no" placeholder="Account no" class="form-control" value="{{admin_id.account_number}}"  type="text">
+    </div>
+  </div>
+
+
+
+
+  <label class="col-md-2 control-label">Branch Name
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="branch_name" placeholder="Branch Name" class="form-control" value="{{admin_id.branch_name}}"  type="text">
+    </div>
+  </div>
+  </div>
+
+  <div class="form-group row">
+
+
+    <label class="col-md-2 control-label">IFSC Code
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  type="text" name="ifsc_code" placeholder="IFSC Code" class="form-control" value="{{admin_id.ifsc_code}}" >
+    </div>
+  </div>
+
+
+
+   <label class="col-md-2 control-label">Photo
+
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="photo" placeholder="Photo" class="form-control" value="{{admin_id.photo}}"  type="file">
+    </div>
+  </div>
+</div>
+
+
+<div class="form-group row">
+   <label class="col-md-2 control-label">Salary Slip
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="salary_slip" placeholder="Salary Slip" class="form-control"  type="file">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Date of joining
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+
+  <input  name="date_of_joining" required class="form-control" value="{{admin_id.date_of_joining|date:'Y-m-d'}}"  type="text">
+    </div>
+  </div>
+</div>
+
+    <div class="form-group row">
+
+ <label class="col-md-2 control-label">Password
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="password" placeholder="Password" class="form-control" value="{{admin_id.password_text}}"  type="text" required>
+    </div>
+  </div>
+
+           <label class="col-md-2 control-label">Employee Number
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="employee_number" placeholder="Employee Number" class="form-control" value="{{admin_id.employee_number}}" type="text" required>
+  </div>
+    </div>
+    </div>
+
+
+     <div class="form-group row">
+   <label class="col-md-2 control-label"> Pan Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="pancard" id="pancard" placeholder="Pan Card Number" class="form-control" value="{% if admin_id.pancard == None %}{% else %}{{admin_id.pancard}}{% endif %}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="aadhar_card" placeholder="Aadhar Card Number" data-type="adhaar-number" maxLength="19" class="form-control" value="{% if admin_id.aadhar_card == None or admin_id.aadhar_card == 'None' %}{% else %}{{admin_id.aadhar_card}}{% endif %}" >
+
+  </div>
+    </div>
+</div>
+
+    <div class="form-group row">
+   <label class="col-md-2 control-label">Upload Pan Card
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="upload_pancard" placeholder="Upload Pan Card" class="form-control"  type="file">
+    </div>
+       {% if admin_id.upload_pancard %}
+      <img src="{{admin_id.upload_pancard.url}}" width="250" height="250">
+      <br>
+      NOTE: Right click on image to download
+      {% endif %}
+
+  </div>
+
+   <label class="col-md-2 control-label">Upload Aadhar Card
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input name="upload_aadhar_card" placeholder="Upload Aadhar Card" class="form-control" type="file" >
+  </div>
+        {% if admin_id.upload_aadhar_card %}
+      <img src="{{admin_id.upload_aadhar_card.url}}" width="250" height="250">
+      <br>
+      NOTE: Right click on image to download
+      {% endif %}
+
+    </div>
+</div>
+    <div class="separator"><b>Professional Email configuration</b></div>
+<br>
+    <div class="form-group row">
+   <label class="col-md-2 control-label">Email ID
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+        <input name="professional_email" placeholder="Enter Email" class="form-control" value="{% if admin_id.professional_email == None %}{% else %}{{admin_id.professional_email}}{% endif %}" type="text">
+
+    </div>
+  </div>
+
+   <label class="col-md-2 control-label">Password
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+      <input type="text" name="professional_email_password" placeholder="Enter Password" class="form-control" value="{% if admin_id.professional_email_password == None %}{% else %}{{admin_id.professional_email_password}}{% endif %}" >
+
+  </div>
+    </div>
+</div>
+
+<br>
+<center>
+   <button  type="submit" value="Submit" class="btn btn-primary">Submit</button>
+</center>
+
+
+
+  <br>
+</fieldset>
+    </form>
+<!--            <center>-->
+<!--               <button style="background-color: #FC6E20;" data-toggle="modal" data-target="#myModal" class="btn btn-primary">Test Email Credentials</button>-->
+<!--            </center>-->
+  <!--Product List-->
+<br>
+<script>
+$('[data-type="adhaar-number"]').keyup(function() {
+  var value = $(this).val();
+  value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+  $(this).val(value);
+});
+
+
+
+function isOneChecked(){
+    var panVal = $('#pancard').val();
+    var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+if(panVal == ""){
+
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+       alert("Invalid Aadhar Card Number");
+       return false;
+  } else {
+       return true;
+  }
+}else{
+return true;
+}
+
+
+}
+else{
+
+if(regpan.test(panVal)){
+if ($('[data-type="adhaar-number"]').val() !== ""){
+  if ($('[data-type="adhaar-number"]').val().length != $('[data-type="adhaar-number"]').attr("maxLength")) {
+    alert("Invalid Aadhar Card Number");
+   return false;
+  } else {
+    return true;
+  }
+}else{
+return true;
+}
+
+
+} else {
+   alert("Invalid Pancard Number");
+   return false;
+}
+
+}
+
+
+}
+
+
+</script>
+
+
+                </div>
+              </div>
+            </div>
+      </div>
+
+
+
+
+ <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Test Email Credentials</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+
+
+        <div class="row" >
+
+           <div class="col-md-12">
+               <h5>Credentials:</h5>
+               <span>Email Id: {% if admin_id.professional_email == None %}{% else %}{{admin_id.professional_email}}{% endif %}</span><br>
+               <span>Password: {% if admin_id.professional_email_password == None %}{% else %}{{admin_id.professional_email_password}}{% endif %}</span>
+           </div>
+  <br>
+            <div class="col-md-12">
+            <form action="" method="post" >{% csrf_token %}
+                <input type="hidden" name="test_professional_email" value="{{admin_id.professional_email}}">
+                <input type="hidden" name="test_professional_email_password" value="{{admin_id.professional_email_password}}">
+<!--                <span>To:</span>-->
+                <br>
+                <input required placeholder="Your Email *" name="test_to" class="form-control">
+
+                <center>
+<br>
+            <button type="submit" id="test_submit" name="test_submit" class="btn btn-primary">CHECK</button><br><br>
+                    <div id="spinner-border" class="spinner-border text-info" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <script>
+$(document).ready(function(){
+$("#spinner-border").hide();
+  $("#test_submit").click(function(){
+    $("#spinner-border").show();
+  });
+
+});
+</script>
+        </center>
+            </form>
+            </div>
+        </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

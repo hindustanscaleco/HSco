@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+<script>
+$(document).ready(function(){
+
+    $(".editableBox22").change(function(){
+        $(".timeTextBox22").val($(".editableBox22 option:selected").html());
+    });
+});
+
+$(document).ready(function(){
+
+    $(".editableBoxa22").change(function(){
+        $(".timeTextBoxa22").val($(".editableBoxa22 option:selected").html());
+    });
+});
+
+
+$(document).ready(function(){
+
+    $(".editableBoxaa").change(function(){
+        $(".timeTextBoxaa").val($(".editableBoxaa option:selected").html());
+    });
+});
+</script>
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+<style>
+
+* {
+color:;
+}
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+                   <style>
+          .editableBox, .editableBox1,.editableBoxa22  {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBox, .timeTextBox1 , .timeTextBoxa22 {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+          .editableBox22  {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBox22 {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxa,.editableBoxa1 {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxa,.timeTextBoxa1 {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+.editableBoxaa ,.editableBoxaa1 {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxaa ,.timeTextBoxaa1{
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+
+
+.editableBoxz {
+    width: 70%;
+    height: 30px;
+}
+
+.timeTextBoxz {
+    width: 65%;
+    margin-left: -70%;
+    height: 25px;
+    border: none;
+}
+
+        </style>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+<center>
+         <!-- Page Heading -->
+    <br>
+            <h1 class="h3 mb-0 text-gray-800"> Repair Product</h1>
+</center>
+<br>
+<br>
+
+            <form method="POST" onsubmit="return isOneChecked();">{%csrf_token%}
+
+
+
+
+
+<div class="form-group row">
+
+        <label class="col-md-2 control-label">Type of Scale *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="divselector" required onchange="choice1(this)" class="form-control">
+       <option value="">Select Scale Type</option>
+
+    {% for item in type_purchase %}
+  <option value="{{item.pk}}">{{item.name}}</option>
+
+   {% endfor %}
+
+  </select>
+
+
+     </div>
+  </div>
+
+            <label class="col-md-2 control-label">Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat" required onchange="choice_model(this)" class="form-control">
+
+
+  </select>
+
+
+     </div>
+  </div>
+</div>
+
+
+<div class="form-group row">
+
+
+
+
+                            <label class="col-md-2 control-label">Sub Model *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+
+      <select id="id_subcat2" required onchange="choice_sub_model(this)" class="form-control">
+
+
+  </select>
+
+
+     </div>
+  </div>
+
+<!--                            <label class="col-md-2 control-label">Sub Sub Model *-->
+
+
+<!--</label>-->
+<!--  <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>-->
+
+<!--      <select required id="id_subcat22" name="sub_sub_model" onchange="choice_sub_sub_model(this)" class="form-control">-->
+
+
+
+<!--  </select>-->
+
+
+<!--     </div>-->
+<!--  </div>-->
+
+    <label class="col-md-2 control-label">Cost
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+  <input  name="cost" placeholder="Cost" value="0.0" class="form-control"  type="text">
+    </div>
+  </div>
+</div>
+<div class="form-group row">
+  <label class="col-md-2 control-label">Problem in the scale
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-balance-scale faicons"></i></span>
+        <input  type="text" name="problem_in_scale" placeholder="Problem In The Scale" class="form-control" list="problem_in_scale">
+      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>
+    <datalist style="height:20px;" id="problem_in_scale">
+    <option value = "Scale not turning On"></option>
+    <option value = "Scale is showing incorrect weight"></option>
+    <option value = "Scale only shows 888888"></option>
+    <option value = "Scale only shows zero"></option>
+    <option value = "Weight is slowly increasing or decreasing"></option>
+    <option value = "buttons are not working"></option>
+    <option value = "Scale doesnt show stable weight"></option>
+    <option value = "Display problems (Display gets distorted while showing weight)"></option>
+    <option value = "Scale is not working on battery or scale is not charging"></option>
+    <option value = "Scale turns OFF automatically"></option>
+    <option value = "Others"></option>
+    </datalist>    </div>
+  </div>
+
+
+        <label class="col-md-2 control-label">Replaced Scale given *
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="replaced_scale_given" required onchange="toggleCheckbox2(this)" class="form-control">
+    <option value="no">No</option>
+  <option value="yes">Yes</option>
+
+</select>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+  <div id="show_hide" class="form-group row">
+  <label class="col-md-2 control-label">Replaced Scale Serial No *
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-list faicons"></i></span>
+  <input id="Replaced_scale_serial_no" name="Replaced_scale_serial_no" placeholder="Replaced scale Serial NO" class="form-control"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Deposit Taken For Replaced Scale *</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-money faicons"></i></span>
+<select name="deposite_taken_for_replaced_scale" id="deposite_taken_for_replaced_scale" required class="form-control">
+    <option value="no">No</option>
+  <option value="yes">Yes</option>
+</select>
+    </div>
+  </div>
+
+</div>
+
+
+                <div  class="form-group row">
+                      <label class="col-md-2 control-label">Components Replaced
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+<!--  <div class="input-group"><button style="background-color: #FC6E20;" class="btn btn-primary" type="reset"  id="myBtnb">+</button> &nbsp;-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
+
+<!--    <input  type="text" name="components_replaced" placeholder="Components Replaced" class="form-control" list="components_replaced">-->
+<!--      <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Display"> Display</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Touch Pad"> Touch Pad</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="LED"> LED</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Transformer"> Transformer</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Battery"> Battery</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Switch"> Switch</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Cord wire"> Main Cord wire</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Main Circuit Board"> Main Circuit Board</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="SMPS"> SMPS</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Load Cell"> Load Cell</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced" value="Misc"> Misc</div><br>
+    </div>
+  </div>
+
+
+
+
+    <label class="col-md-2 control-label">Components Replaced in Waranty(if scale in Waranty)
+
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+<!--  <div class="input-group"><button style="background-color: #FC6E20;" class="btn btn-primary" type="reset"  id="myBtn">+</button>&nbsp;-->
+  <span class="">
+<!--      <i class="fa fa-wrench faicons"></i>-->
+  </span>
+<!--<input  type="text" name="components_replaced_in_warranty" placeholder="Components Replaced IW" class="form-control" list="components_replaced_in_warranty">-->
+<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Display"> Display</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Touch Pad"> Touch Pad</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="LED"> LED</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Transformer"> Transformer</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Battery"> Battery</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Switch"> Switch</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Cord wire"> Main Cord wire</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Main Circuit Board"> Main Circuit Board</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="SMPS"> SMPS</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Load Cell"> Load Cell</div><br>
+  <div class="col-md-12"><input type="checkbox" name="components_replaced_in_warranty" value="Misc"> Misc</div><br>
+    </div>
+  </div>
+
+                </div>
+                <div class="form-group row">
+
+<label class="col-md-2 control-label">In Warranty *
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="in_warranty" required class="form-control">
+    <option value="no">No</option>
+  <option value="yes">Yes</option>
+
+</select>
+    </div>
+  </div>
+
+
+                    <label class="col-md-2 control-label">Last Product ?
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>-->
+  YES:<input  name="is_last_product_yes" value="yes" placeholder="Is deleted" class="form-control" type="radio">
+  NO:<input  name="is_last_product_yes" value="no" placeholder="Is deleted" class="form-control" type="radio">
+
+    </div>
+  </div>
+</div>
+
+<!--                <div class="form-group row">-->
+
+<!--<label class="col-md-2 control-label">Components Replaced-->
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--  <table border>-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        Product replaced-->
+<!--    </td>-->
+<!--    </tr>-->
+<!--{% for item in components_replaced_popup %}-->
+
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--Product    </td>-->
+<!--    </tr>-->
+<!--{% endfor %}-->
+<!--</table>-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+
+<!--<label class="col-md-2 control-label">Components Replaced In Warranty *-->
+<!--</label>-->
+
+<!--    <div class="col-md-4 inputGroupContainer">-->
+<!--  <div class="input-group">-->
+<!--<table border>-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--        Sr no.-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        Product replaced-->
+<!--    </td>-->
+<!--    </tr>-->
+<!--{% for item in components_replaced_popup_iw %}-->
+<!--    <tr>-->
+<!--    <td>-->
+<!--    {{ forloop.counter }}-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        {{ item }}-->
+<!--    </td>-->
+<!--</tr>-->
+<!--{% endfor %}-->
+
+<!--</table>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+  <input type="hidden" value="" id="type_of_scale" name="type_of_scale">
+  <input type="hidden" value="" id="model_of_purchase" name="model_of_purchase">
+  <input type="hidden" value="" id="sub_model" name="sub_model">
+  <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
+
+            <br>
+<center>
+    <button type="submit" class="btn btn-primary">Submit</button>
+<br>
+<br>
+</center>
+            </form>
+
+
+
+
+
+              <div class="wrapper" style="display: none;">
+    <select class="editableBoxz" name="district" id="districtSel" size="1"  style="border: 1px solid grey; border-radius: 5px;">
+<option value="" selected="selected">Select</option>
+
+    </select>
+    <input class="timeTextBoxz" name="timebox" maxlength="5"/>
+</div>
+
+
+  </div>    <!-- Trigger/Open The Modal -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+<!--  <div class="modal-content">-->
+<!--          <span class="close">&times;</span>-->
+
+
+<!--      <div style="border: 0.5px solid grey; border-radius: 15px;">-->
+<!--<br>-->
+<!--<center>-->
+<!--    <form action="" id="components_riw" method="POST">{% csrf_token%}-->
+<!--                      <div class="form-group row">-->
+<!--  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">-->
+<!--<p style="color:black;">Components Replaced in Waranty(if scale in Waranty)-->
+<!--</p>-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
+
+<!--    <input  type="text" name="components_replaced_popup" placeholder="Components Replaced On Warranty" class="form-control" list="components_replaced">-->
+<!--    <datalist style="height:20px;" id="xyz">-->
+<!--    <option value = "Display"></option>-->
+<!--    <option value = "Touch Pad"></option>-->
+<!--    <option value = "LED"></option>-->
+<!--    <option value = "Transformer"></option>-->
+<!--    <option value = "Battery"></option>-->
+<!--    <option value = "Switch"></option>-->
+<!--    <option value = "Main Cord wire"></option>-->
+<!--    <option value = "Main Circuit Board"></option>-->
+<!--    <option value = "SMPS"></option>-->
+<!--    <option value = "Load Cell"></option>-->
+<!--    <option value = "Misc"></option>-->
+<!--    </datalist>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+<!--  </div>-->
+<!--                              <button style="background-color: #FC6E20;" class="btn btn-primary" type="submit">Submit</button>-->
+<!--</form>-->
+<!--    <br>-->
+<!--          </center>-->
+
+<!--</div>-->
+
+
+<!--      </div>-->
+
+
+<!--  </div>-->
+<!--<div id="myModalb" class="modal">-->
+
+<!--  &lt;!&ndash; Modal content &ndash;&gt;-->
+<!--  <div class="modal-content">-->
+<!--      <div id="closeb">-->
+<!--                    <span class="close">&times;</span>-->
+
+<!--      </div>-->
+
+
+<!--      <div style="border: 0.5px solid grey; border-radius: 15px;">-->
+<!--<br>-->
+<!--<center>-->
+<!--    <form id="component_r" method="POST">{% csrf_token%}-->
+<!--                      <div class="form-group row">-->
+<!--  <div class="col-md-8 inputGroupContainer" style="margin-left: 15%;">-->
+<!--<p style="color:black;">Components Replaced</p>-->
+<!--  <div class="input-group">-->
+<!--  <span class="input-group-addon icon-border"><i class="fa fa-wrench faicons"></i></span>-->
+
+<!--    <input  type="text" name="components_replaced_popup_iw" placeholder="Components Replaced" class="form-control" list="components_replaced">-->
+<!--    <datalist style="height:20px;" id="">-->
+<!--    <option value = "Display"></option>-->
+<!--    <option value = "Touch Pad"></option>-->
+<!--    <option value = "LED"></option>-->
+<!--    <option value = "Transformer"></option>-->
+<!--    <option value = "Battery"></option>-->
+<!--    <option value = "Switch"></option>-->
+<!--    <option value = "Main Cord wire"></option>-->
+<!--    <option value = "Main Circuit Board"></option>-->
+<!--    <option value = "SMPS"></option>-->
+<!--    <option value = "Load Cell"></option>-->
+<!--    <option value = "Misc"></option>-->
+<!--    </datalist>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+<!--  </div>-->
+                              <button class="btn btn-primary" type="submit">ADD</button>
+</form>
+    <br>
+          </center>
+
+</div>
+
+
+      </div>
+
+
+  </div>
+
+</div>
+  <!-- End of Page Wrapper -->
+
+
+
+<script>
+$(document).ready(function(){
+$('#show_hide').hide();
+});
+            function toggleCheckbox2(select) {
+  value = select.options[select.selectedIndex].value;
+if (value == 'no'){
+$('#show_hide').hide();
+}
+else{
+$('#show_hide').show();
+$('#Replaced_scale_serial_no').prop('required',true);
+$('#deposite_taken_for_replaced_scale').prop('required',true);
+
+}
+
+
+}
+
+
+function isOneChecked() {
+  // All <input> tags...
+  var chx = document.getElementsByTagName('input');
+  for (var i=0; i<chx.length; i++) {
+    // If you have more than one radio group, also check the name attribute
+    // for the one you want as in && chx[i].name == 'choose'
+    // Return true from the function on first match of a checked item
+    if (chx[i].type == 'radio' && chx[i].checked) {
+    alert("Are you sure it's last product?\n you will not be able to add product again.");
+      return true;
+    }
+  }
+  // End of the loop, return false
+  alert("Please Select any one radio buttons in last product field.");
+  return false;
+}
+</script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
+  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+function choice1(select) {
+     //alert(select.options[select.selectedIndex].value);
+
+
+       $("#type_of_scale").val(select.options[select.selectedIndex].text);
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat").html(data);
+        if ($('#id_subcat option').length > 1)
+    {
+    $('#id_subcat').attr('required', '');
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+    }
+    else{
+    $('#id_subcat').removeAttr('required');
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }
+        }
+      });
+}
+function choice_model(select) {
+$("#model_of_purchase").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat2").html(data);
+if ($('#id_subcat2 option').length > 1)
+    {
+    $('#id_subcat2').attr('required', '');
+    $('#id_subcat22').attr('required', '');
+
+    }
+    else{
+    $('#id_subcat2').removeAttr('required');
+    $('#id_subcat22').removeAttr('required');
+    }        }
+      });
+}
+
+function choice_sub_model(select) {
+$("#sub_model").val(select.options[select.selectedIndex].text);
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_sub_sub_models/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': select.options[select.selectedIndex].value       // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#id_subcat22").html(data);
+ if ($('#id_subcat22 option').length > 1)
+    {
+    $('#id_subcat22').attr('required', '');
+
+    }
+    else{
+    $('#id_subcat22').removeAttr('required');
+
+    }        }
+      });
+}
+
+function choice_sub_sub_model(select) {
+$("#sub_sub_model").val(select.options[select.selectedIndex].text);
+
+}
+
+
+
+  </script>
+
+
+
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

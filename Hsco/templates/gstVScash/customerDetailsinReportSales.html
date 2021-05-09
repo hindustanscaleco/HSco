@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="index.html">
+				<img alt="Logo" src="assets/media/logos/logo-letter-2.png" class="logo-default max-h-30px" />
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+								<!--begin::Info-->
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid ">
+
+          <!-- Page Heading -->
+            <div class="row">
+
+                <div class="card-body" style="padding: 2px;">
+<!--                  <div class="row no-gutters align-items-right">-->
+<!--<h1 class="h3 mb-0 text-gray-800 ">Customer Analytics</h1>-->
+<!--                  </div>-->
+                    <br>
+     <div class="row align-items-right justify-content-between">
+         <div class="col-md-10">
+                  <h1 style="color: black; font-size: 25px;">Custom Product Report</h1>
+
+         </div>
+         <div class="col-md-2">
+                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="tableToExcel(&#39;testTable&#39;, &#39;W3C Example Table&#39;)" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+         </div>
+          </div>
+
+
+              </div>
+
+
+
+<!--                 <div class="col-xl-8 col-md-9 mb-9 ">-->
+
+
+<!--                <div class="card-body" style="padding: 2px;">-->
+<!--                  <div class="row no-gutters align-items-right">-->
+
+<!--     {% if request.user.is_authenticated %}-->
+<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
+<!--<a style="padding: 2px; " href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary">Analytics</button></a>-->
+
+
+<!--<form method="POST" ion="">{%csrf_token%}-->
+<!-- <a href="#"><button style="background-color: #FC6E20; margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>-->
+<!--</form>-->
+
+<!-- <a style="padding: 2px;" href="/purchase_logs/"><button style="background-color: #FC6E20;" class="btn btn-primary">Log</button></a>-->
+<!-- <a style="padding: 2px;" href="/report/"><button style="background-color: #FC6E20;" class="btn btn-primary">Report</button></a>-->
+<!-- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>-->
+<!--                      <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Rush Hour Entry </button></a>-->
+<!--                      <a style="padding: 2px;" href="#"><button style="background-color: #FC6E20;" class="btn btn-primary"> GST vs Cash </button></a>-->
+
+<!--{% else %}-->
+<!-- <a style="padding: 2px;" href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Add Sales </button></a>-->
+<!-- <a style="padding: 2px;" href="/quick_purchase_entry/"><button style="background-color: #FC6E20;" class="btn btn-primary"> Quick Entry </button></a>-->
+<!--{% endif %}-->
+<!--{% endif %}-->
+
+
+
+
+
+<!--                </div>-->
+<!--              </div>-->
+
+
+
+
+<!--            </div>-->
+
+
+
+                </div>
+
+
+
+<br>
+
+<style>
+    .border-right-primary{border-right:.25rem solid #4e73df!important}
+</style>
+
+                        <style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: green;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.divs{
+display:none;
+}
+</style>
+
+
+
+            <script>
+//$( document ).ready(function() {
+  //      $('.divs').hide();});
+$(function() {
+  $('#divselector').change(function(){
+    $('.divs').hide();
+    $('#' + $(this).val()).show();
+  });
+});
+            </script>
+                    <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
+<form action="" method="post">{% csrf_token %}
+
+
+<div class="row">
+
+      <div style="float: left;" class="col-xl-2 col-md-2">
+                <input name="date1" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+
+      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
+                <p style="font-weight: 600;">_</p>
+
+      </div>
+
+      <div style="float: left;" class="col-xl-2 col-md-2">
+                <input name="date2" type="date" placeholder="Search 1" class="form-control">
+
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+                <button name="submit1" type="submit" class="btn btn-primary">GO</button></div>
+
+      </div>
+</form>
+
+
+               <style>
+        .border-right-primarya {
+        border-right: 4px solid blue;
+        }
+        .border-left-primarya {
+        border-left: 4px solid blue;
+        }
+    </style>
+<style>
+  .border-left-primary {
+    border-left: .09rem solid #4e73df!important;
+    font-size: 12px;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+    #btn-delete{
+
+    }
+
+</style>
+
+                        <style>
+                .border_class {
+                border:1px solid black;
+                height:45px;
+                text-align:center;
+                vertical-align: middle;
+                line-height: 45px;
+                }
+
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  border-color: black;
+  color: black;
+
+
+
+}
+
+
+th {
+
+  font-size: 13px;
+    border: 1px solid black;
+    text-align: left;
+    padding:5px;
+
+}
+
+td {
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+}
+
+
+            </style>
+
+
+<div >
+
+        {% if deleted %}
+                  <center> <p>list of deleted users</p></center>
+                    {% endif %}
+     <center><p>{{search_msg}}</p></center>
+
+<!--    <form action="" method="post">{% csrf_token %}-->
+        <div class="row table-responsive" id="id_manager_view">
+
+    <table class="table" id="testTable" summary="Code page support in different versions of MS Windows." rules="groups" frame="hsides">
+
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer ID</td>
+            <td style="border: 0px solid gray;">Customer Name</td>
+            <td style="border: 0px solid gray;">Customer Email ID </td>
+            <td style="border: 0px solid gray;"> Customer Mobile No</td>
+            <td style="border: 0px solid gray;">Sales</td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Sales Count</td>
+        </tr>
+
+
+        {% for obj in this_month %}
+        <tr>
+            <td style="border: 1px solid gray;">{{obj.crm_no__id}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__customer_name}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__customer_email_id}}</td>
+            <td style="border: 1px solid gray;">{{obj.crm_no__contact_no}}</td>
+            <td style="border: 1px solid gray;">{{obj.data_sum}}</td>
+            <td style="border: 1px solid gray;">{{obj.data_count}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+
+
+
+<br>
+
+
+<!--            <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if customer_list.has_previous %}-->
+<!--            <a href="?page=1"  class="btn btn-primary">&laquo; First</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.previous_page_number }}" class="btn btn-primary">Previous</a>&nbsp;-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if customer_list.has_next %}-->
+<!--        &nbsp;-->
+<!--            <a href="?page={{ customer_list.next_page_number }}" class="btn btn-primary">Next</a>&nbsp;&nbsp;-->
+<!--            <a href="?page={{ customer_list.paginator.num_pages }}" class="btn btn-primary">Last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--            </div>-->
+
+
+
+        </div>
+              </div>
+
+</div>
+<br>
+
+  </div>
+
+  <!-- End of Page Wrapper -->
+  </div>
+
+
+
+    <!--<div class="row" style="width: 100%; margin-top: 20%;">-->
+
+        <!--{% if request.user.is_authenticated %}-->
+<!--{% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}-->
+                <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+
+
+        <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+                        <!--<form method="POST" ion="">{%csrf_token%}-->
+ <!--<a href="#"><button name="deleted" type="submit" class="btn btn-primary">Deleted User</button></a>-->
+                              <!--</form>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+                <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/user_logs/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Log</button></a>&nbsp; &nbsp;-->
+                        <!--<a href="/report/"> <button style="background-color: #FC6E20;" class="btn btn-primary"Report</button></a>&nbsp;-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+        <!--&lt;!&ndash; Earnings (Monthly) Card Example &ndash;&gt;-->
+            <!--<div class="col-xl-3 col-md-12 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col mr-2">-->
+                        <!--<a href="/purchase_analytics/"><button style="background-color: #FC6E20;" class="btn btn-primary"Analytics</button></a>-->
+
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% else %}-->
+          <!--<div class="col-xl-3 col-md-3 mb-12">-->
+              <!--<div class="card border-left-primarya shadow border-right-primarya">-->
+                <!--<div class="card-body" style="padding: 12px;">-->
+                  <!--<div class="row no-gutters align-items-center">-->
+                    <!--<div class="col ">-->
+ <!--<a href="/add_purchase_details/"><button style="background-color: #FC6E20;" class="btn btn-primary"Add Purchase</button></a>-->
+                    <!--</div>-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+<!--{% endif %}-->
+<!--{% endif %}-->
+
+
+          <!--</div>-->
+
+<script>
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+</script>
+  </div>
+
+
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+										
+
+			
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+		
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>
