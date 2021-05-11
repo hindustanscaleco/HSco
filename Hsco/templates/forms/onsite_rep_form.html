@@ -226,7 +226,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input type="text" required name="contact_no" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  placeholder="Phone number" class="form-control">
+  <input type="number" required name="contact_no" onkeypress="" maxlength="10" minlength="10"  placeholder="Phone number" class="form-control">
     </div>
   </div>
 
@@ -341,7 +341,7 @@ Format : (company name)
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-calendar faicons"></i></span>
-  <input  name="date_of_complaint_received" readonly id="datePicker" required placeholder="Date the complaint was Received
+  <input  name="date_of_complaint_received" readonly id="datePicker"  required placeholder="Date the complaint was Received
 
 
 " class="form-control"  type="date">
@@ -706,10 +706,18 @@ Format : (company name)
       });
 }
 
-  window.onload = function() {
-document.getElementById('datePicker').valueAsDate = new Date();
-document.getElementById('dt2').valueAsDate = new Date();
-};
+
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+$(document).ready( function() {
+    $('#datePicker').val(new Date().toDateInputValue());
+    $('#dt2').val(new Date().toDateInputValue());
+});
 </script>
 
 
