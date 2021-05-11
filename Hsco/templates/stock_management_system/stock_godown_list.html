@@ -459,7 +459,7 @@ td {
             <th style="border-radius: 0px 15px 0px 0px; border: 0px solid gray; background-color: gray; color:white;"> <center>Contact No</center></th>
         </tr>
         {% for item in godown_list %}
-            <tr>
+            <tr onclick="location.href='/stock_godown/{{item.id}}';">
                 <td> <center>{{ item.id }}</center></td>
                 <td><center>{{ item.location }} </center></td>
                 <td> <center>{{ item.name_of_godown }}</center></td>
