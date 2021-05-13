@@ -105,7 +105,8 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
             {% if request.user.role == 'Employee' %}
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Sales Module Graph</h1>
-            <a href="/view_customer_details/" style="background-color: #FC6E20;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> View Sales</a>
+              <br>
+            <a href="/view_customer_details/" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm"> View Sales</a>
           </div>
             {% endif %}
           <div class="row">
@@ -137,7 +138,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
       </div>
 <div class="col-xl-2 col-md-4 col-mb-4">
-              <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Submit</button>
+              <button type="submit" name="submit2" class="btn btn-primary">Submit</button>
       </div>
       </div>
                             </form>
@@ -179,14 +180,14 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 <div class="col-xl-6 col-md-6 mb-4">
                           <input name="defect" class="form-control" placeholder="Defect">
                           <br>
-                          <center> <button name="defect_submit" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
+                          <center> <button name="defect_submit" type="submit"class="btn btn-primary"> Submit</button> </center>
                         </div>
 
 
                         <div class="col-xl-6 col-md-6 mb-4">
                           <input name="warning" class="form-control" placeholder="Warning">
                           <br>
-                          <center> <button name="warning_submit" type="submit" style="background-color: #FC6E20;" class="btn btn-primary"> Submit</button> </center>
+                          <center> <button name="warning_submit" type="submit" class="btn btn-primary"> Submit</button> </center>
                         </div>
 
             </div>
@@ -405,13 +406,13 @@ $(document).ready(function(){
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button style="background-color: #FC6E20;" class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
-          <button style="background-color: #FC6E20;" class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           <a class="btn btn-primary" href="login.html">Logout</a>
         </div>
       </div>
