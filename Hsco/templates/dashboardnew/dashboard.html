@@ -937,7 +937,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: 'Net Profit',
-				data: {{lis_sum}}
+				data: [40,30,20]
 			}],
 			chart: {
 				type: 'bar',
@@ -959,7 +959,7 @@ var KTApexChartsDemo = function () {
 				colors: ['transparent']
 			},
 			xaxis: {
-				categories:  {{lis_date|safe}},
+				categories:  ['jan','feb','mar',],
 			},
 			yaxis: {
 				title: {
@@ -1068,6 +1068,7 @@ jQuery(document).ready(function () {
 <!--begin::Page Scripts(used by this page)-->
 <script src="{% static 'js/pages/widgets.js' %}"></script>
 
+<!--68-0012-->
 		<script src="{% static 'pages/features/charts/apexcharts.js' %}"></script>
 	</body>
 </html>
