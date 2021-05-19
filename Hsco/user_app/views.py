@@ -4,7 +4,7 @@ import requests
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail, get_connection, EmailMessage
 from django.db import connection
-from django.db.models import F
+from django.db.models import F, Sum, Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
@@ -25,6 +25,7 @@ from lead_management.utils import send_html_mail,send_text_mail
 
 from lead_management.email_content import user
 
+from purchase_app.models import Purchase_Details, Feedback
 
 host_file = 'webmail.hindustanscale.com'
 
@@ -752,12 +753,69 @@ def dashboard(request):
                 Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
         except Exception as e:
             messages.error(request, str(e))
+    user_id = 68
+    feeback = Feedback.objects.filter(user_id=user_id)
+    # this month sales
+    knowledge_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('knowledge_of_person'))
+    timeliness_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('timeliness_of_person'))
+    price_of_product = Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_product'))
+    overall_interaction = Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
+
+    mon = datetime.now().month
+
+    # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
+    #                                                                                                      'total_sales_done_today').order_by('entry_date')
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+                                                 date_of_purchase__month=datetime.now().month) \
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    this_lis_date = []
+    this_lis_sum = []
+    for i in this_month:
+        x = i
+        this_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+        this_lis_sum.append(x['data_sum'])
+
+    # previous month sales
+    mon = (datetime.now().month)
+    if mon == 1:
+        previous_mon = 12
+    else:
+        previous_mon = (datetime.now().month) - 1
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+                                                     date_of_purchase__month=previous_mon) \
+        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    previous_lis_date = []
+    previous_lis_sum = []
+    for i in previous_month:
+        x = i
+        previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+        previous_lis_sum.append(x['data_sum'])
+
+    qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+                                         date_of_purchase__month=datetime.now().month) \
+        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    lis_date = []
+    lis_sum = []
+    for i in qs:
+        x = i
+        lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+        lis_sum.append(x['data_sum'])
+    print(lis_date)
+    print(lis_sum)
+    context = {
+        'final_list': lis_date,
+        'final_list2': lis_sum,
+        'previous_lis_date': previous_lis_date,
+        'previous_lis_sum': previous_lis_sum,
+        'this_lis_date': this_lis_date,
+        'this_lis_sum': this_lis_sum,
+        'feeback': feeback,
+
+    }
 
 
 
-
-
-    return render(request,"dashboardnew/dashboard.html",)
+    return render(request,"dashboardnew/dashboard.html",context)
 
 def graph(request):
     return render(request,"graphs/sales_graph.html",)

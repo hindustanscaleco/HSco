@@ -30,7 +30,7 @@
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
-	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading kt-primary--minimize aside-minimize">
 		<!--begin::Main-->
 		<!--begin::Header Mobile-->
 		<div id="kt_header_mobile" class="header-mobile">
@@ -162,7 +162,7 @@
 										<div class="card card-custom gutter-b">
 											<div class="card-header">
 												<div class="card-title">
-													<h3 class="card-label">Sales Chart 1</h3>
+													<h3 class="card-label">Sales Chart 3</h3>
 												</div>
 											</div>
 											<div class="card-body">
@@ -179,7 +179,7 @@
 										<div class="card card-custom gutter-b">
 											<div class="card-header">
 												<div class="card-title">
-													<h3 class="card-label">Sales Chart 1</h3>
+													<h3 class="card-label">Sales Chart 4</h3>
 												</div>
 											</div>
 											<div class="card-body">
@@ -833,7 +833,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: 'Net Profit',
-				data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+				data: {{this_lis_sum}}
 			}],
 			chart: {
 				type: 'bar',
@@ -855,7 +855,7 @@ var KTApexChartsDemo = function () {
 				colors: ['transparent']
 			},
 			xaxis: {
-				categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+				categories: {{this_lis_date|safe}},
 			},
 			yaxis: {
 				title: {
@@ -885,7 +885,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: 'Net Profit',
-				data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+				data: {{previous_lis_sum}}
 			} ],
 			chart: {
 				type: 'bar',
@@ -907,7 +907,7 @@ var KTApexChartsDemo = function () {
 				colors: ['transparent']
 			},
 			xaxis: {
-				categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+				categories: {{previous_lis_date|safe}},
 			},
 			yaxis: {
 				title: {
@@ -937,7 +937,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: 'Net Profit',
-				data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+				data: {{lis_sum}}
 			}],
 			chart: {
 				type: 'bar',
@@ -959,7 +959,7 @@ var KTApexChartsDemo = function () {
 				colors: ['transparent']
 			},
 			xaxis: {
-				categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+				categories:  {{lis_date|safe}},
 			},
 			yaxis: {
 				title: {
