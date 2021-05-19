@@ -765,7 +765,7 @@ def dashboard(request):
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+    this_month = Purchase_Details.objects.filter(
                                                  date_of_purchase__month=datetime.now().month) \
         .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
@@ -781,7 +781,7 @@ def dashboard(request):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+    previous_month = Purchase_Details.objects.filter(
                                                      date_of_purchase__month=previous_mon) \
         .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
@@ -791,7 +791,7 @@ def dashboard(request):
         previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
-    qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,
+    qs = Purchase_Details.objects.filter(
                                          date_of_purchase__month=datetime.now().month) \
         .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     lis_date = []
