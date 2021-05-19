@@ -753,7 +753,7 @@ def dashboard(request):
                 Lead.objects.filter(id=item.follow_up_history.follow_up_section.lead_id).update(no_of_times_followup_done=F('no_of_times_followup_done')+1)
         except Exception as e:
             messages.error(request, str(e))
-    user_id = 68
+    user_id = request.user.id
     feeback = Feedback.objects.filter(user_id=user_id)
     # this month sales
     knowledge_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('knowledge_of_person'))
@@ -765,9 +765,14 @@ def dashboard(request):
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(
-                                                 date_of_purchase__month=datetime.now().month,date_of_purchase__year=2021) \
-        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    if request.user.role == "Super Admin":
+        this_month = Purchase_Details.objects.filter(
+                                                     date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    else:
+        this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -781,9 +786,16 @@ def dashboard(request):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(
-                                                     date_of_purchase__month=previous_mon,date_of_purchase__year=2021) \
-        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    if request.user.role == "Super Admin":
+        previous_month = Purchase_Details.objects.filter(
+                                                         date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    else:
+        previous_month = Purchase_Details.objects.filter(
+            sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
+            date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -791,9 +803,14 @@ def dashboard(request):
         previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
-    qs = Purchase_Details.objects.filter(
-                                         date_of_purchase__month=datetime.now().month,date_of_purchase__year=2021) \
-        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    if request.user.role == "Super Admin":
+        qs = Purchase_Details.objects.filter(
+                                             date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    else:
+        qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year) \
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     lis_date = []
     lis_sum = []
     for i in qs:
