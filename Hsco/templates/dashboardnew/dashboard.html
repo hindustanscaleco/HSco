@@ -80,16 +80,8 @@
 									<!--begin::Dropdown-->
 									<div class="dropdown dropdown-inline" data-toggle="tooltip" data-placement="left">
 										<a href="#" class="btn btn-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="svg-icon svg-icon-lg">
-												<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-												{% if request.user.is_authenticated %}
-													WELCOME  <b>{{request.user.profile_name}}</b>
-												{% else %}
-												Login
-												{% endif %}
-												<!--end::Svg Icon-->
-											</span>
-											<span class="d-none d-md-inline">
+
+											<span class="">
 												{% if request.user.is_authenticated %}
 													WELCOME  <b>{{request.user.profile_name}}</b>
 												{% else %}
@@ -127,7 +119,7 @@
 										<div class="card card-custom gutter-b">
 											<div class="card-header">
 												<div class="card-title">
-													<h3 class="card-label">Sales Chart 1</h3>
+													<h3 class="card-label">Sales Chart (Current Month)</h3>
 												</div>
 											</div>
 											<div class="card-body">
@@ -144,7 +136,7 @@
 										<div class="card card-custom gutter-b">
 											<div class="card-header">
 												<div class="card-title">
-													<h3 class="card-label">Sales Chart 2</h3>
+													<h3 class="card-label">Sales Chart (Previous Month)</h3>
 												</div>
 											</div>
 											<div class="card-body">
@@ -157,12 +149,12 @@
 									</div>
 
 
-							<div class="col-lg-6">
+							<div class="col-lg-12">
 										<!--begin::Card-->
 										<div class="card card-custom gutter-b">
 											<div class="card-header">
 												<div class="card-title">
-													<h3 class="card-label">Sales Chart 3</h3>
+													<h3 class="card-label">Sales Chart (Overall)</h3>
 												</div>
 											</div>
 											<div class="card-body">
@@ -174,22 +166,22 @@
 										<!--end::Card-->
 									</div>
 
-							<div class="col-lg-6">
-										<!--begin::Card-->
-										<div class="card card-custom gutter-b">
-											<div class="card-header">
-												<div class="card-title">
-													<h3 class="card-label">Sales Chart 4</h3>
-												</div>
-											</div>
-											<div class="card-body">
-												<!--begin::Chart-->
-												<div id="chart_6"></div>
-												<!--end::Chart-->
-											</div>
-										</div>
-										<!--end::Card-->
-									</div>
+<!--							<div class="col-lg-6">-->
+<!--										&lt;!&ndash;begin::Card&ndash;&gt;-->
+<!--										<div class="card card-custom gutter-b">-->
+<!--											<div class="card-header">-->
+<!--												<div class="card-title">-->
+<!--													<h3 class="card-label">Sales Chart 4</h3>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--											<div class="card-body">-->
+<!--												&lt;!&ndash;begin::Chart&ndash;&gt;-->
+<!--												<div id="chart_6"></div>-->
+<!--												&lt;!&ndash;end::Chart&ndash;&gt;-->
+<!--											</div>-->
+<!--										</div>-->
+<!--										&lt;!&ndash;end::Card&ndash;&gt;-->
+<!--									</div>-->
 						</div>
 
 

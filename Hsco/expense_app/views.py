@@ -826,12 +826,16 @@ def showBill(request,sales_id,bill_company_type):
         bill_no = Bill.objects.filter(company_type=bill_company_type,purchase_id=sales_id).latest('id').bill_no
     except:
         bill_no = 0
-    print('update bill no')
-    
-    if  Bill.objects.filter(bill_no=bill_no, company_type=bill_company_type).count() > 0 and bill_company_type != '' and bill_company_type != 'None':
-        latest_bill_no = str(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no)
+
+    # if bill already exists
+    if Bill.objects.filter(purchase_id=sales_id, company_type=bill_company_type).count() > 0:
+        latest_bill_no =  str(Bill.objects.get(purchase_id=sales_id, company_type=bill_company_type).bill_no)
+        # elif  Bill.objects.filter(bill_no=bill_no, company_type=bill_company_type).count() > 0 and bill_company_type != '' and bill_company_type != 'None':
+        #     latest_bill_no = str(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no)
+    # if bill is not created and updated bill no in latest bill is not empty
     elif (update_bill_no != '' and update_bill_no != None ) and Bill.objects.filter(bill_no=update_bill_no, company_type=bill_company_type).count() == 0 and bill_company_type != '' and bill_company_type != 'None':
         latest_bill_no = str(update_bill_no).zfill(10)
+    # if latest bill is none
     elif bill_company_type != '' and bill_company_type != 'None':
         try:
             latest_bill_no = str((int(Bill.objects.filter(company_type=bill_company_type).latest('id').bill_no) + 1)).zfill(10)
@@ -842,8 +846,8 @@ def showBill(request,sales_id,bill_company_type):
         return redirect('/update_customer_details/'+str(sales_id))
 
     products_details = Product_Details.objects.filter(purchase_id=sales_id).values()
-    print('product details')
-    print(products_details)
+
+
     for item in products_details:
         # <<<<<<< development
         #         product = Product.objects.filter(scale_type__name=item['type_of_scale'], main_category__name=item['model_of_purchase'],
@@ -861,8 +865,8 @@ def showBill(request,sales_id,bill_company_type):
 
         item['rate'] = product.cost_price
         item['hsn_code'] = product.hsn_code
-    print("purchase_details")
-    print(purchase_details)
+
+
     for obj in purchase_details:
         # print('sqddqsfwdwffewfewqfefefefeqwe',obj['channel_of_dispatch'])
         if obj['channel_of_dispatch'] == "Franchisee Store":
