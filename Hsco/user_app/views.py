@@ -74,13 +74,14 @@ class LoginView(FormView):
                     Location : '''+str(latitude)+''', '''+str(longitude)+'''
                     '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    # x = response.text
-
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print('response')
+                    print(x)
 
                     return redirect('/dashboard/')
                 elif user is not None and user.role =="Super Admin":
@@ -102,13 +103,13 @@ class LoginView(FormView):
                                         Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
                                         '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    # x = response.text
-
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print(x)
                     return redirect('/dashboard/')
 
             return render(request, self.template_name, {'form': form})
@@ -145,13 +146,13 @@ class LoginView(FormView):
                                       Location : ''' + str(request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
                                       '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    # x = response.text
-                    # print(x)
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print(x)
                     next = '/dashboard/'
                 return redirect(next)
             elif user is not None and user.role =="Super Admin":
@@ -177,13 +178,13 @@ class LoginView(FormView):
                         request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
                                                       '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    # response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    # x = response.text
-                    # print(x)
+                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    x = response.text
+                    print(x)
                     next = '/dashboard/'
                 return redirect(next)
 
@@ -251,16 +252,16 @@ Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                     browser_fam = request.user_agent.browser.family
                     is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
 
-                    msg = '''User : ID - ''' + str(employee_number) + ', Name - ' + str(request.user.profile_name) + '''\n
-                Is Mobile User : ''' + str(is_mobile) + '''\n
-                Os : ''' + str(os_fam) + '''\n
-                Browser : ''' + str(browser_fam) + '''\n
-                Device : ''' + str(dev_fam) + '''\n
-                Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(employee_number) + ', Name - ' + str(request.user.profile_name) + '''\n
+User login via Mobile: ''' + str(is_mobile) + '''\n
+OS Used : ''' + str(os_fam) + '''\n
+Browser Used : ''' + str(browser_fam) + '''\n
+Device Used : ''' + str(dev_fam) + '''\n
+Location of the User : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                                             '''
 
                     url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
-                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
                     print(SiteUser.objects.get(id=request.user.id).is_deleted)
