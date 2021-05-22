@@ -2245,6 +2245,7 @@ def purchase_analytics(request):
     from django.db.models import Max
     # Generates a "SELECT MAX..." query
     value=Employee_Analysis_month.objects.aggregate(Max('total_sales_done'))
+    print("value['total_sales_done__max']")
     print(value['total_sales_done__max'])
     try:
 
@@ -2252,6 +2253,7 @@ def purchase_analytics(request):
     except:
         value = None
     value_low = Employee_Analysis_month.objects.aggregate(Min('total_sales_done'))
+    print("value_low['total_sales_done__min']")
     print(value_low['total_sales_done__min'])
     value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('total_sales_done')[0]
     context = {
@@ -2382,6 +2384,11 @@ def customer_employee_sales_graph(request,user_id):
             x=i
             lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
+
+        print("lis_date")
+        print(lis_date)
+        print(lis_sum)
+        print(previous_lis_date)
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,

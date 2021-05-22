@@ -30,7 +30,7 @@ import datetime
 import requests
 import json
 from ess_app.models import Employee_Analysis_month, Employee_Analysis_date
-from django.db.models import Count
+from django.db.models import Count, Max
 from django.db.models import Q
 from datetime import date,datetime, timedelta
 from .serializers import CustomerSerializer

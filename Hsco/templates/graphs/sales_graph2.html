@@ -161,9 +161,10 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
+<!--                  <div class="chart-area">-->
+<!--                    <canvas id="myAreaChart"></canvas>-->
+<!--                  </div>-->
+                    <div id="chart_3"></div>
                 </div>
               </div>
             </div>
@@ -218,9 +219,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart2"></canvas>
-                  </div>
+                  <div id="chart_4"></div>
                 </div>
               </div>
 
@@ -248,9 +247,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                 <!-- Card Body -->
                 <div class="card-body">
 
-                  <div class="chart-area">
-                    <canvas id="myAreaChart3"></canvas>
-                  </div>
+                  <div id="chart_5"></div>
                 </div>
               </div>
 
@@ -465,398 +462,355 @@ $(document).ready(function(){
   <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
 
   <!-- Page level custom scripts -->
-  <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->  code added below
+  <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
   <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
+
 <!--chart1-->
-<script>
+		<script>
+			"use strict";
 
-  // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+// Shared Colors Definition
+const primary = '#6993FF';
+const success = '#1BC5BD';
+const info = '#8950FC';
+const warning = '#FFA800';
+const danger = '#F64E60';
 
-function number_format(number, decimals, dec_point, thousands_sep) {
+// Class definition
+function generateBubbleData(baseval, count, yrange) {
+    var i = 0;
+    var series = [];
+    while (i < count) {
+      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
+      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
 
-  // *     example: number_format(1234.56, 2, ',', ' ');
-  // *     return: '1 234,56'
-  number = (number + '').replace(',', '').replace(' ', '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-    s = '',
-    toFixedFix = function(n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+      series.push([x, y, z]);
+      baseval += 86400000;
+      i++;
+    }
+    return series;
   }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
+
+function generateData(count, yrange) {
+    var i = 0;
+    var series = [];
+    while (i < count) {
+        var x = 'w' + (i + 1).toString();
+        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+        series.push({
+            x: x,
+            y: y
+        });
+        i++;
+    }
+    return series;
 }
 
-// Area Chart Example
-var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
+var KTApexChartsDemo = function () {
+	// Private functions
+	var _demo1 = function () {
+		const apexChart = "#chart_1";
+		var options = {
+			series: [{
+				name: "Desktops",
+				data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+			}],
+			chart: {
+				height: 350,
+				type: 'line',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+			},
+			colors: [primary]
+		};
 
-    labels: {{final_list|safe}},
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
 
-    datasets: [{
-      label: "Leads",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: {{final_list2}},
+	var _demo2 = function () {
+		const apexChart = "#chart_2";
+		var options = {
+			series: [{
+				name: 'series1',
+				data: [31, 40, 28, 51, 42, 109, 100]
+			}, {
+				name: 'series2',
+				data: [11, 32, 45, 32, 34, 52, 41]
+			}],
+			chart: {
+				height: 350,
+				type: 'area'
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'smooth'
+			},
+			xaxis: {
+				type: 'datetime',
+				categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+			},
+			tooltip: {
+				x: {
+					format: 'dd/MM/yy HH:mm'
+				},
+			},
+			colors: [primary, success]
+		};
 
-    }],
-  },
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+	var _demo3 = function () {
+		const apexChart = "#chart_3";
+		var options = {
+			series: [{
+				name: 'Net Profit',
+				data: {{this_lis_sum}}
+			}],
+			chart: {
+				type: 'bar',
+				height: 350
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					columnWidth: '55%',
+					endingShape: 'rounded'
+				},
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				show: true,
+				width: 2,
+				colors: ['transparent']
+			},
+			xaxis: {
+				categories: {{this_lis_date|safe}},
+			},
+			yaxis: {
+				title: {
+					text: 'Rs. (thousands)'
+				}
+			},
+			fill: {
+				opacity: 1
+			},
+			tooltip: {
+				y: {
+					formatter: function (val) {
+						return "Rs " + val
+					}
+				}
+			},
+			colors: [primary, success, warning]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+
+	var _demo4 = function () {
+		const apexChart = "#chart_4";
+		var options = {
+			series: [{
+				name: 'Net Profit',
+				data: {{previous_lis_sum}}
+			} ],
+			chart: {
+				type: 'bar',
+				height: 350
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					columnWidth: '55%',
+					endingShape: 'rounded'
+				},
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				show: true,
+				width: 2,
+				colors: ['transparent']
+			},
+			xaxis: {
+				categories: {{previous_lis_date|safe}},
+			},
+			yaxis: {
+				title: {
+					text: 'Rs. (thousands)'
+				}
+			},
+			fill: {
+				opacity: 1
+			},
+			tooltip: {
+				y: {
+					formatter: function (val) {
+						return "Rs. " + val
+					}
+				}
+			},
+			colors: [success, warning]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+
+	var _demo5 = function () {
+		const apexChart = "#chart_5";
+		var options = {
+			series: [{
+				name: 'Net Profit',
+				data: [40,30,20]
+			}],
+			chart: {
+				type: 'bar',
+				height: 350
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					columnWidth: '55%',
+					endingShape: 'rounded'
+				},
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				show: true,
+				width: 2,
+				colors: ['transparent']
+			},
+			xaxis: {
+				categories:  ['jan','feb','mar',],
+			},
+			yaxis: {
+				title: {
+					text: 'Rs. (thousands)'
+				}
+			},
+			fill: {
+				opacity: 1
+			},
+			tooltip: {
+				y: {
+					formatter: function (val) {
+						return "Rs. " + val
+					}
+				}
+			},
+			colors: [warning]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+
+	var _demo6 = function () {
+		const apexChart = "#chart_6";
+		var options = {
+			series: [{
+				name: 'Net Profit',
+				data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+			}],
+			chart: {
+				type: 'bar',
+				height: 350
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					columnWidth: '55%',
+					endingShape: 'rounded'
+				},
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				show: true,
+				width: 2,
+				colors: ['transparent']
+			},
+			xaxis: {
+				categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+			},
+			yaxis: {
+				title: {
+					text: 'Rs. (thousands)'
+				}
+			},
+			fill: {
+				opacity: 1
+			},
+			tooltip: {
+				y: {
+					formatter: function (val) {
+						return "Rs. " + val
+					}
+				}
+			},
+			colors: [danger]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
 
 
 
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '' + number_format(value);
-          }
-        },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
-        }
-      }
-    }
-  }
+
+	return {
+		// public functions
+		init: function () {
+			_demo1();
+			_demo2();
+			_demo3();
+			_demo4();
+			_demo5();
+			_demo6();
+
+		}
+	};
+}();
+
+jQuery(document).ready(function () {
+	KTApexChartsDemo.init();
 });
 
-</script>
-<!--chart2-->
-<script>
-
-  // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-function number_format(number, decimals, dec_point, thousands_sep) {
-
-  // *     example: number_format(1234.56, 2, ',', ' ');
-  // *     return: '1 234,56'
-  number = (number + '').replace(',', '').replace(' ', '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-    s = '',
-    toFixedFix = function(n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-  }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
-}
-
-// Area Chart Example
-var ctx = document.getElementById("myAreaChart2");
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-
-    labels: {{this_lis_date|safe}},
-
-    datasets: [{
-      label: "Leads",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: {{this_lis_sum}},
-
-    }],
-  },
-
-
-
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '' + number_format(value);
-          }
-        },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
-        }
-      }
-    }
-  }
-});
-
-</script>
-<!--chart3-->
-<script>
-
-  // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-function number_format(number, decimals, dec_point, thousands_sep) {
-
-  // *     example: number_format(1234.56, 2, ',', ' ');
-  // *     return: '1 234,56'
-  number = (number + '').replace(',', '').replace(' ', '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-    s = '',
-    toFixedFix = function(n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-  }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
-}
-
-// Area Chart Example
-var ctx = document.getElementById("myAreaChart3");
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-
-    labels: {{previous_lis_date|safe}},
-
-    datasets: [{
-      label: "Leads",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: {{previous_lis_sum}},
-
-    }],
-  },
-
-
-
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '' + number_format(value);
-          }
-        },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
-        }
-      }
-    }
-  }
-});
-
-</script>
+		</script>
 
 
 								

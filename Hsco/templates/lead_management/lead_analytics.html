@@ -112,7 +112,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
 
 
 <div class="col-xl-2 col-md-4 col-mb-4">
-              <button style="background-color: #FC6E20;" type="submit" name="submit2" class="btn btn-primary">Submit</button>
+              <button  type="submit" name="submit2" class="btn btn-primary">Submit</button>
       </div>
       </div>
             </form>
@@ -147,6 +147,11 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                   </div>
                 </div>
                 <!-- Card Body -->
+<!--                   <div class="card-body">-->
+<!--                  <div class="chart-area">-->
+<!--                    <canvas id="myAreaChart"></canvas>-->
+<!--                  </div>-->
+<!--                </div>-->
                 <div class="card-body">
                  <div id="chart_1"></div>
                 </div>
@@ -385,28 +390,12 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
   }
 };
 </script>
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'js/dashboard/jquery.min.js' %}"></script>
-  <script src="{% static 'js/dashboard/bootstrap.bundle.min.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'jjs/dashboard/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/dashboard/sb-admin-2.min.js' %}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{% static 'js/dashboard/Chart.min.js' %}"></script>
-
-  <!-- Page level custom scripts -->
-  <!--<script src="{% static 'js/dashboard/chart-area-demo.js' %}"></script>-->
-  <script src="{% static 'js/dashboard/chart-pie-demo.js' %}"></script>
 
 
+<!--chart-->
 
-<!--chart1-->
 
-                         <script>
+                        <script>
             "use strict";
 
 // Shared Colors Definition
@@ -456,7 +445,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: "Sale",
-				data: {{lead_conversion_sum}},
+				data: {{previous_month_lead_sum}},
 			}],
 			chart: {
 				height: 350,
@@ -478,7 +467,7 @@ var KTApexChartsDemo = function () {
 				},
 			},
 			xaxis: {
-				categories: {{lead_conversion_date|safe}},
+				categories: {{previous_month_lead_date|safe}},
 			},
 			colors: [primary]
 		};
@@ -489,71 +478,46 @@ var KTApexChartsDemo = function () {
 
 
 
-	return {
-		// public functions
-		init: function () {
-			_demo1();
-
-		}
-	};
-}();
-
-jQuery(document).ready(function () {
-	KTApexChartsDemo.init();
-});
-
-        </script>
-
-
-<!--chart 2-->
-
-                         <script>
-            "use strict";
-
-// Shared Colors Definition
-const primary = '#6993FF';
-const success = '#1BC5BD';
-const info = '#8950FC';
-const warning = '#FFA800';
-const danger = '#F64E60';
-
-// Class definition
-function generateBubbleData(baseval, count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
-      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-      series.push([x, y, z]);
-      baseval += 86400000;
-      i++;
-    }
-    return series;
-  }
-
-function generateData(count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-        var x = 'w' + (i + 1).toString();
-        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-        series.push({
-            x: x,
-            y: y
-        });
-        i++;
-    }
-    return series;
-}
-
-var KTApexChartsDemo = function () {
-	// Private functions
-
-	var _demo1 = function () {
+	var _demo2 = function () {
 		const apexChart = "#chart_2";
+		var options = {
+			series: [{
+				name: "Sale",
+				data: {{previous_month_lead_sum}},
+			}],
+			chart: {
+				height: 350,
+				type: 'line',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: {{previous_month_lead_date|safe}},
+			},
+			colors: [primary]
+		};
+
+		var chart = new ApexCharts(document.querySelector(apexChart), options);
+		chart.render();
+	}
+
+
+
+	var _demo3 = function () {
+		const apexChart = "#chart_3";
 		var options = {
 			series: [{
 				name: "Sale",
@@ -594,106 +558,8 @@ var KTApexChartsDemo = function () {
 		// public functions
 		init: function () {
 			_demo1();
-
-		}
-	};
-}();
-
-jQuery(document).ready(function () {
-	KTApexChartsDemo.init();
-});
-
-        </script>
-
-<!--chart 3-->
-
-                        <script>
-            "use strict";
-
-// Shared Colors Definition
-const primary = '#6993FF';
-const success = '#1BC5BD';
-const info = '#8950FC';
-const warning = '#FFA800';
-const danger = '#F64E60';
-
-// Class definition
-function generateBubbleData(baseval, count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
-      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-      series.push([x, y, z]);
-      baseval += 86400000;
-      i++;
-    }
-    return series;
-  }
-
-function generateData(count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-        var x = 'w' + (i + 1).toString();
-        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-        series.push({
-            x: x,
-            y: y
-        });
-        i++;
-    }
-    return series;
-}
-
-var KTApexChartsDemo = function () {
-	// Private functions
-
-	var _demo1 = function () {
-		const apexChart = "#chart_2";
-		var options = {
-			series: [{
-				name: "Sale",
-				data: {{previous_month_lead_sum}},
-			}],
-			chart: {
-				height: 350,
-				type: 'line',
-				zoom: {
-					enabled: false
-				}
-			},
-			dataLabels: {
-				enabled: false
-			},
-			stroke: {
-				curve: 'straight'
-			},
-			grid: {
-				row: {
-					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-					opacity: 0.5
-				},
-			},
-			xaxis: {
-				categories: {{previous_month_lead_date|safe}},
-			},
-			colors: [primary]
-		};
-
-		var chart = new ApexCharts(document.querySelector(apexChart), options);
-		chart.render();
-	}
-
-
-
-	return {
-		// public functions
-		init: function () {
-			_demo1();
+			_demo2();
+			_demo3();
 
 		}
 	};

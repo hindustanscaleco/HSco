@@ -1336,8 +1336,9 @@ def dispatch_analytics(request):
     this_lis_sum = []
     for i in this_month:
         x = i
-        this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
-        this_lis_sum.append(x['data_sum'])
+        if (x['data_sum']!=None):
+            this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
+            this_lis_sum.append(x['data_sum'])
 
     from django.db.models import Max
     # Generates a "SELECT MAX..." query
@@ -1354,6 +1355,10 @@ def dispatch_analytics(request):
         value_low = Employee_Analysis_month.objects.filter(total_dispatch_done=value_low['total_dispatch_done__min']).order_by('id').first()
     except:
         pass
+    print("this_lis_date")
+    print(this_lis_date)
+    print(this_lis_sum)
+    # this_lis_sum = [12,12,23,23]
     context = {
 
         'this_lis_date': this_lis_date,
@@ -1362,7 +1367,7 @@ def dispatch_analytics(request):
         'value_low': value_low,
 
     }
-    return render(request,"analytics/dispatch_analytics.html",)
+    return render(request,"analytics/dispatch_analytics.html",context)
 
 def dispatch_employee_graph(request,user_id):
     from django.db.models import Sum

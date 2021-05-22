@@ -1718,7 +1718,7 @@ def update_view_lead(request,id):
                     for x in product_pf:
                         pf_total += float(x['pf'])
                     Pi_section.objects.filter(lead_id=lead_id).update(pf_total= F("pf_total") + pf_total)
-                    pi_obj = Pi_section.objects.get(lead_id=lead_id)
+                    # pi_obj = Pi_section.objects.get(lead_id=lead_id)
                     
                     purchase_det.total_pf = pf_total
 
@@ -1741,6 +1741,8 @@ def update_view_lead(request,id):
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH").latest('id')
                     # purchase_det.industry = lead_id.customer_id.customer_industry
+                    print("ead_id.customer_id.customer_industry")
+                    print(lead_id.customer_id.customer_industry)
                     purchase_det.industry_id = DynamicDropdown.objects.get(type="INDUSTRY",name=lead_id.customer_id.customer_industry)
                     purchase_det.value_of_goods = 0.0
                     # purchase_det.channel_of_marketing = lead_id.channel
@@ -4539,6 +4541,8 @@ def lead_analytics(request):
             x = i
             previous_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
             previous_month_lead_sum.append(x['data_sum'])
+
+
         context14 = {
             'current_month_lead_date': current_month_lead_date,
             'current_month_lead_sum': current_month_lead_sum,

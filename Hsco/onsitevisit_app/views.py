@@ -1314,6 +1314,11 @@ def onsite_analytics(request,):
             total_reparing_done_onsite=value_low['total_reparing_done_onsite__min']).order_by('id').first()
     except:
         pass
+    print("value")
+    print(value)
+    print(value_low)
+    print(this_lis_sum)
+    print(this_lis_date)
     context = {
 
         'this_lis_date': this_lis_date,
