@@ -2318,9 +2318,10 @@ def customer_employee_sales_graph(request,user_id):
         lis_date = []
         lis_sum = []
         for i in qs:
-            x = i
-            lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
-            lis_sum.append(x['data_sum'])
+            if i:
+                x = i
+                lis_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+                lis_sum.append(x['data_sum'])
         context = {
             'final_list': lis_date,
             'final_list2': lis_sum,
