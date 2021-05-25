@@ -282,8 +282,12 @@ th {
         		<td>
         			<center> {{item.hsn_code}} </center>
         		</td>
+        		{% if item.sub_sub_model == '' or item.sub_sub_model == 'None' or item.sub_sub_model == None %}
+        		<td>{{item.sub_model}}		</td>
+            {% else %}
         		<td>{{item.sub_sub_model}}		</td>
-        		<td>INR <span style="float: right;">  {{item.amount}} </span></td>
+            {% endif %}
+        		<td>INR <span style="float: right;">  {{item.amount|div:item.quantity}} </span></td>
         		<td> INR <span style="float: right;">{{item.amount}} </span></td>
         	</tr>
           {% if forloop.last %}
