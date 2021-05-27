@@ -1057,7 +1057,7 @@ def restamping_employee_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_date__range=(start_date, end_date))\
+        qs = Restamping_after_sales_service.objects.filter(user_id=SiteUser.objects.get(id=user_id).id,entry_timedate__range=(start_date, end_date))\
         .values('entry_timedate').annotate(data_sum=Sum('total_amount'))
         lis_date = []
         lis_sum = []
