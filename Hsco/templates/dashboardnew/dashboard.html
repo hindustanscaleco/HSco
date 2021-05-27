@@ -112,6 +112,8 @@
 							</div>
 						</div>
 						<!--end::Subheader-->
+						{% if 'Customer Module' in user.modules_assigned %}
+
 					<div class="container-fluid">
 						<div class="row">
 									<div class="col-lg-6">
@@ -186,6 +188,21 @@
 
 
 					</div>
+
+						{% else %}
+						<div class="container-fluid">
+							<br>
+							<br>
+							<br>
+							<br>
+							<center>
+							<h3>Seems like sales module is not assigned to you!</h3>
+							<br>
+							<h1>Dashboard Coming Soon!</h1>
+							</center>
+						</div>
+
+						{% endif %}
 					</div>
 					<!--end::Content-->
 					<!--begin::Footer-->
