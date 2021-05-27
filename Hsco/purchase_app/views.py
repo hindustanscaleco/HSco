@@ -2377,8 +2377,7 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
-        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
