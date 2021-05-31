@@ -65,23 +65,29 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = request.user_agent.is_mobile
 
-                    msg ='''
-                    User : '''+mobile+'''
-                    Is Mobile User : '''+str(is_mobile)+'''
-                    Os : '''+str(os_fam)+'''
-                    Browser : '''+str(browser_fam)+'''
-                    Device : '''+str(dev_fam)+'''
-                    Location : '''+str(latitude)+''', '''+str(longitude)+'''
-                    '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(
+                        mobile) + ', Name - ' + str(request.user.profile_name) + '''\n
+                                        User login via Mobile: ''' + str(is_mobile) + '''\n
+                                        OS Used : ''' + str(os_fam) + '''\n
+                                        Browser Used : ''' + str(browser_fam) + '''\n
+                                        Device Used : ''' + str(dev_fam) + '''\n
+                                        Location of the User : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
+                                                '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print('response')
-                    print(x)
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!45')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
 
                     return redirect('/dashboard/')
                 elif user is not None and user.role =="Super Admin":
@@ -94,22 +100,31 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = request.user_agent.is_mobile
 
-                    msg = '''
-                                        User : ''' + mobile + '''
-                                        Is Mobile User : ''' + str(is_mobile) + '''
-                                        Os : ''' + str(os_fam) + '''
-                                        Browser : ''' + str(browser_fam) + '''
-                                        Device : ''' + str(dev_fam) + '''
-                                        Location : ''' + str(latitude) + ''', ''' + str(longitude) + '''
-                                        '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9730644834&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
+
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(
+                        mobile) + ', Name - ' + str(request.user.profile_name) + '''\n
+                                                            User login via Mobile: ''' + str(is_mobile) + '''\n
+                                                            OS Used : ''' + str(os_fam) + '''\n
+                                                            Browser Used : ''' + str(browser_fam) + '''\n
+                                                            Device Used : ''' + str(dev_fam) + '''\n
+                                                            Location of the User : ''' + str(
+                        latitude) + ''' , ''' + str(longitude) + '''\n
+                                                                    '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print(x)
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!88')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
                     return redirect('/dashboard/')
 
             return render(request, self.template_name, {'form': form})
@@ -137,22 +152,32 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = request.user_agent.is_mobile
 
-                    msg = '''
-                                      User : ''' + mobile + '''
-                                      Is Mobile User : ''' + str(is_mobile) + '''
-                                      Os : ''' + str(os_fam) + '''
-                                      Browser : ''' + str(browser_fam) + '''
-                                      Device : ''' + str(dev_fam) + '''
-                                      Location : ''' + str(request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
-                                      '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
+
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(
+                        mobile) + ', Name - ' + str(request.user.profile_name) + '''\n
+                                                                                User login via Mobile: ''' + str(
+                        is_mobile) + '''\n
+                                                                                OS Used : ''' + str(os_fam) + '''\n
+                                                                                Browser Used : ''' + str(browser_fam) + '''\n
+                                                                                Device Used : ''' + str(dev_fam) + '''\n
+                                                                                Location of the User : ''' + str(
+                        latitude) + ''' , ''' + str(longitude) + '''\n
+                                                                                        '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print(x)
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!78')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
                     next = '/dashboard/'
                 return redirect(next)
             elif user is not None and user.role =="Super Admin":
@@ -168,23 +193,31 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = request.user_agent.is_mobile
 
-                    msg = '''
-                                                      User : ''' + mobile + '''
-                                                      Is Mobile User : ''' + str(is_mobile) + '''
-                                                      Os : ''' + str(os_fam) + '''
-                                                      Browser : ''' + str(browser_fam) + '''
-                                                      Device : ''' + str(dev_fam) + '''
-                                                      Location : ''' + str(
-                        request.session['latitude']) + ''', ''' + str(request.session['longitude']) + '''
-                                                      '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=9284336756&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(
+                        mobile) + ', Name - ' + str(request.user.profile_name) + '''\n
+                                                                                User login via Mobile: ''' + str(
+                        is_mobile) + '''\n
+                                                                                OS Used : ''' + str(os_fam) + '''\n
+                                                                                Browser Used : ''' + str(browser_fam) + '''\n
+                                                                                Device Used : ''' + str(dev_fam) + '''\n
+                                                                                Location of the User : ''' + str(
+                        latitude) + ''' , ''' + str(longitude) + '''\n
+                                                                                        '''
+
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + SiteUser.objects.get(
+                        role='Super Admin').login_sms_number + "&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-                    x = response.text
-                    print(x)
+                    try:
+                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        x = response.text
+                        print(x)
+                        print('login sms send!!555')
+                    except Exception as e:
+                        print('login sms not send')
+                        print(e)
                     next = '/dashboard/'
                 return redirect(next)
 
@@ -210,15 +243,16 @@ class LoginView(FormView):
                     browser_fam = request.user_agent.browser.family
                     is_mobile = 'No' if request.user_agent.is_mobile == False else 'Yes'
 
-                    msg = '''User : ID - ''' + str(employee_number)+', Name - '+str(request.user.profile_name) + '''\n
-Is Mobile User : ''' + str(is_mobile) + '''\n
-Os : ''' + str(os_fam) + '''\n
-Browser : ''' + str(browser_fam) + '''\n
-Device : ''' + str(dev_fam) + '''\n
-Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
+                    msg = '''New System User is Login to HSCo System User ID - ''' + str(
+                        employee_number) + ', Name - ' + str(request.user.profile_name) + '''\n
+                    User login via Mobile: ''' + str(is_mobile) + '''\n
+                    OS Used : ''' + str(os_fam) + '''\n
+                    Browser Used : ''' + str(browser_fam) + '''\n
+                    Device Used : ''' + str(dev_fam) + '''\n
+                    Location of the User : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                             '''
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile="+SiteUser.objects.get(role='Super Admin').login_sms_number+"&message=" + msg + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile="+SiteUser.objects.get(role='Super Admin').login_sms_number+"&message=" + msg + "&senderid=" + settings.senderid + "&type=txt&tid=1207162079781332773"
                     payload = ""
                     headers = {'content-type': 'application/x-www-form-urlencoded'}
                     print(SiteUser.objects.get(id=request.user.id).is_deleted)
@@ -229,7 +263,7 @@ Location : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                         response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                         x = response.text
                         print(x)
-                        print('login sms send!!')
+                        print('login sms send!!787878')
                     except Exception as e:
                         print('login sms not send')
                         print(e)
@@ -272,7 +306,7 @@ Location of the User : ''' + str(latitude) + ''' , ''' + str(longitude) + '''\n
                         response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                         x = response.text
                         print(x)
-                        print('login sms send!!')
+                        print('login sms send!!sdsd')
                     except Exception as e:
                         print('login sms not send')
                         print(e)
@@ -768,11 +802,11 @@ def dashboard(request):
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     if request.user.role == "Super Admin":
         this_month = Purchase_Details.objects.filter(
-                                                     date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year) \
+                                                     date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     else:
         this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
-            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year) \
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
@@ -789,12 +823,12 @@ def dashboard(request):
         previous_mon = (datetime.now().month) - 1
     if request.user.role == "Super Admin":
         previous_month = Purchase_Details.objects.filter(
-                                                         date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year) \
+                                                         date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     else:
         previous_month = Purchase_Details.objects.filter(
             sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
-            date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year) \
+            date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
 
     previous_lis_date = []
@@ -806,12 +840,10 @@ def dashboard(request):
 
     if request.user.role == "Super Admin":
         qs = Purchase_Details.objects.filter(
-                                             date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year) \
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+                                             date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     else:
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year) \
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     lis_date = []
     lis_sum = []
     for i in qs:

@@ -2285,7 +2285,7 @@ def customer_employee_sales_graph(request,user_id):
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month)\
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
         .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     this_lis_date = []
     this_lis_sum = []
@@ -2300,8 +2300,7 @@ def customer_employee_sales_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon)\
-        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2312,9 +2311,6 @@ def customer_employee_sales_graph(request,user_id):
     if request.method=='POST' and 'date1' in request.POST :
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
-        print("start_date")
-        print(start_date)
-        print(end_date)
 
         qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
         lis_date = []
@@ -2379,7 +2375,7 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -2387,10 +2383,6 @@ def customer_employee_sales_graph(request,user_id):
             lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
             lis_sum.append(x['data_sum'])
 
-        print("lis_date")
-        print(lis_date)
-        print(lis_sum)
-        print(previous_lis_date)
         context={
             'final_list':lis_date,
             'final_list2':lis_sum,
