@@ -585,7 +585,7 @@ def dispatch_view(request):
         dispatch_list = Dispatch.objects.filter(
             Q(user_id__pk=request.user.pk) & Q(entry_timedate__month=today_month) | (
                         Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False) & Q(
-                    entry_timedate__month=today_month))).order_by('-dispatch_no')
+                    entry_timedate__month=today_month) & Q(entry_timedate__year=datetime.now().year))).order_by('-dispatch_no')
 
         stage1 = Dispatch.objects.filter((Q(user_id__pk=request.user.pk) & Q(current_stage='dispatch q')) | (
                     Q(user_id__group__icontains=request.user.name) & Q(user_id__is_deleted=False) & Q(
@@ -611,7 +611,7 @@ def dispatch_view(request):
         dispatch_list = Dispatch.objects.filter(
             Q(user_id__admin=admin) & Q(entry_timedate__month=today_month) | Q(dispatch_by=request.user.name) & Q(
                 entry_timedate__month=today_month) | Q(user_id__name=admin) & Q(
-                entry_timedate__month=today_month)).order_by('-dispatch_no')
+                entry_timedate__month=today_month) & Q(entry_timedate__year=datetime.now().year)).order_by('-dispatch_no')
 
         stage1 = Dispatch.objects.filter(
             (Q(user_id__admin=admin) | Q(dispatch_by=request.user.name) | Q(user_id__name=admin)) & Q(
@@ -636,7 +636,7 @@ def dispatch_view(request):
         admin = SiteUser.objects.get(id=request.user.pk).admin
         dispatch_list = Dispatch.objects.filter(
             (Q(dispatch_by=None) | Q(dispatch_by='') | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(
-                entry_timedate__month=today_month)).order_by('-dispatch_no')
+                entry_timedate__month=today_month) & Q(entry_timedate__year=datetime.now().year)).order_by('-dispatch_no')
 
         stage1 = Dispatch.objects.filter(
             (Q(dispatch_by=None) | Q(dispatch_by='') | Q(user_id__admin=admin) | Q(dispatch_by=request.user.name)) & Q(
@@ -660,7 +660,7 @@ def dispatch_view(request):
         admin = SiteUser.objects.get(id=request.user.pk).admin
         dispatch_list = Dispatch.objects.filter(
             (Q(dispatch_by=request.user.name) | Q(dispatch_by=None) | Q(dispatch_by='')) & Q(user_id__admin=admin) & Q(
-                entry_timedate__month=today_month)).order_by('-dispatch_no')
+                entry_timedate__month=today_month) & Q(entry_timedate__year=datetime.now().year)).order_by('-dispatch_no')
 
         stage1 = Dispatch.objects.filter(
             (Q(dispatch_by=request.user.name) | Q(dispatch_by=None) | Q(dispatch_by='')) & Q(user_id__admin=admin) & Q(

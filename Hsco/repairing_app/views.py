@@ -1196,6 +1196,14 @@ def repairing_module_home(request):
                 'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'dashboardnew/repairing_module_home.html', context)
+        elif 'deleted' in request.POST:
+            repair_list = repair_list.filter(user_id__is_deleted=False).order_by('-repairing_no')
+
+            context = {
+                'repair_list': repair_list,
+                'search_msg': 'Search result deleted users: ',
+            }
+            return render(request, 'dashboardnew/repairing_module_home.html', context)
         elif request.method=='POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
 
@@ -1420,10 +1428,17 @@ def repairing_analytics(request):
 
     # Generates a "SELECT MAX..." query
     value = Employee_Analysis_month.objects.aggregate(Max('total_reparing_done'))
+    print("value['total_reparing_done__max']")
+    print("value['total_reparing_done__max']")
     print(value['total_reparing_done__max'])
+    print(value)
     try:
-        value = Employee_Analysis_month.objects.get(total_reparing_done=value['total_reparing_done__max'])
-    except:
+        value = Employee_Analysis_month.objects.filter(total_reparing_done=round(value['total_reparing_done__max'],2))[0]
+        # for obj in value:
+        #     print("obj")
+        print(value)
+    except Exception as e:
+        print("Exception:"+str(e))
         pass
 
     value_low = Employee_Analysis_month.objects.aggregate(Min('total_reparing_done'))

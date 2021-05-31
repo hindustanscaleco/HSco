@@ -111,8 +111,8 @@ font-size: 14px;
 {% if user.role == 'Super Admin' or user.role == 'Admin' or user.role == 'Manager' %}
 <a style="padding: 2px; " href="/add_repairing_details/"><button class="btn btn-primary">Add Repairing</button></a>
 
-<form method="POST" ion="">{%csrf_token%}
- <a href="#"><button style="margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button></a>
+<form method="POST" action="">{%csrf_token%}
+ <button style="margin-top: 3px;" name="deleted" type="submit" class="btn btn-primary" >Deleted User</button>
 </form>
  <a style="padding: 2px;" href="/repairing_logs/"> <button class="btn btn-primary">Log</button></a>
  <a style="padding: 2px;" href="/repairing_report_module/"> <button class="btn btn-primary">Report</button></a>

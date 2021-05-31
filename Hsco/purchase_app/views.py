@@ -1903,7 +1903,7 @@ def add_product_details(request,id):
                 """ % (body)
 
                 try:
-                    email_send = EmailMessage('Dispatched, Your Hsco Purchase is Dispatched from our end',
+                    email_send = EmailMessage('Thank you for purchasing from HSCo',
                                               user(request, email_text),
                                               settings.EMAIL_HOST_USER, to )
                     email_send.content_subtype = 'html'
@@ -2252,10 +2252,14 @@ def purchase_analytics(request):
         value = Employee_Analysis_month.objects.get(total_sales_done=value['total_sales_done__max'])
     except:
         value = None
-    value_low = Employee_Analysis_month.objects.aggregate(Min('total_sales_done'))
+    value_low = Employee_Analysis_month.objects.filter(Q(total_sales_done__gte=100.0)).aggregate(Min('total_sales_done'))
     print("value_low['total_sales_done__min']")
     print(value_low['total_sales_done__min'])
-    value_low = Employee_Analysis_month.objects.filter(total_sales_done=value_low['total_sales_done__min']).order_by('total_sales_done')[0]
+    value_low = Employee_Analysis_month.objects.filter(Q(total_sales_done=value_low['total_sales_done__min']),).order_by('total_sales_done')[0]
+    # for item in value_low:
+    #     print("item.entry_timedate")
+    #     print(item.entry_timedate)
+    #     print(item.id)
     context = {
 
         'this_lis_date': this_lis_date,
