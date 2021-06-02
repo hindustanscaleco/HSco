@@ -391,7 +391,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-sort-numeric-asc faicons"></i></span>
       {% if product_obj.product_brochure %}
-      <a href="product_obj.product_brochure.url">Old File</a>
+      <a href="{{product_obj.product_brochure.url}}">Old File</a>
       {% endif %}
   <input  name="product_brochure" placeholder="Product Brochure" class="form-control"  type="file" >
     </div>
@@ -405,7 +405,7 @@ color:;
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-suitcase faicons"></i></span>
       {% if product_obj.product_document %}
-      <a href="product_obj.product_document.url">Old File</a>
+      <a href="{{product_obj.product_document.url}}">Old File</a>
       {% endif %}
   <input  name="product_document" placeholder="Product Document" class="form-control" type="file" >
     </div>
