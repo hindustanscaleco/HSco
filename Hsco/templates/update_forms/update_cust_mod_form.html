@@ -332,7 +332,6 @@ for (var i = 0, len = elements.length; i < len; ++i) {
   <input name="customer_email_id" placeholder="E-mail Id" class="form-control"  type="email" disabled id="myText5" value="{% if purchase_id_id.company_email != None and purchase_id_id.company_email != '' %}{{purchase_id_id.company_email}}{% else %}{% endif %}">
     </div>
   </div>
-{% if purchase_id_id.is_gst == True %}
       <label class="col-md-2 control-label">Customer GST No.
   </label>
   <div class="col-md-4 inputGroupContainer">
@@ -341,7 +340,6 @@ for (var i = 0, len = elements.length; i < len; ++i) {
   <input type="text" {% if purchase_id_id.is_gst %} required {% endif %} name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" value="{{purchase_id_id.crm_no.customer_gst_no}}" >
     </div>
   </div>
-{% endif %}
 </div>
 
 
