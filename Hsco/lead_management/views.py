@@ -1697,6 +1697,7 @@ def update_view_lead(request,id):
                         sales_customer.save()
 
                     purchase_det = Purchase_Details()
+                    import datetime
                     #purchase details
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1707,8 +1708,8 @@ def update_view_lead(request,id):
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
                     purchase_det.second_person = lead_id.customer_id.customer_name  # new1
                     purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
-                    purchase_det.date_of_purchase = lead_id.entry_timedate
-                    purchase_det.product_purchase_date = lead_id.entry_timedate
+                    purchase_det.date_of_purchase = datetime.date.today
+                    purchase_det.product_purchase_date = datetime.date.today
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
                     #update pf
@@ -4108,7 +4109,13 @@ def select_product(request,id):
 @login_required(login_url='/')
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
-    u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+
+    if request.user.role == "Super Admin":
+        u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+    else:
+        u_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__admin=loggedin_user).values_list(
+            "lead_id__owner_of_opportunity").distinct()
+
     users_list = []
     for item in u_list:
         for ite in item:
