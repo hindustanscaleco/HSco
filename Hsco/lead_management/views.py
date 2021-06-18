@@ -1635,7 +1635,7 @@ def update_view_lead(request,id):
 
 
             pi_pro = Pi_product.objects.filter(pk__in=delete_id)
-            list_count = 0;
+            list_count = 0
             for item in pi_pro:
 
                 product_id = Product.objects.filter(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
@@ -1708,8 +1708,7 @@ def update_view_lead(request,id):
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
                     purchase_det.second_person = lead_id.customer_id.customer_name  # new1
                     purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
-                    purchase_det.date_of_purchase = lead_id.entry_timedate
-                    purchase_det.product_purchase_date = lead_id.entry_timedate
+                    # purchase_det.date_of_purchase = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
                     #update pf
