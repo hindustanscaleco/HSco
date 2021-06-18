@@ -1708,8 +1708,8 @@ def update_view_lead(request,id):
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
                     purchase_det.second_person = lead_id.customer_id.customer_name  # new1
                     purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
-                    purchase_det.date_of_purchase = datetime.date.today
-                    purchase_det.product_purchase_date = datetime.date.today
+                    purchase_det.date_of_purchase = lead_id.entry_timedate
+                    purchase_det.product_purchase_date = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
                     #update pf
