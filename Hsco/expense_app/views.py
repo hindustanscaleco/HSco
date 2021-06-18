@@ -816,12 +816,16 @@ def showBill(request,sales_id,bill_company_type):
                                                                         'value_of_goods','bank_name','total_pf','date_of_purchase','reference_no','tax_amount','channel_of_dispatch','payment_mode','round_off_total',
                                                                         'credit_pending_amount','credit_authorised_by','neft_bank_name','neft_date','reference_no','cheque_no','cheque_date','purchase_no','date_of_purchase','bill_no')
     latest_bill_no=0
-    todays_date = str(datetime.now().strftime("%d-%m-%Y"))
+    try:
+        todays_date = str(Bill.objects.get(purchase_id=sales_id, company_type=bill_company_type).entry_date)
+    except:
+        todays_date = str(datetime.now().strftime("%d-%m-%Y"))
     
     try:
         update_bill_no = Bill.objects.filter(company_type=bill_company_type).latest('id').update_bill_no
     except:
         update_bill_no = ''
+        
     try:
         bill_no = Bill.objects.filter(company_type=bill_company_type,purchase_id=sales_id).latest('id').bill_no
     except:
