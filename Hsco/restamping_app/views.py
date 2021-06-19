@@ -218,7 +218,7 @@ def restamping_manager(request):
             return render(request, "manager/restamping_manager.html", context)
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
-            restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
+            # restamp_list = Restamping_after_sales_service.objects.filter(name=customer)
             if check_admin_roles(request):  # For ADMIN
                 restamp_list = Restamping_after_sales_service.objects.filter(
                     Q(user_id=request.user.pk)|Q(user_id__group__icontains=request.user.name), user_id__is_deleted=False,second_person__icontains=customer).order_by('-restamping_no')
