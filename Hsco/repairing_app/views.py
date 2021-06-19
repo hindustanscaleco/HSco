@@ -762,9 +762,9 @@ def update_repairing_details(request,id):
 
             try:
 
-                msg='Dear '+customer_name+',Thank you for selecting HSCo. The Estimate for Your ' \
+                msg='Dear '+customer_name+', The Estimate for Your ' \
                     'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'.\n For any further details please contact our customer ' \
-                    'service team on 7045922251. \n Estimate Details:'+product_list
+                    'service team on 7045922251'
                 # email_send = EmailMessage('Feedback Form',
                 #                           '', settings.EMAIL_HOST_USER,
                 #                           [item.customer_email_id, ])

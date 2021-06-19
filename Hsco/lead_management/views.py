@@ -1740,9 +1740,8 @@ def update_view_lead(request,id):
 
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH").latest('id')
-                    # purchase_det.industry = lead_id.customer_id.customer_industry
-                    print("ead_id.customer_id.customer_industry")
-                    print(lead_id.customer_id.customer_industry)
+                   
+                   
                     purchase_det.industry_id = DynamicDropdown.objects.get(type="INDUSTRY",name=lead_id.customer_id.customer_industry)
                     purchase_det.value_of_goods = 0.0
                     # purchase_det.channel_of_marketing = lead_id.channel
