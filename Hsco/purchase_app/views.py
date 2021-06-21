@@ -2130,7 +2130,7 @@ def final_report(request):
                 print('payment details')
                 print(payment_details)
                 sale = Purchase_Details.objects.get(id=product['purchase_id'])
-                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay' or sale.payment_mode == 'Google Pay':
                     item['payment_mode'] = sale.payment_mode
                 elif sale.payment_mode == 'Credit':
                     item['payment_mode'] = sale.payment_mode
