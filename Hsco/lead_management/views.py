@@ -1684,7 +1684,7 @@ def update_view_lead(request,id):
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
                     lead_customer = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
                     if Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name).count()>0:
-                        sales_customer = Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name,customer_gst_no=lead_customer.customer_gst_no).order_by('-id')[0]
+                        sales_customer = Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name).order_by('-id')[0]
                     else:
                         sales_customer = Customer_Details()
                         sales_customer.contact_no = lead_customer.contact_no
