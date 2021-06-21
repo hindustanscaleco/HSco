@@ -127,7 +127,7 @@
 
             <div class="row" style="float:right ; text-align:right;">
             <div class="col-xl-4 col-md-4">
-                        {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' %}
+                        {% if request.user.role == 'Super Admin' %}
  <button onclick="increase_billno()" type="reset" class="btn btn-primary">Bill Number</button>
  {% endif %}
  </div>
@@ -538,7 +538,7 @@ td {
             <input type="hidden" name="bill_id" value={{item.id}}>
               <a href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}" class="btn btn-primary"><span><i class="fa fa-print" aria-hidden="true"></i></span></a>
               <a target="_blank" href="{% if item.bill_file %} {{item.bill_file.url}} {% endif %}" class="btn btn-primary"><span><i class="fa fa-download" aria-hidden="true"></i></span></a>
-              <a href="/update_customer_details/{{item.purchase_id.id}}"><span><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+              <a href="/update_customer_details/{{item.purchase_id.id}}"><span><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span></a>
               <button type="submit"  name="delete_bill" class="btn btn-primary"><span><i  class="fa fa-trash" aria-hidden="true"></i></span></button>
           </form>
           </td>
