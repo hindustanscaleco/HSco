@@ -7,10 +7,16 @@ from .models import type_purchase,main_model,sub_model,sub_sub_model, Log,Dynami
 from .models import Customer_Details,Lead_Customer_Details
 
 class CustomerDetailsAdmin(admin.ModelAdmin):
-    list_display = ('id','customer_name','company_name','contact_no')
-    search_fields = ('id','customer_name','contact_no','company_name')
+    list_display = ('id','customer_name','company_name','contact_no','customer_gst_no')
+    search_fields = ('id','customer_name','contact_no','company_name','customer_gst_no')
 
 admin.site.register(Customer_Details, CustomerDetailsAdmin)
+
+class LeadCustomerDetailsAdmin(admin.ModelAdmin):
+    list_display = ('id','customer_name','company_name','contact_no','customer_gst_no')
+    search_fields = ('id','customer_name','contact_no','company_name','customer_gst_no')
+
+admin.site.register(Lead_Customer_Details, LeadCustomerDetailsAdmin)
 
 class DDAdmin(ImportExportModelAdmin):
     list_display = ('name', 'type', 'is_enabled','entry_timedate',)
