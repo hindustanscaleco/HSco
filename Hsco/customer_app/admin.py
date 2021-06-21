@@ -24,7 +24,7 @@ class DDAdmin(ImportExportModelAdmin):
     search_fields = ('name',)
 
 #admin.site.register(Customer_Details)
-admin.site.register(Lead_Customer_Details)
+# admin.site.register(Lead_Customer_Details)
 admin.site.register(type_purchase)
 admin.site.register(main_model)
 admin.site.register(sub_model)
