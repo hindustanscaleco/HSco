@@ -1698,13 +1698,20 @@ def edit_product(request,id):
         item.type_of_machine = type_of_machine
         item.model = model
         item.sub_model = sub_model
-        item.problem_in_scale = problem_in_scale
-        item.components_replaced = components_replaced
-        item.components_replaced_in_warranty = components_replaced_in_warranty
-        item.replaced_scale_given = replaced_scale_given
-        item.Replaced_scale_serial_no = Replaced_scale_serial_no
-        item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
-        item.in_warranty = in_warranty
+        if problem_in_scale != None and problem_in_scale != '':
+            item.problem_in_scale = problem_in_scale
+        if components_replaced != None and components_replaced != '':
+            item.components_replaced = components_replaced
+        if components_replaced_in_warranty != None and components_replaced_in_warranty != '':
+            item.components_replaced_in_warranty = components_replaced_in_warranty
+        if replaced_scale_given != None and replaced_scale_given != '':
+            item.replaced_scale_given = replaced_scale_given
+        if Replaced_scale_serial_no != None and Replaced_scale_serial_no != '':
+            item.Replaced_scale_serial_no = Replaced_scale_serial_no
+        if deposite_taken_for_replaced_scale != None and deposite_taken_for_replaced_scale != '':
+            item.deposite_taken_for_replaced_scale = deposite_taken_for_replaced_scale
+        if in_warranty != None and in_warranty != '':
+            item.in_warranty = in_warranty
 
         # if in_warranty.lower() == 'yes':
         #     # Repairing_after_sales_service.objects.filter(id=reparing_id).update(total_cost=F("total_cost") - item.cost)
