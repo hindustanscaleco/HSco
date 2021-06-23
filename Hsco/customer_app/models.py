@@ -25,7 +25,7 @@ class Customer_Details(models.Model):
     longitude = models.DecimalField(max_digits=22, decimal_places=15,null=True,blank=True)
 
     class Meta:
-        unique_together = ('customer_name','contact_no')
+        unique_together = ('customer_name','contact_no','customer_gst_no')
 
     def __int__(self):
         return self.id

@@ -564,7 +564,6 @@ def quick_purchase_entry(request):
 
                 item.save()
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
-            item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
             site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
             # item2.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -682,6 +681,10 @@ def quick_purchase_entry(request):
             return redirect('/quick_purchase_entry/' )
         item.save()
 
+        pro_sum = Product_Details.objects.filter(purchase_id__id=item2.id).aggregate(Sum('amount'))
+        total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + item2.total_pf if item2.total_pf != None else 0  + item2.tax_amount if item2.tax_amount  != None else 0 
+        Purchase_Details.objects.filter(id=item2.id).update(total_amount=total_value )
+        
         if is_last_product_yes == 'yes':
             try:
                 del request.session['global_count_sess']
@@ -2109,8 +2112,16 @@ def final_report(request):
             selected_list[n] = 'Entry Date'
         if i == 'second_person':
             selected_list[n] = 'Customer Name'
+    
+    #work area report for different users   
+    if check_admin_roles(request):  # For ADMIN
+        product_query = Product_Details.objects.filter(
+            Q(purchase_id__user_id__name=request.user.name) | Q(purchase_id__user_id__group__icontains=request.user.name),entry_timedate__range=(start_date, end_date),
+            purchase_id__user_id__is_deleted=False, purchase_id__user_id__modules_assigned__icontains='Customer Module').values(*string_product)
+    else:  # For EMPLOYEE
+        product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date),purchase_id__user_id=request.user.pk).values(*string_product)
 
-    product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
+    # product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
         sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
         
@@ -2130,7 +2141,7 @@ def final_report(request):
                 print('payment details')
                 print(payment_details)
                 sale = Purchase_Details.objects.get(id=product['purchase_id'])
-                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay':
+                if sale.payment_mode == 'Cash' or sale.payment_mode == 'Razorpay' or sale.payment_mode == 'Google Pay':
                     item['payment_mode'] = sale.payment_mode
                 elif sale.payment_mode == 'Credit':
                     item['payment_mode'] = sale.payment_mode
@@ -2146,56 +2157,8 @@ def final_report(request):
                     item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
                     item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
                     item['reference_no'] = 'Reference No: '+str(sale.reference_no)
-            print(item)
-            print('entry_timedate' in item)
             product.update(item)
-        
-        # print(product['id'])
-        # print(Product_Details.objects.filter(id=product['id']).values('entry_timedate'))
-        # for item in Product_Details.objects.filter(id=product['id']).values('entry_timedate'):
-        #     product['entry_timedate'] = item['entry_timedate']
-        # product['sales'] = sales_query
-
-        # product['sales_customer'] = customer_query
-
-    # with connection.cursor() as cursor:
-    #     if string != '' and string_product != '':
-    #
-    #             cursor.execute("SELECT " + (string_product +","+ string) + " from purchase_app_product_details  PRODUCT , purchase_app_purchase_details "
-    #              "REP , customer_app_customer_details CRM where PRODUCT.purchase_id_id = REP.id and REP.crm_no_id = CRM.id and "
-    #             " PRODUCT.entry_timedate between'" + start_date + "' and '" + end_date + "';")
-    #             row = cursor.fetchall()
-    #             final_row_product = [list(x) for x in row]
-    #             repairing_data = []
-    #             for i in row:
-    #                 repairing_data.append(list(i))
-    #
-    #             final_row = [list(x) for x in row]
-    #             repairing_data = []
-    #             for i in row:
-    #                 repairing_data.append(list(i))
-
-    # with connection.cursor() as cursor:
-    #     if string!='':
-    #         cursor.execute("SELECT  "+string+" from purchase_app_purchase_details , customer_app_customer_details"
-    #                                 "  where purchase_app_purchase_details.crm_no_id = customer_app_customer_details.id and entry_timedate between '"+start_date+"' and '"+end_date+"';")
-    #         row = cursor.fetchall()
-    #
-    #
-    #         final_row= [list(x) for x in row]
-    #         list3=[]
-    #         for i in row:
-    #             list3.append(list(i))
-    #
-    #     if string_product!='':
-    #         cursor.execute("SELECT  " + (string_product) + " from purchase_app_product_details PRODUCT, purchase_app_purchase_details PURCHASE"
-    #                                              "  where PRODUCT.purchase_id_id = PURCHASE.id and PRODUCT.entry_timedate between '" + start_date + "' and '" + end_date + "';")
-    #         row = cursor.fetchall()
-    #
-    #         final_row_product = [list(x) for x in row]
-    #         list3 = []
-    #         for i in row:
-    #             list3.append(list(i))
+    
 
     try:
         del request.session['start_date']

@@ -523,9 +523,8 @@ color:;
                                         <input type="hidden" value="" id="sub_sub_model" name="sub_sub_model">
                                         <input type="hidden" value="{{global_count}}" name="global_count">
 
-
                                         <center>
-                                            <button type="submit" value="submit"
+                                            <button id="submit_button_id" type="submit" value="submit"
                                                     class="btn btn-primary">Submit
                                             </button>
 
@@ -561,7 +560,15 @@ color:;
         success: function (data) {   // `data` is the return of the `load_cities` view function
 
     $("#rec_data").html(data);
+    console.log(data);
 
+    if(data.includes("Error")){
+        document.getElementById("submit_button_id").disabled = true;
+    }
+    else{
+        document.getElementById("submit_button_id").disabled = false;
+
+    }
 
         }
       });

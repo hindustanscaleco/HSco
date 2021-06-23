@@ -1635,7 +1635,7 @@ def update_view_lead(request,id):
 
 
             pi_pro = Pi_product.objects.filter(pk__in=delete_id)
-            list_count = 0;
+            list_count = 0
             for item in pi_pro:
 
                 product_id = Product.objects.filter(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
@@ -1683,7 +1683,7 @@ def update_view_lead(request,id):
                 is_entered_purchase = lead_id.is_entered_purchase
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
                     lead_customer = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                    if Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name).count()>0:
+                    if Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name,customer_gst_no=lead_customer.customer_gst_no).count()>0:
                         sales_customer = Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name,customer_gst_no=lead_customer.customer_gst_no).order_by('-id')[0]
                     else:
                         sales_customer = Customer_Details()
@@ -1708,8 +1708,7 @@ def update_view_lead(request,id):
                     purchase_det.new_repeat_purchase = lead_id.new_existing_customer
                     purchase_det.second_person = lead_id.customer_id.customer_name  # new1
                     purchase_det.second_contact_no = lead_id.customer_id.contact_no  # new2
-                    purchase_det.date_of_purchase = lead_id.entry_timedate
-                    purchase_det.product_purchase_date = lead_id.entry_timedate
+                    # purchase_det.date_of_purchase = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
                     #update pf
@@ -1741,9 +1740,8 @@ def update_view_lead(request,id):
 
                     purchase_det.channel_of_sales = ''
                     purchase_det.channel_of_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH").latest('id')
-                    # purchase_det.industry = lead_id.customer_id.customer_industry
-                    print("ead_id.customer_id.customer_industry")
-                    print(lead_id.customer_id.customer_industry)
+                   
+                   
                     purchase_det.industry_id = DynamicDropdown.objects.get(type="INDUSTRY",name=lead_id.customer_id.customer_industry)
                     purchase_det.value_of_goods = 0.0
                     # purchase_det.channel_of_marketing = lead_id.channel
