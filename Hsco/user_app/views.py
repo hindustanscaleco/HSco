@@ -846,7 +846,7 @@ def dashboard(request):
                                              date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
     else:
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase__month','date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
 
   
     lis_date = []
