@@ -831,6 +831,9 @@ def dashboard(request):
             date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
 
+    #current year sales
+    import calendar
+
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -840,15 +843,18 @@ def dashboard(request):
 
     if request.user.role == "Super Admin":
         qs = Purchase_Details.objects.filter(
-                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
     else:
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase__month','date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+
+  
     lis_date = []
     lis_sum = []
     for i in qs:
         x = i
-        lis_date.append(x['date_of_purchase'].strftime('%B-%Y'))
+        # print(x['date_of_purchase'].strftime('%B-%Y'))
+        lis_date.append(calendar.month_name[x['date_of_purchase__month']])
         lis_sum.append(x['data_sum'])
     print(lis_date)
     print(lis_sum)
