@@ -346,7 +346,7 @@ $(function() {
 
     <table class="table">
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>
+           {% if request.user.role != "Super Admin" %} <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No</td>{% endif %}
             <td style="border: 0px solid gray;">Employee Name</td>
             <td style="border: 0px solid gray;">Lead Convertion</td>
             <td style="border: 0px solid gray;">Lost</td>
@@ -356,9 +356,10 @@ $(function() {
              {% for list12 in pi_list %}
              {% for list1 in list12 %}
 
-        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">
+        <tr style="cursor: pointer; ">
+<!--        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{list1.pk}}';">-->
 
-            <td>{{ forloop.counter}}</td>
+           {% if request.user.role != "Super Admin" %} <td>{{ forloop.counter}}</td>{% endif %}
             <td>{{ list1.0}}</td>
             <td>{{ list1.1 }}</td>
             <td>{{ list1.2}}</td>

@@ -840,10 +840,10 @@ def dashboard(request):
 
     if request.user.role == "Super Admin":
         qs = Purchase_Details.objects.filter(
-                                             date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     else:
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     lis_date = []
     lis_sum = []
     for i in qs:
@@ -852,17 +852,43 @@ def dashboard(request):
         lis_sum.append(x['data_sum'])
     print(lis_date)
     print(lis_sum)
+
+
+    if request.user.role == "Super Admin":
+        smly_qs = Purchase_Details.objects.filter(
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year-1).order_by(
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    else:
+        smly_qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
+                                             date_of_purchase__month=datetime.now().month,
+                                             date_of_purchase__year=datetime.now().year-1).order_by(
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    smly_lis_date = []
+    smly_lis_sum = []
+    for i in smly_qs:
+        x = i
+        smly_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+        smly_lis_sum.append(x['data_sum'])
+    print(smly_lis_date)
+    print(smly_lis_sum)
     context = {
         'final_list': lis_date,
         'final_list2': lis_sum,
+        'smly_lis_date': smly_lis_date,
+        'smly_lis_sum': smly_lis_sum,
         'previous_lis_date': previous_lis_date,
         'previous_lis_sum': previous_lis_sum,
         'this_lis_date': this_lis_date,
         'this_lis_sum': this_lis_sum,
         'feeback': feeback,
+        'graph_name': str(datetime.now().strftime("%B"))+" "+str(datetime.now().year-1)
 
     }
-
+    # import datetime
+    mydate = datetime.now()
+    print(datetime.now().strftime("%B"))
+    print(mydate.strftime("%B"))
+    print(datetime.now().year-1)
 
 
     return render(request,"dashboardnew/dashboard.html",context)
