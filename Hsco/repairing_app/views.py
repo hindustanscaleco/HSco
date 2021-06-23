@@ -785,7 +785,7 @@ def update_repairing_details(request,id):
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message='Dear '+customer_name+', The Estimate for Your ' \
-                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
+                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161762964372059"
@@ -837,7 +837,7 @@ def update_repairing_details(request,id):
                     'Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762973239014"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762986598863"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
