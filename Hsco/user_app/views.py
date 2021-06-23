@@ -803,11 +803,11 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         this_month = Purchase_Details.objects.filter(
                                                      date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     else:
         this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -824,12 +824,12 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         previous_month = Purchase_Details.objects.filter(
                                                          date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     else:
         previous_month = Purchase_Details.objects.filter(
             sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
 
     previous_lis_date = []
     previous_lis_sum = []
@@ -848,7 +848,7 @@ def dashboard(request):
     lis_sum = []
     for i in qs:
         x = i
-        lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+        lis_date.append(x['date_of_purchase'].strftime('%B-%Y'))
         lis_sum.append(x['data_sum'])
     print(lis_date)
     print(lis_sum)
@@ -884,13 +884,6 @@ def dashboard(request):
         'graph_name': str(datetime.now().strftime("%B"))+" "+str(datetime.now().year-1)
 
     }
-    # import datetime
-    mydate = datetime.now()
-    print(datetime.now().strftime("%B"))
-    print(mydate.strftime("%B"))
-    print(datetime.now().year-1)
-
-
     return render(request,"dashboardnew/dashboard.html",context)
 
 def graph(request):
