@@ -837,7 +837,7 @@ def update_repairing_details(request,id):
                     'Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762973239014"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -2159,7 +2159,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         except:
             pass
     elif msg_id == '3':
-        tid=''
+        tid='1207161762973239014'
         message = 'Dear '+name+', Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
                   ' Please collect your Scales within the next 3 days. Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
