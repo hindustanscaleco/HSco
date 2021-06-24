@@ -627,7 +627,7 @@ def final_expense_report(request):
     for single_expense in expense_query:
         if single_expense['expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master'] == 'Purchase of Goods':
             single_expense['product details'] = list(Expense_Product.objects.filter(expense_id=single_expense['id']).values(*selected_product_list) )
-            expense_product = Expense_Product.objects.get(expense_id=single_expense['id'])
+            # expense_product = Expense_Product.objects.get(expense_id=single_expense['id'])
             # for index,product in enumerate(selected_product_list):
             #     single_expense[product] = expense_product.values(*product)
             #     print(product)
