@@ -661,21 +661,34 @@ def quick_purchase_entry(request):
 
 
         try:
-            if sub_sub_model != '':
+            if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                 sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                                                    sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
-                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
+                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                             quantity=F("quantity") - quantity)
+                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                            messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
+                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                            return redirect('/add_product_details/' + str(purchase_id))
+                else:
+                    messages.success(request, "Selected Product does not exist in selected godown !!!")
+
             elif sub_model != '':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                 sub_category__name=sub_model, sub_sub_category__name=None)
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity > quantity:
-                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
+                                                    sub_category__name=sub_model, sub_sub_category__name=None)
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
+                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
+                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
                             quantity=F("quantity") - quantity)
+                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                            messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
+                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                            return redirect('/add_product_details/' + str(purchase_id))
+                else:
+                    messages.success(request, "Selected Product does not exist in selected godown !!!")
         except:
             messages.success(request, "Selected Product does not exist in product master !!!")
             return redirect('/quick_purchase_entry/' )

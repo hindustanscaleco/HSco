@@ -933,7 +933,7 @@ def report_restamping(request):
         repair_string = ','.join(selected_list)
         repair_product_string = ','.join(selected_product_list)
 
-        request.session['start_date'] = repair_start_date
+        request.session['repair_start_date'] = repair_start_date
         request.session['repair_end_date'] = repair_end_date
         request.session['repair_string'] = repair_string
         request.session['selected_list'] = selected_list
@@ -953,6 +953,9 @@ def final_report_restamping(request):
     repair_product_string = request.session.get('repair_product_string')
     selected_product_list = request.session.get('selected_product_list')
     final_row = []
+    print('date')
+    print(restamp_end_date)
+    print(restamp_start_date)
     final_row_product = []
     for n, i in enumerate(selected_list):
         if i == 'restamping_app_restamping_after_sales_service.id':
