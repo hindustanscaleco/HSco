@@ -199,13 +199,15 @@ td {
                     {% for header in lead.keys %}
                         <th>{{ header }}</th>
                     {% endfor %}
+                    <th>product details</th>
                 {% endif %}
          </tr>
                 <tr>
                     {% for value in lead.values %}
                         {% if 'products_list' in lead.keys %}
+                       
                             {% if forloop.last %}
-
+                            
                             {% else %}
                                 <td>{{ value }}</td>
                             {% endif %}

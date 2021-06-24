@@ -611,26 +611,24 @@ def final_expense_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
 
-    selected_expense_list = ['id'] + request.session.get('selected_expense_list')    
+    selected_expense_head_list = ['id'] + request.session.get('selected_expense_list')    
+    selected_expense_list = ['id'] + request.session.get('selected_expense_list') + ['product details']
     selected_product_list = request.session.get('selected_product_list')    
-    string_expense = request.session.get('string_expense')    
-    string_product = request.session.get('string_product')    
     final_row_product = []
+    string_expense = request.session.get('string_expense')    
+    string_product = request.session.get('string_product') 
     final_row = []
     
     from django.db.models import F
     expense_query = Expense.objects.none()
     
-    expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list).order_by('-id')
-    print('enumerate(selected_product_list)')
+    expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_head_list).order_by('-id')
+
     #if expense is purchase of goods    
     for single_expense in expense_query:
         if single_expense['expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master'] == 'Purchase of Goods':
             single_expense['product details'] = list(Expense_Product.objects.filter(expense_id=single_expense['id']).values(*selected_product_list) )
-            # expense_product = Expense_Product.objects.get(expense_id=single_expense['id'])
-            # for index,product in enumerate(selected_product_list):
-            #     single_expense[product] = expense_product.values(*product)
-            #     print(product)
+            
     
     
     
@@ -648,7 +646,7 @@ def final_expense_report(request):
         'final_row':final_row,
         'final_row_product':final_row_product,
         'selected_list':selected_expense_list,
-        'expense_query':expense_query,
+        'expense_query':expense_query ,
     }
     return render(request,'expense_app/final_expense_report.html', context)
 
