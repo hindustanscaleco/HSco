@@ -617,21 +617,20 @@ def final_expense_report(request):
     string_product = request.session.get('string_product')    
     final_row_product = []
     final_row = []
-    # product_query = Expense_Product.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_product_list)
     
     from django.db.models import F
     expense_query = Expense.objects.none()
     
-    # if product_query == None or product_query == '' or product_query == 'None':
     expense_query = Expense.objects.filter(entry_date__range=(start_date, end_date)).values(*selected_expense_list).order_by('-id')
-    print('selected product list')
-    print(selected_product_list)
-    # for product in expense_query:
-
-    if 'product_details' in selected_product_list:
-        for single_expense in expense_query:
-            single_expense['product details'] = list(Expense_Product.objects.filter(expense_id=single_expense['id']).values('type_of_scale','model_of_purchase','sub_model','sub_sub_model','quantity','amount')) 
-
+    print('enumerate(selected_product_list)')
+    #if expense is purchase of goods    
+    for single_expense in expense_query:
+        if single_expense['expense_type_sub_sub_master_id__expense_type_sub_master_id__expense_type_master'] == 'Purchase of Goods':
+            single_expense['product details'] = list(Expense_Product.objects.filter(expense_id=single_expense['id']).values(*selected_product_list) )
+            expense_product = Expense_Product.objects.get(expense_id=single_expense['id'])
+            # for index,product in enumerate(selected_product_list):
+            #     single_expense[product] = expense_product.values(*product)
+            #     print(product)
     
     
     
@@ -649,7 +648,6 @@ def final_expense_report(request):
         'final_row':final_row,
         'final_row_product':final_row_product,
         'selected_list':selected_expense_list,
-        # 'selected_product_list':selected_product_list+selected_expense_list,
         'expense_query':expense_query,
     }
     return render(request,'expense_app/final_expense_report.html', context)
