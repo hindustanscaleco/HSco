@@ -904,14 +904,15 @@ checkbox.addEventListener( 'change', function() {
         <br>
         <br>
         <button style="display:none; " id="myText19" type="submit" value="Submit" class="btn btn-primary">Save</button>
-
+        {% if purchase_id_id.tax_amount > 0 %}
     <select style="width:150px;" name="bill_company_type"  id="billBUtton" class="form-control">
   <option value="">Select</option>
   <option value="Scale">Scale</option>
   <option  value="Sales">Sales</option>
 </select>
-                  <button  type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
 
+                  <button  type="submit" name="generate_bill" id="bill_id"  class="btn btn-primary">Bill</button>
+{% endif %}
 
       </center>
     </div>

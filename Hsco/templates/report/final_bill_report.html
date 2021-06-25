@@ -229,7 +229,7 @@ td {
                             {% if forloop.last %}
 
                             {% else %}
-                                <td>{{ value }}</td>
+                                <td>{{ value | floatformat:2 }}</td>
                             {% endif %}
                         {% else %}
                             <td>{{ value }}</td>
