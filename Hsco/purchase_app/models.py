@@ -37,14 +37,14 @@ class Purchase_Details(models.Model):   #cleaned
     industry_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='industry', null=True, blank=True)
     channel_of_dispatch_id = models.ForeignKey(DynamicDropdown,on_delete=models.CASCADE,related_name='channel_dispatch', null=True, blank=True)
 
-    value_of_goods = models.FloatField(default=0.0,null=True,blank=True)
+    value_of_goods = models.DecimalField(default=0.0,null=True,blank=True,decimal_places=2,max_digits=65)
     notes = models.CharField(max_length=300,null=True,blank=True)
     feedback_form_filled = models.BooleanField(default=False)
     sales_person = models.CharField(max_length=150, null=True, blank=True)
     new_repeat_purchase = models.CharField(max_length=150, null=True, blank=True)
     dispatch_id_assigned = models.ForeignKey('dispatch_app.Dispatch',on_delete=models.CASCADE,null=True,blank=True)  #remaining make forenkey of this with Dispatch module
     entry_timedate = models.DateField(default=datetime.date.today)
-    feedback_stars=models.FloatField(default=0.0)
+    feedback_stars=models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
     is_last_product = models.BooleanField(default=False)
     feedback_link = models.URLField(max_length=200, null=True, blank=True)
     purchase_no = models.BigIntegerField(null=True,blank=True)
@@ -64,18 +64,18 @@ class Purchase_Details(models.Model):   #cleaned
     reference_no = models.CharField(max_length=150, null=True, blank=True)
 
     #credit details
-    credit_pending_amount =  models.FloatField(default=0.0,null=True,blank=True)
+    credit_pending_amount =  models.DecimalField(default=0.0,null=True,blank=True,decimal_places=2,max_digits=65)
     credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
 
-    tax_amount = models.FloatField(default=0.0)
-    round_off_total = models.FloatField(default=0.0)
-    total_amount = models.FloatField(default=0.0)
-    total_pf = models.FloatField(default=0.0)
+    tax_amount = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
+    round_off_total = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
+    total_amount = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
+    total_pf = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
     is_gst = models.BooleanField(default=False)
 
-    cgst = models.FloatField(default=0.0)
-    sgst = models.FloatField(default=0.0)
-    igst = models.FloatField(default=0.0)
+    cgst = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
+    sgst = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
+    igst = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
 
     bill_notes = models.TextField(null=True, blank=True)
 
@@ -113,7 +113,7 @@ class Product_Details(models.Model):
     brand = models.CharField(max_length=30,null=True,blank=True)
     capacity = models.CharField(max_length=30,null=True,blank=True)
     unit = models.CharField(max_length=30,null=True,blank=True)
-    amount = models.FloatField(default=0.0,)
+    amount = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     entry_timedate = models.DateTimeField(default=timezone.now,)

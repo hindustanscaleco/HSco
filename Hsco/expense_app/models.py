@@ -92,7 +92,7 @@ class Expense(models.Model):
     reference_no = models.CharField(max_length=150, null=True, blank=True)
 
     #credit details
-    credit_pending_amount =  models.FloatField(default=0.0,null=True,blank=True)
+    credit_pending_amount =  models.DecimalField(default=0.0,null=True,blank=True,decimal_places=2,max_digits=65)
     credit_authorised_by = models.CharField(max_length=250,null=True, blank=True )
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
     entry_date = models.DateField(default=datetime.date.today)
@@ -111,7 +111,7 @@ class Expense_Product(models.Model):
     brand = models.CharField(max_length=50,null=True,blank=True)
     capacity = models.CharField(max_length=50,null=True,blank=True)
     unit = models.CharField(max_length=50,null=True,blank=True)
-    amount = models.FloatField(default=0.0,)
+    amount = models.DecimalField(default=0.0,decimal_places=2,max_digits=65)
     quantity = models.CharField(max_length=30,null=True,blank=True)
     rate = models.CharField(max_length=30,null=True,blank=True)
 
