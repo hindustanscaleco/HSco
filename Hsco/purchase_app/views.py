@@ -1216,10 +1216,10 @@ def view_customer_details(request):
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
+                                                            user_id__is_deleted=False,date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,entry_timedate__range=[start_date, end_date]).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
