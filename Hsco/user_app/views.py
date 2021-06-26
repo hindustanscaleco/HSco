@@ -801,16 +801,12 @@ def dashboard(request):
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     if request.user.role == "Super Admin":
-        print('datetime now')
-        print('datetime now')
-        print(datetime.now().date())
-        print(datetime.now().date())
         this_month = Purchase_Details.objects.filter(
-                                                     date_of_purchase=datetime.now().date(),date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
+                                                     date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     else:
         this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
-            date_of_purchase=datetime.now().date(), date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
             .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     this_lis_date = []
     this_lis_sum = []
