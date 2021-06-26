@@ -51,6 +51,7 @@ from restamping_app.models import Restamping_after_sales_service
 
 from amc_visit_app.models import Amc_After_Sales
 from expense_app.models import Bill
+import calendar
 
 today_month = datetime.now().month
 today_year = datetime.now().year
@@ -1215,8 +1216,7 @@ def view_customer_details(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
                 cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
@@ -2266,7 +2266,7 @@ def customer_employee_sales_graph(request,user_id):
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-        .values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -2280,7 +2280,7 @@ def customer_employee_sales_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2292,13 +2292,13 @@ def customer_employee_sales_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('total_amount'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             if i:
                 x = i
-                lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+                lis_date.append(calendar.month_name[x['date_of_purchase__month']])
                 lis_sum.append(x['data_sum'])
         context = {
             'final_list': lis_date,
@@ -2355,12 +2355,12 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
         lis_date = []
         lis_sum = []
         for i in qs:
             x=i
-            lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
+            lis_date.append(calendar.month_name[x['date_of_purchase__month']])
             lis_sum.append(x['data_sum'])
 
         context={
