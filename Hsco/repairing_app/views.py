@@ -728,7 +728,8 @@ def update_repairing_details(request,id):
             repair_id.second_stage_timedate = timezone.now()
             repair_id.save(update_fields=['stage_update_timedate',])
             repair_id.save(update_fields=['second_stage_timedate',])
-
+        
+        
         if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and confirmed_estimate !=repair_id.confirmed_estimate:
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
             repair_id.stage_update_timedate = timezone.now()
@@ -783,12 +784,12 @@ def update_repairing_details(request,id):
 
             # message = 'Click on the link to give feedback http://139.59.76.87/feedback_repairing/' + str(
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
-
+            print('sending estimate sms')
             message='Dear '+customer_name+', The Estimate for Your ' \
-                    'Repairing No '+str(repair_id.repairing_no)+' is  '+str(repair_id.total_cost)+'- For any further details please contact our customer ' \
+                    'Repairing No '+str(repair_id.repairing_no)+' is '+str(repair_id.total_cost)+'/- For any further details please contact our customer ' \
                     'service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161762964372059"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762964372059"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -820,7 +821,7 @@ def update_repairing_details(request,id):
             repair_id.save(update_fields=['repaired'])
 
             try:
-                msg = ' Dear '+customer_name+',Thank you for selecting HSCo. Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
+                msg = ' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved.Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
 
                 email_send = EmailMessage('Repairing Done - HSCo',
                                           user(request, msg),
@@ -837,7 +838,7 @@ def update_repairing_details(request,id):
                     'Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762986598863"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762973239014"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
@@ -2161,7 +2162,7 @@ def send_sms(request,name,phone,email,repair_id,item_id):
     elif msg_id == '3':
         tid='1207161762973239014'
         message = 'Dear '+name+', Your Repairing Complaint No '+str(repair_id)+' is resolved.' \
-                  ' Please collect your Scales within the next 3 days. Consider this as your final reminder.For any further details please contact our customer service team on 7045922251'
+                  ' Please collect your Scales within the next 3 days.For any further details please contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(reparing_done_sms_count=F("reparing_done_sms_count") + 1)
         try:
             from lead_management.email_content import user
@@ -2179,7 +2180,9 @@ def send_sms(request,name,phone,email,repair_id,item_id):
         print('late mark sms')
         message = 'Dear '+name+', Your Repairing No '+str(repair_id)+' has been Overdue ' \
                   'with us for more than 3 days. Please Collect it without fail today before 8 pm else we will scrap it.' \
-                  ' We will not be liable for any claims thereafter. For more information ' \
+                  ' We will not be liable for any claims thereafter.' \
+                  ' Consider this as your final reminder.' \
+                  ' For more information ' \
                   'contact our customer service team on 7045922251'
         Repairing_after_sales_service.objects.filter(id=id).update(late_mark_sms_count=F("late_mark_sms_count") + 1)
         try:
