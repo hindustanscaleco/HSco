@@ -144,7 +144,14 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
                             </form>
                        <br>
                        <br>
-              <div class="card shadow mb-4">
+                       {% if request.user.role == "Employee" and 'Customer Module' in user.modules_assigned %}
+						<div class="container-fluid">
+								<label class="switch"><input type="checkbox" checked><span class="slider round hide-off"></a></span> &nbsp; &nbsp; <h4> Toggle Graph </h4></label>
+						</div>
+						{% endif %}
+                       <br>
+
+              <div class="card shadow mb-4 hideme">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary"> Sales (Current Year)</h6>
@@ -199,7 +206,7 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
             {% endif %}
 
 
-<div class="row">
+<div class="row hideme">
                           <div class="col-xl-6 col-md-6 mb-4">
 
               <div class="card shadow mb-4">
@@ -258,11 +265,11 @@ background-image: -o-linear-gradient(left, #ccc, #333, #ccc);
           </div>
 
           <center>
-<div class="card-header py-3">
+<div class="card-header py-3 hideme">
                   <h4 class="m-0 font-weight-bold text-primary" > Average Feedback</h4>
                 </div></center>
 
-            <div class="row">
+            <div class="row hideme">
                         <div class="col-xl-12 col-md-12 mb-4">
 
               <div class="card shadow mb-4">
@@ -394,10 +401,7 @@ $(document).ready(function(){
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+
 
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -810,6 +814,27 @@ var KTApexChartsDemo = function () {
 
 jQuery(document).ready(function () {
 	KTApexChartsDemo.init();
+});
+
+
+{% if request.user.role == "Employee" and 'Customer Module' in user.modules_assigned %}
+
+$(document).ready(function(){
+$(".hideme").hide();
+});
+
+{% endif %}
+
+$(document).ready(function(){
+	$(".switch input").on("change", function(e) {
+  	const isOn = e.currentTarget.checked;
+
+    if (isOn) {
+    	$(".hideme").hide();
+    } else {
+    	$(".hideme").show();
+    }
+  });
 });
 
 		</script>
