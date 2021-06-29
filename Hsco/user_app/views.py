@@ -18,13 +18,13 @@ import secrets
 import string
 from datetime import datetime, timedelta
 from django.contrib import messages
-
+from django.db.models.functions import Cast
 from lead_management.models import Auto_followup_details, Lead
 
 from lead_management.utils import send_html_mail,send_text_mail
 
 from lead_management.email_content import user
-
+from django.db.models import FloatField
 from purchase_app.models import Purchase_Details, Feedback
 
 host_file = 'webmail.hindustanscale.com'
@@ -803,11 +803,11 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         this_month = Purchase_Details.objects.filter(
                                                      date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     else:
         this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -824,12 +824,12 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         previous_month = Purchase_Details.objects.filter(
                                                          date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     else:
         previous_month = Purchase_Details.objects.filter(
             sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
     #current year sales
     import calendar
@@ -843,10 +843,10 @@ def dashboard(request):
 
     if request.user.role == "Super Admin":
         qs = Purchase_Details.objects.filter(
-                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
+                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     else:
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
   
     lis_date = []
@@ -863,12 +863,12 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         smly_qs = Purchase_Details.objects.filter(
             date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year-1).order_by(
-            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     else:
         smly_qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
                                              date_of_purchase__month=datetime.now().month,
                                              date_of_purchase__year=datetime.now().year-1).order_by(
-            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     smly_lis_date = []
     smly_lis_sum = []
     for i in smly_qs:
