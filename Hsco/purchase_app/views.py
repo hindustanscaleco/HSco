@@ -2468,12 +2468,23 @@ def load_users(request):
         if (sel_month == 0 or sel_month == 'true'):
             current_month = datetime.now().month
             current_year = datetime.now().year
-            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
-                                                               entry_date__year=current_year,
-                                                               manager_id__icontains=request.user.name,
-                                                               user_id__is_deleted=False,
-                                                               user_id__modules_assigned__icontains='Customer Module')
-            if (user_list.count() == 0):
+            
+            sales_employee_list = SiteUser.objects.filter(modules_assigned__icontains='Customer Module',group__icontains=request.user.profile_name) 
+
+            sales_list = []
+            for employee in sales_employee_list:
+                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year)\
+                .values('sales_person','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+
+                sales_list.append(current_month_sales)
+            
+
+            # user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+            #                                                    entry_date__year=current_year,
+            #                                                    manager_id__icontains=request.user.name,
+            #                                                    user_id__is_deleted=False,
+            #                                                    user_id__modules_assigned__icontains='Customer Module')
+            if (sales_employee_list.count() == 0):
                 error_exist_225 = True
                 success_exist_225 = False
             else:
@@ -2484,22 +2495,33 @@ def load_users(request):
                 'error_exist_225': error_exist_225,
                 'success_exist_225': success_exist_225,
                 'error_msg_225': 'Select Valid Month And Year\n Showing Results For Current Month and Year.',
-                'user_list': user_list,
+                'user_list': sales_list,
                 'manager': True,
 
             }
 
 
         else:
+            
+
             current_month = sel_month
             current_year = sel_year
 
-            user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
-                                                               entry_date__year=current_year,
-                                                               manager_id__icontains=request.user.name,
-                                                               user_id__is_deleted=False,
-                                                               user_id__modules_assigned__icontains='Customer Module')
-            if(user_list.count() == 0):
+            sales_employee_list = SiteUser.objects.filter(modules_assigned__icontains='Customer Module',group__icontains=request.user.profile_name) 
+
+            sales_list = []
+            for employee in sales_employee_list:
+                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=current_month,date_of_purchase__year=current_year)\
+                .values('sales_person','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+
+                sales_list.append(current_month_sales)
+
+            # user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
+            #                                                    entry_date__year=current_year,
+            #                                                    manager_id__icontains=request.user.name,
+            #                                                    user_id__is_deleted=False,
+            #                                                    user_id__modules_assigned__icontains='Customer Module')
+            if(sales_employee_list.count() == 0):
                 error_exist_225 = True
                 success_exist_225 = False
             else:
@@ -2517,7 +2539,7 @@ def load_users(request):
                 'success_exist_225': success_exist_225,
                 'success_msg_225': 'Results For ' + sel_month_text + ', ' + current_year,
                 'error_msg_225': error_msg_225,
-                'user_list': user_list,
+                'user_list': sales_list,
                 'manager': True,
             }
 
