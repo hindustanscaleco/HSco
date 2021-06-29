@@ -19,6 +19,8 @@ from email.mime.text import MIMEText
 from django.core.mail import send_mail, EmailMessage
 from lead_management.email_content import user
 from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
+from django.db.models.functions import Cast
+from django.db.models import FloatField
 
 from ess_app.models import Defects_Warning
 
@@ -2266,7 +2268,7 @@ def customer_employee_sales_graph(request,user_id):
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
     this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-        .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+        .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -2280,7 +2282,7 @@ def customer_employee_sales_graph(request,user_id):
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2292,7 +2294,7 @@ def customer_employee_sales_graph(request,user_id):
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
         lis_date = []
         lis_sum = []
         for i in qs:
@@ -2355,7 +2357,7 @@ def customer_employee_sales_graph(request,user_id):
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
         lis_date = []
         lis_sum = []
         for i in qs:
