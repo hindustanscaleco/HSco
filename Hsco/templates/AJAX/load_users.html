@@ -41,7 +41,7 @@
 
             {% for list1 in user_list %}
             {% for sub_list in list1 %}
-                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{list1.user_id.pk}}';">
+                <tr style="cursor: pointer; " onclick="location.href='/customer_employee_sales_graph/{{sub_list.user_id}}';">
 
                     <td> {{ sub_list.sales_person }}</td>
                     <td> {{ sub_list.data_sum}} </td>

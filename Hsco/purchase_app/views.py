@@ -2474,7 +2474,7 @@ def load_users(request):
             sales_list = []
             for employee in sales_employee_list:
                 current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year)\
-                .values('sales_person','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+                .values('sales_person','user_id','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
                 sales_list.append(current_month_sales)
             
@@ -2512,7 +2512,7 @@ def load_users(request):
             sales_list = []
             for employee in sales_employee_list:
                 current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=current_month,date_of_purchase__year=current_year)\
-                .values('sales_person','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+                .values('sales_person','user_id','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
                 sales_list.append(current_month_sales)
 
