@@ -2776,11 +2776,11 @@ def gstvsCash(request):
         to_date = request.POST.get('date2')
 
         gst_sales = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date],is_gst=True).values('entry_timedate').annotate(
-            data_sum=Sum('total_amount')).values('entry_timedate', 'data_sum',)
+            data_sum=Cast(Sum('total_amount'), FloatField())).values('entry_timedate', 'data_sum',)
 
         cash_sales = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date], payment_mode='Cash').values(
             'entry_timedate').annotate(
-            cash_sum=Sum('total_amount')).values('entry_timedate', 'cash_sum',)
+            cash_sum=Cast(Sum('total_amount'), FloatField())).values('entry_timedate', 'cash_sum',)
 
         total_gst = 0.0
         total_cash = 0.0
