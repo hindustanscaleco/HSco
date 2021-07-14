@@ -1754,24 +1754,23 @@ def stock_godown_report(request,godown_id):
 
                 # for finding opening stock of selected date
                 try:
-                    opening_stock = DailyStock.objects.filter(
+                    opening_stock = DailyStock.objects.get(
                         Q(entry_timedate=opening_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
 
                 except:
                     try:
-                        opening_stock = DailyStock.objects.filter(
+                        opening_stock = DailyStock.objects.get(
                             Q(entry_timedate=opening_stock_date_first) &
-                            Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(
-                                closing_stock_sum=Sum('closing_stock'))
+                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
                     except:
                         opening_stock = 0
 
                 # for finding closing stock of selected date
                 try:
-                    closing_stock = DailyStock.objects.filter(
+                    closing_stock = DailyStock.objects.get(
                         Q(entry_timedate=closing_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
+                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
 
                 except:
                     closing_stock = 0
