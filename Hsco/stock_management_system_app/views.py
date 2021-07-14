@@ -1703,7 +1703,14 @@ def stock_godown_report(request,godown_id):
         closing_stock_date = calendar.monthrange(to_year, to_month if to_month > 1 else 12)[1]
         closing_stock_date = datetime.strptime(str(to_year if to_month < 12 else to_year + 1) + "-" + str(to_month if to_month > 1 else 12) + "-" + str(closing_stock_date), "%Y-%m-%d")
 
+        print('opening_stock_date_first')
+        print(opening_stock_date_first)
 
+        print('opening_stock_date')
+        print(opening_stock_date)
+
+        print('closing_stock_date')
+        print(closing_stock_date)
         if select_type == 'Day':
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__main_category__id','product_id__sub_category','product_id__sub_sub_category')
             for godown_product in products_list:
