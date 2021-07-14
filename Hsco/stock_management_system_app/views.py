@@ -1761,6 +1761,9 @@ def stock_godown_report(request,godown_id):
 
                 # for finding opening stock of selected date
                 # try:
+                print('godown id')
+                print(godown_product.pk)
+                print(godown_product)
                 opening_stock = DailyStock.objects.get(
                     Q(entry_timedate=opening_stock_date)&
                     Q(godown_products__product_id__id=godown_product.pk)).closing_stock
