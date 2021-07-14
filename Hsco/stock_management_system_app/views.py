@@ -1766,7 +1766,7 @@ def stock_godown_report(request,godown_id):
                 print(godown_product)
                 opening_stock = DailyStock.objects.get(
                     Q(entry_timedate=opening_stock_date)&
-                    Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                    Q(godown_products=godown_product)).closing_stock
 
                 # except:
                 #     try:
