@@ -1523,19 +1523,24 @@ def stock_accpet_goods(request, godown_id, accept_id):
                 else:
                     product_name = product.godown_product_id.product_id.sub_category
                 msg_product_string+= "\n Product Name: "+str(product_name)+", Quantity: "+str(product.quantity)
-            #send message to user (godown assigned)
-            message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
-Type: Purchase '''  + '''
-Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
+            
+            try:
+                #send message to user (godown assigned)
+                message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
+    Type: Purchase '''  + '''
+    Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
 
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-            print(x)
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+                print(x)
+            except:
+                print('message not send')
+                pass
             for good in accepted_goods:
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):
                     godown_product = GodownProduct.objects.get(godown_id=godown_id,product_id=good.godown_product_id.product_id)
@@ -1749,23 +1754,24 @@ def stock_godown_report(request,godown_id):
 
                 # for finding opening stock of selected date
                 try:
-                    opening_stock = DailyStock.objects.get(
+                    opening_stock = DailyStock.objects.filter(
                         Q(entry_timedate=opening_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                        Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
 
                 except:
                     try:
-                        opening_stock = DailyStock.objects.get(
+                        opening_stock = DailyStock.objects.filter(
                             Q(entry_timedate=opening_stock_date_first) &
-                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                            Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(
+                                closing_stock_sum=Sum('closing_stock'))
                     except:
                         opening_stock = 0
 
                 # for finding closing stock of selected date
                 try:
-                    closing_stock = DailyStock.objects.get(
+                    closing_stock = DailyStock.objects.filter(
                         Q(entry_timedate=closing_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                        Q(godown_products__product_id__id=godown_product.pk)).values('godown_products__product_id').annotate(closing_stock_sum=Sum('closing_stock'))
 
                 except:
                     closing_stock = 0
