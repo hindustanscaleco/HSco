@@ -204,6 +204,7 @@ else{
 
 <fieldset>
 
+
 <div class="form-group row">
      <label class="col-md-1 control-label">From(Month):
 
@@ -212,8 +213,21 @@ else{
 
     <div class="col-md-2">
    <div class="custom-control ">
-    <input  type="month" class="form-control form-control-1 input-sm from" name="from_month" required>
+       <style>
+           .ui-datepicker-calendar { display: none; }
+       </style>
 
+<input  name="from_month" class="month_year form-control" placeholder="mm/yyyy" autocomplete="off"/>
+       <script>
+           $(function() {
+    $('.month_year').datepicker({
+  		format: 'yyyy-mm',
+    	viewMode: "months",
+    	minViewMode: "months",
+        autoClose:true
+	});
+});
+       </script>
 </div>
   </div>
 
@@ -227,7 +241,22 @@ else{
 
     <div class="col-md-2">
 <div class="custom-control">
-    <input  type="month" class="form-control form-control-1 input-sm from" name="to_month" required>
+
+    <style>
+           .ui-datepicker-calendar { display: none; }
+       </style>
+<input   name="to_month" class="month_year form-control" placeholder="mm/yyyy" autocomplete="off"/>
+       <script>
+           $(function() {
+    $('.month_year').datepicker({
+  		format: 'yyyy-mm',
+    	viewMode: "months",
+    	minViewMode: "months",
+        autoClose:true
+	});
+});
+       </script>
+
 </div>
   </div>
 
@@ -823,8 +852,20 @@ function myFunction() {
     }
     document.getElementById("shift2").href = c;
 }
+
 </script>
 
+
+<script>
+    <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+    $( "#format" ).on( "change", function() {
+      $( "#datepicker" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });
+  } );
+  </script>
+  </script>
 
 
 								
