@@ -216,11 +216,11 @@ else{
        <style>
            .ui-datepicker-calendar { display: none; }
        </style>
-<input  name="from_month" class="month_year form-control" placeholder="mm/yyyy" autocomplete="off"/>
+<input  name="from_month" class="month_year form-control" autocomplete="off"/>
        <script>
            $(function() {
     $('.month_year').datepicker({
-  		format: 'MM yyyy',
+  		format: 'yyyy mm',
     	viewMode: "months",
     	minViewMode: "months",
         autoClose:true
@@ -248,7 +248,7 @@ else{
        <script>
            $(function() {
     $('.month_year').datepicker({
-  		format: 'MM yyyy',
+  		format: 'yyyy mm',
     	viewMode: "months",
     	minViewMode: "months",
         autoClose:true
