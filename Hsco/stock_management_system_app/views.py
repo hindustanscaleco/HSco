@@ -19,7 +19,7 @@ import json
 
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-
+from .cron_job_daily import main
 # @receiver(post_save, sender=GodownProduct)
 # def purchase_handler(sender, instance, update_fields=None, **kwargs):
 #     try:
@@ -1527,11 +1527,11 @@ def stock_accpet_goods(request, godown_id, accept_id):
             try:
                 #send message to user (godown assigned)
                 message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
-    Type: Purchase '''  + '''
-    Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
+Type: Purchase '''  + '''
+Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
 
 
-                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161779589168036"
                 payload = ""
                 headers = {'content-type': 'application/x-www-form-urlencoded'}
 

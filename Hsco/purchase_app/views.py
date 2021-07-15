@@ -1943,7 +1943,7 @@ def add_product_details(request,id):
 
 
             message = 'Dear ' + str(
-                purchase.second_person) + ',' \
+                purchase.second_person) + ' ,' \
                                           ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
                 purchase.purchase_no) + '.' \
                                         ' We will love to hear your feedback to help us improve' \
@@ -1953,7 +1953,7 @@ def add_product_details(request,id):
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161735423953054"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161866138738855"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 

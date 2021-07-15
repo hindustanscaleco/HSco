@@ -17,6 +17,9 @@ from lead_management.models import Pi_section
 from purchase_app.models import Purchase_Details,Product_Details
 from .utils import render_to_pdf
 from datetime import datetime
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+
+
 # Create your views here.
 today_month = datetime.now().month
 
@@ -452,17 +455,16 @@ def vendor_master(request):
 
     return render(request,"expense_app/vendor_master.html")
 
+@csrf_exempt
 def expense_details(request, expense_id):
     expense = Expense.objects.get(id=expense_id)
+
     vendors_list = Vendor.objects.all()
     expense_products = Expense_Product.objects.filter(expense_id=expense_id)
     # get vendor list according to expense sub sub master
     if request.method == 'GET' and 'expense_type_sub_sub_master' in request.GET:
         expense_type_sub_sub_master_id = request.GET.get('expense_type_sub_sub_master')
         vendors_list = Vendor.objects.filter(expense_type_sub_sub_master_id=expense_type_sub_sub_master_id)
-        print('venodr list')
-        print(vendors_list)
-        print('jlkdfsklj')
         context={
             'vendors_list' : vendors_list,
             'expense_masters' : expense_masters,
@@ -517,7 +519,8 @@ def expense_details(request, expense_id):
 
         credit_pending_amount = request.POST.get('credit_pending_amount')
         credit_authorised_by = request.POST.get('credit_authorised_by')
-
+        print('request')
+        print(gst)
         if gst == "on":
             gst = True
         else:

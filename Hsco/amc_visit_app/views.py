@@ -232,7 +232,7 @@ def add_amc_after_sales(request):
             message = 'Click on the link to give feedback http://139.59.76.87/feedback_amc/' + str(
                 request.user.pk) + '/' + str(crm_no.id) + '/' + str(item2.amc_no)
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + crm_no.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161779198242230"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
