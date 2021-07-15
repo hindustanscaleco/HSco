@@ -233,7 +233,14 @@ color:;
       <input name="date_of_birth" required id="my_date_picker" class="form-control" value="{{ career_module_id.date_of_birth|date:'Y-m-d'}}">
     </div>
   </div>
-
+  <script>
+    $(function() {
+$('#my_date_picker').datepicker({
+format: 'yyyy-mm-dd',
+ autoClose:true
+});
+});
+</script>
     <label class="col-md-2 control-label">Current/Previous Salary
 
 </label>
