@@ -645,7 +645,7 @@ var KTApexChartsDemo = function () {
 		var options = {
 			series: [{
 				name: 'Net Profit',
-				data: {{previous_lis_sum}}
+				data: {{this_lis_sum}}
 			} ],
 			chart: {
 				type: 'bar',
@@ -667,7 +667,7 @@ var KTApexChartsDemo = function () {
 				colors: ['transparent']
 			},
 			xaxis: {
-				categories: {{previous_lis_date|safe}},
+				categories: {{this_lis_date|safe}},
 			},
 			yaxis: {
 				title: {
