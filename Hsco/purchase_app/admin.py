@@ -8,6 +8,7 @@ class Purchase_DetailsAdmin(admin.ModelAdmin):
     list_display = ('purchase_no','id','date_of_purchase','total_amount','is_gst')
 
     search_fields = ('purchase_no','id','date_of_purchase')
+    filter = ('purchase_no','id','date_of_purchase','is_gst')
 
 class Product_DetailsAdmin(admin.ModelAdmin):
 
