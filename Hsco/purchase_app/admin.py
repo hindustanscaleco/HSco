@@ -5,7 +5,7 @@ from .models import Purchase_Details, Product_Details, Feedback
 
 class Purchase_DetailsAdmin(admin.ModelAdmin):
 
-    list_display = ('purchase_no','id','date_of_purchase')
+    list_display = ('purchase_no','id','date_of_purchase','total_amount','is_gst')
 
     search_fields = ('purchase_no','id','date_of_purchase')
 
