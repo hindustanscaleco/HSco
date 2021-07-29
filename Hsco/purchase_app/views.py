@@ -2778,7 +2778,7 @@ def gstvsCash(request):
         gst_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date],is_gst=True).values('date_of_purchase').annotate(
             data_sum=Cast(Sum('total_amount'), FloatField())).values('date_of_purchase', 'data_sum',)
 
-        cash_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date], payment_mode='Cash').values(
+        cash_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date], payment_mode='Cash', is_gst=False).values(
             'date_of_purchase').annotate(
             cash_sum=Cast(Sum('total_amount'), FloatField())).values('date_of_purchase', 'cash_sum',)
 
