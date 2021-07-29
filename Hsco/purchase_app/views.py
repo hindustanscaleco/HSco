@@ -2789,7 +2789,7 @@ def gstvsCash(request):
         for elm2 in gst_sales:
             total_gst = total_gst + elm2['data_sum']
             for elm1 in cash_sales:
-                if elm2['entry_timedate'] == elm1['entry_timedate']:
+                if elm2['date_of_purchase'] == elm1['date_of_purchase']:
                     elm2.update({'cash_sum':elm1['cash_sum']})
 
     context={
