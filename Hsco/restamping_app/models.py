@@ -3,6 +3,7 @@ from django.db import models
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from model_utils import FieldTracker
+from simple_history.models import HistoricalRecords
 
 
 class Restamping_after_sales_service(models.Model):
@@ -30,6 +31,7 @@ class Restamping_after_sales_service(models.Model):
     log_entered_by = models.CharField(blank= True, null=True, max_length=100)
 
     tracker = FieldTracker()
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id
@@ -54,6 +56,7 @@ class Restamping_Product(models.Model):
 
     tracker = FieldTracker()
 
-
+    history = HistoricalRecords()
+    
     def __int__(self):
         return self.id

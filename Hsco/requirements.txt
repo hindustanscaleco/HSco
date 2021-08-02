@@ -48,3 +48,4 @@ django-user-agents==0.4.0
 geographiclib==1.50
 geopy==2.1.0
 django-mathfilters==1.0.0
+django-simple-history==3.0.0

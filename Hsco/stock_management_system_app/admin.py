@@ -1,22 +1,23 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import Product, Godown, GodownProduct, GoodsRequest, RequestedProducts, AcceptGoods, AGProducts, \
     GodownTransactions, DailyStock
 
-class Product_Admin(admin.ModelAdmin):
+class Product_Admin(SimpleHistoryAdmin):
 
     list_display = ('scale_type','main_category','sub_category','sub_sub_category')
 
     search_fields = ('scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
 
-class GodownProduct_Admin(admin.ModelAdmin):
+class GodownProduct_Admin(SimpleHistoryAdmin):
 
     list_display = ('id', 'product_id','entry_timedate')
 
     search_fields = ('product_id__id','product_id__scale_type__name','product_id__main_category__name','product_id__sub_category__name','product_id__sub_sub_category__name')
 
-class GodownTransactions_Admin(admin.ModelAdmin):
+class GodownTransactions_Admin(SimpleHistoryAdmin):
     def godown_product(self, obj):
         return obj.godown_product_id
 

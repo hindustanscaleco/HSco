@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'expense_app',
     'django_user_agents',
     'mathfilters',
+    'simple_history',
 
 ]
 
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'session_security.middleware.SessionSecurityMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 
 ]
 AUTH_USER_MODEL = 'user_app.SiteUser'

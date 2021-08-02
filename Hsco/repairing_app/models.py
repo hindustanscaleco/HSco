@@ -10,6 +10,7 @@ from model_utils import FieldTracker
 
 from customer_app.models import Log
 from django.db.models.signals import pre_save,post_save
+from simple_history.models import HistoricalRecords
 
 
 class Repairing_after_sales_service(models.Model):
@@ -77,6 +78,8 @@ class Repairing_after_sales_service(models.Model):
 
     tracker = FieldTracker()
 
+    history = HistoricalRecords()
+
     def __int__(self):
         return self.pk
 
@@ -118,6 +121,8 @@ class Repairing_Product(models.Model):
 
     tracker = FieldTracker()
 
+    history = HistoricalRecords()
+
     def __int__(self):
         return self.pk
 
@@ -132,6 +137,8 @@ class Repairing_Feedback(models.Model):
     about_hsco = models.CharField(max_length=150, null=True, blank=True)
     any_suggestion = models.CharField(max_length=150, null=True, blank=True)
 
+    history = HistoricalRecords()
+
     class Meta:
         unique_together = ('user_id', 'customer_id', 'reparing_id',)
 
@@ -141,6 +148,8 @@ class Component_Replaced(models.Model):
     replaced_name = models.CharField(max_length=150,null=True,blank=True)
     in_waranty = models.BooleanField(default=False)
     entry_timedate = models.DateField(default=datetime.date.today)
+
+    history = HistoricalRecords()
 
 
 

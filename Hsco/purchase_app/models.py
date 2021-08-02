@@ -5,6 +5,7 @@ from django.utils import timezone
 from customer_app.models import Customer_Details,DynamicDropdown
 from user_app.models import SiteUser
 from model_utils import FieldTracker
+from simple_history.models import HistoricalRecords
 
 
 choices = (('NO', 'NO'),
@@ -79,6 +80,7 @@ class Purchase_Details(models.Model):   #cleaned
 
     bill_notes = models.TextField(null=True, blank=True)
 
+    history = HistoricalRecords()
     def __int__(self):
         return self.id
 
@@ -119,6 +121,8 @@ class Product_Details(models.Model):
     entry_timedate = models.DateTimeField(default=timezone.now,)
     tracker = FieldTracker()
 
+    history = HistoricalRecords()
+
     def __int__(self):
         return self.purchase_id
 
@@ -135,6 +139,8 @@ class Feedback(models.Model):
     any_suggestion = models.CharField(max_length=120,null=True,blank=True)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 
+    history = HistoricalRecords()
+    
     class Meta:
         unique_together = ('user_id', 'customer_id', 'purchase_id',)
 
