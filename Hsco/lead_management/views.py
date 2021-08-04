@@ -48,6 +48,7 @@ from customer_app.models import DynamicDropdown
 
 today_month = datetime.now().month
 host_file = 'smtp.gmail.com'
+today_year = datetime.now().year
 
 def one_time_dd_lead():
     lead_id = Lead.objects.filter(Q(channel_id=None)).values('id')
@@ -91,13 +92,13 @@ def lead_home(request):
     admin = SiteUser.objects.get(id=request.user.pk).admin
 
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
-        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)).order_by('-id')
+        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Admin':  # For ADMIN
-        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
 
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(admin__icontains=request.user.profile_name))
@@ -105,11 +106,11 @@ def lead_home(request):
         # page = request.GET.get('page')
         # lead_list = paginator.get_page(page)
     elif request.user.role == 'Manager':  # For manager
-        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(manager__icontains=request.user.profile_name))
     elif request.user.role == 'Employee': #for employee
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)).order_by('-id')
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(id=request.user.pk)
         # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
         # page = request.GET.get('page')
