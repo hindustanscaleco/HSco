@@ -2646,12 +2646,19 @@ def stock_does_not_exist(request):
     return render(request, 'AJAX/stock_does_not_exist.html',context)
 
 def modules_map(request):
-    from geopy.geocoders import Nominatim
-    geolocator = Nominatim(user_agent="hsc")
-    lat_lon_list=[
-      ['sample1', 18.9977, 72.8376, 1],
-      ['sample2', 19.2183, 72.9781, 2],
-    ]
+#     import requests
+
+# response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA')
+
+# resp_json_payload = response.json()
+
+# print(resp_json_payload['results'][0]['geometry']['location'])
+#     from geopy.geocoders import Nominatim
+#     geolocator = Nominatim(user_agent="hsc")
+#     lat_lon_list=[
+#       ['sample1', 18.9977, 72.8376, 1],
+#       ['sample2', 19.2183, 72.9781, 2],
+#     ]
 
 
 

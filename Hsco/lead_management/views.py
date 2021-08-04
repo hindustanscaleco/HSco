@@ -68,21 +68,23 @@ def one_time_dd_lead():
            
 @login_required(login_url='/')
 def lead_home(request):
+    one_time_dd_lead()
+    # print(datetime.now().date)
     import requests
     import json
-
+    
     mobile = '7045922250'
     api = 'MTYxMjUxMzg1MC42NDQyIzI5OTI4NzM='
 
     last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
     import datetime
+    
     to_date = datetime.datetime.today().strftime('%d-%b-%Y')
     # to_date= (IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=20)).strftime('%d-%b-%Y')
 
 
     from datetime import datetime
-
     lead_count=0
     error2 = None
     error = None
@@ -568,7 +570,8 @@ def lead_home(request):
                     entered_customer_name = item['SENDERNAME']
                     if entered_customer_name == None or entered_customer_name == '':
                         entered_customer_name = 'NA'
-
+                   
+                   
                     if Lead.objects.filter(requirement_indiamart_unique=clean_requirement,
                                            customer_id__contact_no=clean_mob,customer_id__customer_name=entered_customer_name,
                                            channel='IndiaMart', indiamart_time=item['DATE_R']).count() == 0:
@@ -617,9 +620,10 @@ def lead_home(request):
                                         item2.is_indiamart_purchased_lead = True
                                     else:
                                         item2.is_indiamart_purchased_lead = False
-
-                                    item2.date_of_initiation = time.strftime("%Y-%m-%d", conv2)
-                                    item2.channel = 'IndiaMart'
+                                    import datetime
+                                    item2.date_of_initiation = datetime.datetime.today().strftime('%Y-%m-%d')
+                                    item2.channel = "India Mart"
+                                    item2.channel_id = DynamicDropdown.objects.get(name="India Mart",type="CHANNEL OF MARKETING")
                                     item2.owner_of_opportunity = request.user
 
                                     # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
