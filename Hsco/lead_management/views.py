@@ -68,7 +68,7 @@ def one_time_dd_lead():
            
 @login_required(login_url='/')
 def lead_home(request):
-    one_time_dd_lead()
+    # one_time_dd_lead()
     # print(datetime.now().date)
     import requests
     import json
