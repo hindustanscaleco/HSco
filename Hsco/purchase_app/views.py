@@ -2647,15 +2647,23 @@ def stock_does_not_exist(request):
     return render(request, 'AJAX/stock_does_not_exist.html',context)
 
 def modules_map(request):
-    # import requests
-    # geo_api_key = 'AIzaSyD3v017Me4yt1wx0o3QQYy6aI3fMiollvs'
-    # response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key='+geo_api_key)
+    import requests
+    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()
+    # cust0 = Customer_Details.objects.all().count()
+    print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
+    # print(customer_list)
+    # print(cust0)
+    for cust_address in customer_list:
+        geo_api_key = 'AIzaSyD3v017Me4yt1wx0o3QQYy6aI3fMiollvs'
+        response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(cust_address) + str(', india')+'&key='+geo_api_key)
 
-    # resp_json_payload = response.json()
-    # print(resp_json_payload)
-    # print('response')
-    # print(resp_json_payload['results'][0]['geometry']['location'])
-
+        resp_json_payload = response.json()
+        print(resp_json_payload)
+        print('response')
+        print(resp_json_payload['results'][0]['geometry']['location']["lat"])
+        print(resp_json_payload['results'][0]['geometry']['location']["lng"])
+        # Customer_Details.objects.filter(id=cust.id).update(latitude=location.latitude)
+        # Customer_Details.objects.filter(id=cust.id).update(longitude=location.longitude)
     # import requests
     # import urllib.parse
 
