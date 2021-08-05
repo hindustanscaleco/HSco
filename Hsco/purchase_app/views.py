@@ -2677,7 +2677,7 @@ def modules_map(request):
     from geopy.geocoders import Nominatim
     if request.method =='POST':
         if 'map_all_data' in request.POST:
-            customer_list = Customer_Details.objects.all()
+            customer_list = Customer_Details.objects.all()[:200]
             for cust in customer_list:
                 try:
                     
