@@ -13,9 +13,15 @@ class EmailThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        msg = EmailMessage(self.subject, self.html_content, self.sender, self.recipient_list,cc=self.cc_list)
-        msg.content_subtype = 'html'
-        msg.send()
+        try:
+            msg = EmailMessage(self.subject, self.html_content, self.sender, self.recipient_list,cc=self.cc_list)
+            msg.content_subtype = 'html'
+            msg.send()
+            print('email sent')
+        except Exception as e:
+            print(e)
+            print('exception occured email not sent')
+            pass
 
 
 def send_html_mail(subject, html_content,sender, recipient_list,cc_list ):
@@ -37,7 +43,8 @@ class Email_text_Thread(threading.Thread):
             msg.send()
 
             print('email sent')
-        except:
+        except Exception as e:
+            print(e)
             print('exception occured email not sent')
             pass
 

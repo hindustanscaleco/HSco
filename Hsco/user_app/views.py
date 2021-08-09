@@ -30,6 +30,7 @@ from django.db.models import Q
 
 host_file = 'webmail.hindustanscale.com'
 
+
 class LoginView(FormView):
 
     form_class = LoginForm
@@ -732,12 +733,12 @@ def dashboard(request):
 
                 if (item.follow_up_history.is_email):
                         if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-
-                                                        
-                            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],[request.user.professional_email])
+                            
+                            
+                            send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER2, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],[request.user.professional_email])
                         else:
                             send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg,
-                                           settings.EMAIL_HOST_USER, [
+                                           settings.EMAIL_HOST_USER2, [
                                                item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],[request.user.professional_email])
 
                             
@@ -830,13 +831,13 @@ def dashboard(request):
   
     lis_date = []
     lis_sum = []
-
     for i in qs:
         x = i
         # print(x['date_of_purchase'].strftime('%B-%Y'))
         lis_date.append(calendar.month_name[x['date_of_purchase__month']])
         lis_sum.append(x['data_sum'])
-
+    print(lis_date)
+    print(lis_sum)
 
 
     if request.user.role == "Super Admin":
@@ -859,7 +860,8 @@ def dashboard(request):
         x = i
         smly_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         smly_lis_sum.append(x['data_sum'])
-
+    
+    
     context = {
         'final_list': lis_date,
         'final_list2': lis_sum,

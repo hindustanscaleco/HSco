@@ -2648,7 +2648,7 @@ def stock_does_not_exist(request):
 
 def modules_map(request):
     import requests
-    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()
+    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[0]
     # cust0 = Customer_Details.objects.all().count()
     print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
     # print(customer_list)
