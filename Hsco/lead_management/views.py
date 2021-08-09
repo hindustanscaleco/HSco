@@ -93,12 +93,12 @@ def lead_home(request):
 
             
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
-        lead_list = Lead.objects.filter(Q(date_of_initiation__month=today_month)&Q(date_of_initiation__year=today_year)).order_by('-id')
+        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
         
         
     elif request.user.role == 'Admin':  # For ADMIN
-        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(date_of_initiation__month=today_month)&Q(date_of_initiation__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
 
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(admin__icontains=request.user.profile_name))

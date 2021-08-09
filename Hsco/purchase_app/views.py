@@ -37,7 +37,7 @@ from stock_management_system_app.models import AGProducts
 from stock_management_system_app.models import AcceptGoods
 from .models import  Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
-from _datetime import datetime
+from datetime import datetime
 from django.core.mail import send_mail
 from Hsco import settings
 import requests
@@ -2851,8 +2851,8 @@ def reportCustomerPage(request):
         this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('crm_no__id').annotate(
             data_count=Count('crm_no__id')).annotate(
             data_sum=Sum('total_amount')).values('date_of_purchase','crm_no__id', 'crm_no__customer_name','data_sum','crm_no__customer_email_id','crm_no__contact_no','data_count').order_by('-data_sum')
-        print('this month')
-        print(this_month)
+        
+        
     context = {
         "this_month": this_month,
     }

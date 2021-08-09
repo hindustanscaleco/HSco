@@ -54,7 +54,7 @@ class UserAdmin(ImportExportModelAdmin):
     add_form = UserCreationForm
 
     list_display = ('email', 'employee_number', 'name','mobile',  'role')
-    list_filter = ( 'role',)
+    list_filter = ( 'role','is_deleted')
 
     fieldsets = (
                 ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password','is_active')}),
