@@ -81,8 +81,6 @@ def lead_home(request):
     import datetime
     
     to_date = datetime.datetime.today().strftime('%d-%b-%Y')
-    # to_date= (IndiamartLeadDetails.objects.latest('to_date').to_date + datetime.timedelta(days=20)).strftime('%d-%b-%Y')
-
 
     from datetime import datetime
     lead_count=0
@@ -93,30 +91,29 @@ def lead_home(request):
     response = None
     admin = SiteUser.objects.get(id=request.user.pk).admin
 
+            
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
         lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
-        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        # page = request.GET.get('page')
-        # lead_list = paginator.get_page(page)
+        
+        
     elif request.user.role == 'Admin':  # For ADMIN
         lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
 
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(admin__icontains=request.user.profile_name))
-        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        # page = request.GET.get('page')
-        # lead_list = paginator.get_page(page)
+        
+        
     elif request.user.role == 'Manager':  # For manager
         lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(manager__icontains=request.user.profile_name))
+
     elif request.user.role == 'Employee': #for employee
         lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(id=request.user.pk)
-        # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-        # page = request.GET.get('page')
-        # lead_list = paginator.get_page(page)
+        
+        
     cust_sugg = Lead_Customer_Details.objects.all()
 
 
@@ -686,32 +683,25 @@ def lead_home(request):
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
 
+            if check_admin_roles(request):  # For ADMIN
+                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
+                                                owner_of_opportunity__group__icontains=request.user.name,
+                                                ).order_by('-id')
+                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
+                                                owner_of_opportunity__group__icontains=request.user.name,).count()
 
-
-            if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).order_by('-id')
-                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
-                context={
-                    'lead_list': lead_list,
-                    'lead_list_count': True if lead_list_count != 0 else False ,
-                    'lead_lis': False if lead_list_count != 0 else True,
-                }
-
-            else:
-                admin = SiteUser.objects.get(id=request.user.pk).admin
-                lead_list = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).order_by('-id')
+                
+            else:  # For EMPLOYEE
+                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
+                                                owner_of_opportunity=request.user.pk,).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
-                paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
-                page = request.GET.get('page')
-                lead_list = paginator.get_page(page)
-                context = {
+                
+            context = {
                     'lead_list': lead_list,
                     'lead_list_count': True if lead_list_count != 0 else False,
                     'lead_lis': False if lead_list_count != 0 else True,
-                }
+            }
+            
 
 
             return render(request, 'lead_management/lead_home.html', context)
@@ -1149,16 +1139,11 @@ def lead_home(request):
                                                 owner_of_opportunity__is_deleted=False,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-id')
 
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
+                
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
-                                                entry_timedate__range=[start_date, end_date]).order_by('-customer_id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Lead_Customer_Details.objects.filter()
+                                                entry_timedate__range=[start_date, end_date]).order_by('-id')
+                
             context = {
                 'lead_list': cust_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
