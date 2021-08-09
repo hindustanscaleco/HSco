@@ -31,10 +31,9 @@ class Customer_Details(models.Model):
         return self.id
 
     def short_address(self):
-        if self.address:
-            return self.address[:18]
-        else:
-            return 'N/A'
+        address = str(self.address) 
+        return address
+        
 
 class Lead_Customer_Details(models.Model):
     # crn_number = models.UUIDField(unique=True, default=uuid.uuid4)

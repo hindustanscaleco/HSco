@@ -71,6 +71,9 @@
 									</div>
 									<!--end::Page Heading-->
 								</div>
+
+
+
 								<!--end::Info-->
 								<!--begin::Toolbar-->
 								<div class="d-flex align-items-center flex-wrap">
@@ -111,10 +114,18 @@
 								<!--end::Toolbar-->
 							</div>
 						</div>
+{% if request.user.role == "Employee" and 'Customer Module' in user.modules_assigned %}
+						<div class="container-fluid">
+								<label class="switch"><input type="checkbox" checked><span class="slider round hide-off"></a></span> &nbsp; <h3> Toggle Graph </h3></label>
+						</div>
+						{% endif %}
+
+						<br>
+
 						<!--end::Subheader-->
 						{% if 'Customer Module' in user.modules_assigned %}
 
-					<div class="container-fluid">
+					<div class="container-fluid {% if request.user.role == 'Employee' %}hideme{% endif %} ">
 						<div class="row">
 									<div class="col-lg-6">
 										<!--begin::Card-->
@@ -1063,6 +1074,27 @@ var KTApexChartsDemo = function () {
 
 jQuery(document).ready(function () {
 	KTApexChartsDemo.init();
+});
+
+
+{% if request.user.role == "Employee" and 'Customer Module' in user.modules_assigned %}
+
+$(document).ready(function(){
+$(".hideme").hide();
+});
+
+{% endif %}
+
+$(document).ready(function(){
+	$(".switch input").on("change", function(e) {
+  	const isOn = e.currentTarget.checked;
+
+    if (isOn) {
+    	$(".hideme").hide();
+    } else {
+    	$(".hideme").show();
+    }
+  });
 });
 
 		</script>

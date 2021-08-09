@@ -730,7 +730,7 @@ def update_repairing_details(request,id):
             repair_id.save(update_fields=['second_stage_timedate',])
         
         
-        if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and confirmed_estimate !=repair_id.confirmed_estimate:
+        if current_stage_in_db == 'Estimate is given but Estimate is not confirmed' and confirmed_estimate == 'Yes' and repair_id.estimate_informed_sms_count == 0 :
             Repairing_after_sales_service.objects.filter(id=id).update(current_stage='Estimate is confirmed but not repaired')
             repair_id.stage_update_timedate = timezone.now()
             repair_id.third_stage_timedate = timezone.now()
@@ -795,8 +795,7 @@ def update_repairing_details(request,id):
 
             response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
-            print('sms response ')
-            print(x)
+            
 
             Repairing_after_sales_service.objects.filter(id=id).update(
                 estimate_informed_sms_count=F("estimate_informed_sms_count") + 1)
@@ -809,7 +808,7 @@ def update_repairing_details(request,id):
 
         current_stage_in_db = Repairing_after_sales_service.objects.get(id=id).current_stage  # updatestage4
         # if current_stage_in_db == 'Estimate is confirmed but not repaired' and (repaired_by != None or repaired_by!=""):
-        if (repaired_by != None and repaired_by!="" and repaired_by != 'None') and repaired_by !=repair_id.repaired_by:
+        if (repaired_by != None and repaired_by!="" and repaired_by != 'None') and repair_id.reparing_done_sms_count == 0:
             Repairing_after_sales_service.objects.filter(id=id).update(
                 current_stage='Repaired but not collected')
             repair_id.stage_update_timedate = timezone.now()
@@ -835,7 +834,7 @@ def update_repairing_details(request,id):
             #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
             message=' Dear '+customer_name+', Your Repairing Complaint No '+str(repair_id.repairing_no)+' is resolved. ' \
-                    'Please collect your Scales within the next 3 days.Consider this as your final reminder.For any further details please contact our ' \
+                    'Please collect your Scales within the next 3 days.For any further details please contact our ' \
                     'customer service team on 7045922251'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item.contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161762973239014"
@@ -848,7 +847,7 @@ def update_repairing_details(request,id):
                 reparing_done_sms_count=F("reparing_done_sms_count") + 1)
 
 
-        if delivery_by != None and delivery_by !='' and delivery_by != 'None' and delivery_by !=repair_id.delivery_by :
+        if delivery_by != None and delivery_by !='' and delivery_by != 'None' and repair_id.final_del_sms_count == 0  :
             repair_id.delivery_by = delivery_by
             repair_id.delivery_date = datetime.today().strftime('%Y-%m-%d')
             repair_id.save(update_fields=['delivery_by'])
@@ -886,7 +885,7 @@ def update_repairing_details(request,id):
                 #     request.user.pk) + '/' + str(item.pk) + '/' + str(item2.id)
 
                 message = ' Dear ' + customer_name + ',Thank you for selecting HSCo. Your Scale with Repairing No ' + str(
-                                  repair_id.repairing_no) + ' have been ' \
+                                  repair_id.repairing_no) + ' has been ' \
                           'Successfully Resolved and Collected. We will love ' \
                           'to hear your feedback to help us improve our customer experience. Please click on the link below:\n ' \
                                                   ' http://139.59.76.87/feedback_repairing/'+str(request.user.pk)+'/'+str(repair_id.crm_no.pk)+'/'+str(repair_id.id)+'\n ' \
@@ -963,10 +962,10 @@ def update_repairing_details(request,id):
                     ead.save()
 
                 repair_id.ess_calculated = True
-                item2.save(update_fields=['ess_calculated', ])
+                repair_id.save(update_fields=['ess_calculated', ])
 
         if repair_id.repairing_time_calculated == False and repair_id.repairing_start_timedate != None and repair_id.repairing_done_timedate != None:
-            if item2.repaired_date != None and item2.repaired_by != None :
+            if repair_id.repaired_date != None and repair_id.repaired_by != None :
                 date_format = "%Y-%m-%d %H:%M:%S"
 
                 if repair_id.repaired_date == repair_id.entry_timedate:

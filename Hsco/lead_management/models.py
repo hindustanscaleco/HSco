@@ -15,7 +15,7 @@ class Lead(models.Model):
     owner_of_opportunity = models.ForeignKey(SiteUser,null=True,blank=True,on_delete=models.CASCADE)
     current_stage = models.CharField(max_length=50,null=True,blank=True)
     new_existing_customer = models.CharField(max_length=50,null=True,blank=True)
-    date_of_initiation = models.DateTimeField(default=timezone.now,)
+    date_of_initiation = models.DateField(null=True,blank=True)
     #old field
     channel = models.CharField(max_length=50,null=True,blank=True)
     #new field

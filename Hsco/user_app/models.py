@@ -9,6 +9,8 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,
     User)
+from simple_history.models import HistoricalRecords
+
 choices = (('Super Admin', 'Super Admin'),
     ('Admin', 'Admin'),
    ('Manager', 'Manager'),
@@ -123,7 +125,7 @@ class SiteUser(AbstractBaseUser):
     photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
     product_master_access = models.BooleanField(default=False)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
-
+    history = HistoricalRecords()
 
     objects = SiteUserManager()
 

@@ -18,14 +18,15 @@ import secrets
 import string
 from datetime import datetime, timedelta
 from django.contrib import messages
-
+from django.db.models.functions import Cast
 from lead_management.models import Auto_followup_details, Lead
 
 from lead_management.utils import send_html_mail,send_text_mail
 
 from lead_management.email_content import user
-
+from django.db.models import FloatField
 from purchase_app.models import Purchase_Details, Feedback
+from django.db.models import Q
 
 host_file = 'webmail.hindustanscale.com'
 
@@ -83,8 +84,6 @@ class LoginView(FormView):
                     try:
                         response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                         x = response.text
-                        print(x)
-                        print('login sms send!!45')
                     except Exception as e:
                         print('login sms not send')
                         print(e)
@@ -120,8 +119,6 @@ class LoginView(FormView):
                     try:
                         response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
                         x = response.text
-                        print(x)
-                        print('login sms send!!88')
                     except Exception as e:
                         print('login sms not send')
                         print(e)
@@ -735,44 +732,15 @@ def dashboard(request):
 
                 if (item.follow_up_history.is_email):
                         if (item.follow_up_history.html_content != None and item.follow_up_history.html_content != '' and len(item.follow_up_history.html_content)>5):
-                            # with get_connection(
-                            #         host=host_file,
-                            #         port=587,
-                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                            #         use_tls=True
-                            # ) as connection:
-                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
-                            #                               item.follow_up_history.html_content,
-                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email
-                            #                               , [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                            #                               connection=connection)
-                            #     # part1 = MIMEText(text, 'plain')
-                            #     # part2 = MIMEText(user(request), 'html')
-                            #     # email_send.attach(part1)
-                            #     email_send.content_subtype = 'html'
-                            #     email_send.send()
+
+                                                        
                             send_html_mail(item.follow_up_history.email_subject, item.follow_up_history.html_content, settings.EMAIL_HOST_USER, [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],[request.user.professional_email])
                         else:
                             send_text_mail(item.follow_up_history.email_subject, item.follow_up_history.email_msg,
                                            settings.EMAIL_HOST_USER, [
                                                item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],[request.user.professional_email])
 
-                            # with get_connection(
-                            #         host=host_file,
-                            #         port=587,
-                            #         username=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                            #         password=item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email_password,
-                            #         use_tls=True
-                            # ) as connection:
-                            #     email_send = EmailMessage(item.follow_up_history.email_subject,
-                            #                               user(request, item.follow_up_history.email_msg),
-                            #                               item.follow_up_history.follow_up_section.lead_id.owner_of_opportunity.professional_email,
-                            #                               [item.follow_up_history.follow_up_section.lead_id.customer_id.customer_email_id, ],
-                            #                               connection=connection)
-                            #
-                            #     email_send.content_subtype = 'html'
-                            #     email_send.send()
+                            
 
 
 
@@ -803,11 +771,15 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         this_month = Purchase_Details.objects.filter(
                                                      date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
-    else:
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    elif request.user.role == "Admin" or request.user.role == "Manager":
+        this_month = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+            date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    else: #for employee
         this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -824,12 +796,16 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         previous_month = Purchase_Details.objects.filter(
                                                          date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
-    else:
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    elif request.user.role == "Admin" or request.user.role == "Manager":
+        previous_month = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+             date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    else: #for employee
         previous_month = Purchase_Details.objects.filter(
             sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
             date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
-            .values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
     #current year sales
     import calendar
@@ -843,10 +819,13 @@ def dashboard(request):
 
     if request.user.role == "Super Admin":
         qs = Purchase_Details.objects.filter(
-                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
-    else:
+                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    elif request.user.role == "Admin" or request.user.role == "Manager":
+        qs = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    else: #for employee
         qs = Purchase_Details.objects.filter(sales_person = SiteUser.objects.get(id=request.user.id).profile_name,
-             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Sum('value_of_goods'))
+             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
   
     lis_date = []
@@ -863,12 +842,17 @@ def dashboard(request):
     if request.user.role == "Super Admin":
         smly_qs = Purchase_Details.objects.filter(
             date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year-1).order_by(
-            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
-    else:
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    elif request.user.role == "Admin" or request.user.role == "Manager":
+        smly_qs = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                             date_of_purchase__month=datetime.now().month,
+                                             date_of_purchase__year=datetime.now().year-1).order_by(
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    else: #for employee
         smly_qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
                                              date_of_purchase__month=datetime.now().month,
                                              date_of_purchase__year=datetime.now().year-1).order_by(
-            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Sum('value_of_goods'))
+            'date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     smly_lis_date = []
     smly_lis_sum = []
     for i in smly_qs:

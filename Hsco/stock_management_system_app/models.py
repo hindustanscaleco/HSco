@@ -7,6 +7,7 @@ from purchase_app.models import Purchase_Details
 from django.utils import timezone
 
 from purchase_app.models import Product_Details
+from simple_history.models import HistoricalRecords
 
 
 class Product(models.Model):
@@ -26,6 +27,7 @@ class Product(models.Model):
     cost_price = models.FloatField( null=True, blank=True)
     selling_price = models.FloatField( null=True, blank=True)
     carton_size = models.CharField(max_length=150)
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id
@@ -41,6 +43,7 @@ class Godown(models.Model):
     default_godown_purchase = models.BooleanField(default=False)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    history = HistoricalRecords()
 
 
 class GodownProduct(models.Model):
@@ -54,6 +57,7 @@ class GodownProduct(models.Model):
 
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    history = HistoricalRecords()
 
     @property
     def carton_count(self):
@@ -101,6 +105,7 @@ class GoodsRequest(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    history = HistoricalRecords()
 
 class RequestedProducts(models.Model):
     godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE,null=True,blank=True)
@@ -119,6 +124,7 @@ class RequestedProducts(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
     entry_timedate_time = models.DateTimeField(default=timezone.now,)
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id
@@ -130,6 +136,7 @@ class AcceptGoods(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id
@@ -144,6 +151,7 @@ class AGProducts(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id
@@ -163,6 +171,7 @@ class GodownTransactions(models.Model):
     tracker = FieldTracker()
     log_entered_by = models.CharField(blank=True, null=True, max_length=100)
     notes = models.TextField(null=True,blank=True)
+    history = HistoricalRecords()
 
     def __int__(self):
         return self.id

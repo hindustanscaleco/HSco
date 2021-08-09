@@ -14,7 +14,8 @@ class Indiamart_Admin(ImportExportModelAdmin):
     list_display = ('id', 'from_date', 'to_date', 'lead_count', 'entry_timedate')
 
 class Pi_section_Admin(admin.ModelAdmin):
-    list_display = ('id', 'pf_total', 'entry_timedate')
+    list_display = ('lead_id_id','id', 'pf_total', 'grand_total','entry_timedate')
+    search_fields = ( 'pf_total', 'grand_total')
 
 class Pi_product_Admin(admin.ModelAdmin):
     list_display = ('id', 'pf', 'entry_timedate')

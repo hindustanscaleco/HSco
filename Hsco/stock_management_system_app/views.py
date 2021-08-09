@@ -19,7 +19,7 @@ import json
 
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-
+from .cron_job_daily import main
 # @receiver(post_save, sender=GodownProduct)
 # def purchase_handler(sender, instance, update_fields=None, **kwargs):
 #     try:
@@ -1523,19 +1523,24 @@ def stock_accpet_goods(request, godown_id, accept_id):
                 else:
                     product_name = product.godown_product_id.product_id.sub_category
                 msg_product_string+= "\n Product Name: "+str(product_name)+", Quantity: "+str(product.quantity)
-            #send message to user (godown assigned)
-            message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
+            
+            try:
+                #send message to user (godown assigned)
+                message = '''Godown Name: ''' + str(item2.from_godown.name_of_godown)+ '''
 Type: Purchase '''  + '''
 Transaction Id : ''' + str(new_transaction.id) + msg_product_string 
 
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
-            payload = ""
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
+                url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + item2.from_godown.contact_no  + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt&tid=1207161779589168036"
+                payload = ""
+                headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
-            x = response.text
-            print(x)
+                response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                x = response.text
+                print(x)
+            except:
+                print('message not send')
+                pass
             for good in accepted_goods:
                 if GodownProduct.objects.filter(godown_id=godown_id,product_id=good.godown_product_id.product_id):
                     godown_product = GodownProduct.objects.get(godown_id=godown_id,product_id=good.godown_product_id.product_id)
@@ -1698,7 +1703,14 @@ def stock_godown_report(request,godown_id):
         closing_stock_date = calendar.monthrange(to_year, to_month if to_month > 1 else 12)[1]
         closing_stock_date = datetime.strptime(str(to_year if to_month < 12 else to_year + 1) + "-" + str(to_month if to_month > 1 else 12) + "-" + str(closing_stock_date), "%Y-%m-%d")
 
+        print('opening_stock_date_first')
+        print(opening_stock_date_first)
 
+        print('opening_stock_date')
+        print(opening_stock_date)
+
+        print('closing_stock_date')
+        print(closing_stock_date)
         if select_type == 'Day':
             products_list = GodownProduct.objects.filter(godown_id=godown_id).order_by('product_id__main_category__id','product_id__sub_category','product_id__sub_sub_category')
             for godown_product in products_list:
@@ -1714,15 +1726,11 @@ def stock_godown_report(request,godown_id):
                 try:
                     opening_stock = DailyStock.objects.get(
                         Q(entry_timedate=opening_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                        Q(godown_products=godown_product)).closing_stock
 
                 except:
-                    try:
-                        opening_stock = DailyStock.objects.get(
-                            Q(entry_timedate=opening_stock_date_first) &
-                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
-                    except:
-                        opening_stock = 0
+                    opening_stock = 0
+                    pass
                 godown_product.opening_stock = opening_stock
             context22 = {
                 'godown': godown,
@@ -1749,26 +1757,27 @@ def stock_godown_report(request,godown_id):
 
                 # for finding opening stock of selected date
                 try:
+                    print('godown id')
+                    print(godown_product.pk)
+                    print(godown_product)
                     opening_stock = DailyStock.objects.get(
                         Q(entry_timedate=opening_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                        Q(godown_products=godown_product)).closing_stock
 
                 except:
-                    try:
-                        opening_stock = DailyStock.objects.get(
-                            Q(entry_timedate=opening_stock_date_first) &
-                            Q(godown_products__product_id__id=godown_product.pk)).closing_stock
-                    except:
-                        opening_stock = 0
+                    opening_stock = 0
+                    pass
+                
 
                 # for finding closing stock of selected date
                 try:
                     closing_stock = DailyStock.objects.get(
                         Q(entry_timedate=closing_stock_date)&
-                        Q(godown_products__product_id__id=godown_product.pk)).closing_stock
+                        Q(godown_products=godown_product)).closing_stock
 
                 except:
                     closing_stock = 0
+                    pass
 
                 try:
                     godown_product.faulty_quantity_sum = gt_list[0]['faulty_quantity_sum']

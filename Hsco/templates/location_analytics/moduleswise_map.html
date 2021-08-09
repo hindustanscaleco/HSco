@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -20,7 +19,7 @@
 		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
 		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 		<!--end::Global Theme Styles-->
 		<!--begin::Layout Themes(used by all pages)-->
 		<!--end::Layout Themes-->
@@ -289,7 +288,28 @@ td {
 
   </div>
     <br>
+{% if messages %}
+    {% for message in messages %}
+             {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error : </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+    {% endif %}
 
+
+             {% endfor %}
+
+{% endif %}
     <div class="row container">
 
 
@@ -297,6 +317,7 @@ td {
         <div class="col-md-4">
       <div class="form-group">
         <button name="deleted" type="submit" class="btn btn-primary">GO</button>
+        <button name="map_all_data" type="submit" class="btn btn-primary">MAP ALL CUSTOMERS</button>
         </div>
         </div>
     </div>

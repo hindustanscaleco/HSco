@@ -264,10 +264,14 @@ color:;
 </label>
    <div class="col-md-1 inputGroupContainer">
   <div class="custom-control custom-checkbox">
-
-    <input type="checkbox" value="{{expense.gst}}" class="custom-control-input"  id="gst_id"  name="gst"     >
-
-  <label class="custom-control-label"    for="gst_id"></label>
+    {% if expense.gst == True %}
+    <input type="checkbox"   class="custom-control-input"  id="gst_id1"  name="gst" onclick="on_gst()"   checked >
+    <label class="custom-control-label"    for="gst_id1"></label>
+    {% else %}
+    <input type="checkbox"  class="custom-control-input"  id="gst_id"  name="gst"     >
+    <label class="custom-control-label"    for="gst_id"></label>
+    {% endif %}
+  
   </div>
   </div>
   </div>
@@ -824,7 +828,7 @@ inputFields[i].disabled = false;
               }
           }
             show();
-
+          
   </script>
 
   <script>
