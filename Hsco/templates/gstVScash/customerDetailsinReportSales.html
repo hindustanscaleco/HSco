@@ -342,7 +342,8 @@ td {
     <table class="table" id="testTable" summary="Code page support in different versions of MS Windows." rules="groups" frame="hsides">
 
         <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer ID</td>
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Date of Purchase</td>
+            <td style="border: 0px solid gray;">Customer ID</td>
             <td style="border: 0px solid gray;">Customer Name</td>
             <td style="border: 0px solid gray;">Customer Email ID </td>
             <td style="border: 0px solid gray;"> Customer Mobile No</td>
@@ -353,6 +354,7 @@ td {
 
         {% for obj in this_month %}
         <tr>
+            <td style="border: 1px solid gray;">{{obj.date_of_purchase}}</td>
             <td style="border: 1px solid gray;">{{obj.crm_no__id}}</td>
             <td style="border: 1px solid gray;">{{obj.crm_no__customer_name}}</td>
             <td style="border: 1px solid gray;">{{obj.crm_no__customer_email_id}}</td>
