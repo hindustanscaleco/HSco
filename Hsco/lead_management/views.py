@@ -93,7 +93,7 @@ def lead_home(request):
 
             
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
-        lead_list = Lead.objects.filter(Q(date_of_initiation=today_month)&Q(date_of_initiation__year=today_year)).order_by('-id')
+        lead_list = Lead.objects.filter(Q(date_of_initiation__month=today_month)&Q(date_of_initiation__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
         
         
