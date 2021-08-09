@@ -2848,8 +2848,8 @@ def reportCustomerPage(request):
     if request.method == 'POST':
         from_date = request.POST.get('date1')
         to_date = request.POST.get('date2')
-        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('crm_no__customer_name').annotate(
-            data_count=Count('crm_no__customer_name')).annotate(
+        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('crm_no__id').annotate(
+            data_count=Count('crm_no__id')).annotate(
             data_sum=Sum('total_amount')).values('date_of_purchase','crm_no__id', 'crm_no__customer_name','data_sum','crm_no__customer_email_id','crm_no__contact_no','data_count').order_by('-data_sum')
         print('this month')
         print(this_month)
