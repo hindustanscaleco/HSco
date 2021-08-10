@@ -2648,75 +2648,55 @@ def stock_does_not_exist(request):
 
 def modules_map(request):
     import requests
-    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[0]
-    # cust0 = Customer_Details.objects.all().count()
+    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[100]
     print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
-    # print(customer_list)
+    print(customer_list)
     # print(cust0)
+    geo_api_key = 'AIzaSyBAh5BCM7Eo5J6hqSiu_S2V8kAlSubVW3o'
+
     for cust_address in customer_list:
-        geo_api_key = 'AIzaSyD3v017Me4yt1wx0o3QQYy6aI3fMiollvs'
         response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(cust_address) + str(', india')+'&key='+geo_api_key)
 
         resp_json_payload = response.json()
         print(resp_json_payload)
         print('response')
+        latitude = resp_json_payload['results'][0]['geometry']['location']["lat"]
+        longitude = resp_json_payload['results'][0]['geometry']['location']["lng"]
         print(resp_json_payload['results'][0]['geometry']['location']["lat"])
         print(resp_json_payload['results'][0]['geometry']['location']["lng"])
-        # Customer_Details.objects.filter(id=cust.id).update(latitude=location.latitude)
-        # Customer_Details.objects.filter(id=cust.id).update(longitude=location.longitude)
-    # import requests
-    # import urllib.parse
+        Customer_Details.objects.filter(address=cust_address).update(latitude=latitude)
+        Customer_Details.objects.filter(address=cust_address).update(longitude=longitude)
+    
 
-    # address = 'Shivaji Nagar, Bangalore, KA 560001'
-    # url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
-
-    # response = requests.get(url).json
-    # print('response')
-    # print(str(response))
-    # print(response[0]["lat"])
-    # print(response[0]["lon"])
-
-    from geopy.geocoders import Nominatim
-    geolocator = Nominatim(user_agent="hsc")
-    location = geolocator.geocode("175 5th Avenue NYC")
-    print((location.latitude, location.longitude))
+    # from geopy.geocoders import Nominatim
+    # geolocator = Nominatim(user_agent="hsc")
+    # location = geolocator.geocode("175 5th Avenue NYC")
+    # print((location.latitude, location.longitude))
     lat_lon_list=[
     ]
-    from geopy.geocoders import Nominatim
+    # from geopy.geocoders import Nominatim
     if request.method =='POST':
-        if 'map_all_data' in request.POST:
-            customer_list = Customer_Details.objects.all()[:200]
-            for cust in customer_list:
-                try:
+        ####### map all data using a button  (commented) #########
+
+        # if 'map_all_data' in request.POST:
+        #     customer_list = Customer_Details.objects.all()[:200]
+        #     for cust in customer_list:
+        #         try:
                     
-                    geolocator = Nominatim(user_agent="hsc")
-                    address = str(cust.address) + str(', india')
-                    location = geolocator.geocode(address)
-                    Customer_Details.objects.filter(id=cust.id).update(latitude=location.latitude)
-                    Customer_Details.objects.filter(id=cust.id).update(longitude=location.longitude)
-                except Exception  as e:
-                    print(e)
-                    pass
-            messages.success(request, "Latest Customers Address Data mapped successfully!")
-            return redirect('/modules_map')
+        #             geolocator = Nominatim(user_agent="hsc")
+        #             address = str(cust.address) + str(', india')
+        #             location = geolocator.geocode(address)
+        #             Customer_Details.objects.filter(id=cust.id).update(latitude=location.latitude)
+        #             Customer_Details.objects.filter(id=cust.id).update(longitude=location.longitude)
+        #         except Exception  as e:
+        #             print(e)
+        #             pass
+        #     messages.success(request, "Latest Customers Address Data mapped successfully!")
+        #     return redirect('/modules_map')
  
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         selected_module = request.POST.get('selected_module')
-        
-        address_list = Customer_Details.objects.filter(latitude=None, longitude=None,
-                                                       entry_timedate__range=[from_date, to_date]).values(
-            "address", ).distinct()
-        for item in address_list:
-            try:
-                location = geolocator.geocode(item['short_address'])
-                if location != None:
-                    location = geolocator.geocode(location.short_address)
-                    if location != None:
-                        customer_object = Customer_Details.objects.filter(address=item['short_address'])
-                        customer_object.update(latitude=location.latitude, longitude=location.longitude)
-            except Exception as e:
-                pass
 
 
         if 'sales' in selected_module:
