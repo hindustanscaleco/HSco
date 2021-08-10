@@ -42,11 +42,8 @@ class UserChangeForm(forms.ModelForm):
 
 
 def flush_users(modeladmin, request, queryset):
-    # if queryset.filter(is_admin=True):
-    #     pass
-    # else:
-    queryset.update(is_active=False)
-
+    queryset.filter(is_admin=False).update(is_active=False)
+    
 flush_users.short_description = "Flush Selected Users"
 
 def allow_users_login(modeladmin, request, queryset):
