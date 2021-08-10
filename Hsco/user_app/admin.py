@@ -42,10 +42,10 @@ class UserChangeForm(forms.ModelForm):
 
 
 def flush_users(modeladmin, request, queryset):
-    if queryset.filter(is_admin=True):
-        pass
-    else:
-        queryset.update(is_active=False)
+    # if queryset.filter(is_admin=True):
+    #     pass
+    # else:
+    queryset.update(is_active=False)
 
 flush_users.short_description = "Flush Selected Users"
 
@@ -57,7 +57,7 @@ class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'employee_number', 'name','mobile',  'role')
+    list_display = ('email', 'employee_number', 'name','mobile',  'role', 'is_active')
     list_filter = ( 'role','is_deleted')
 
     fieldsets = (

@@ -13,12 +13,18 @@ class Lead_Admin(ImportExportModelAdmin):
 class Indiamart_Admin(ImportExportModelAdmin):
     list_display = ('id', 'from_date', 'to_date', 'lead_count', 'entry_timedate')
 
-class Pi_section_Admin(admin.ModelAdmin):
-    list_display = ('lead_id_id','id', 'pf_total', 'grand_total','entry_timedate')
+class Pi_section_Admin(ImportExportModelAdmin):
+    def get_current_stage(self, obj):
+        return str(obj.lead_id.current_stage)
+
+    list_display = ('lead_id_id','id', 'pf_total', 'grand_total','entry_timedate','get_current_stage')
     search_fields = ( 'pf_total', 'grand_total')
+    # list_filter = (get_current_stage)
+
+    
 
 class Pi_product_Admin(admin.ModelAdmin):
-    list_display = ('id', 'pf', 'entry_timedate')
+    list_display = ('id','product_total_cost','lead_id_id', 'pf', 'entry_timedate')
 
 admin.site.register(Lead,Lead_Admin)
 admin.site.register(Pi_section,Pi_section_Admin)
