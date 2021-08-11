@@ -2652,7 +2652,7 @@ def modules_map(request):
     print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
     print(customer_list)
     # print(cust0)
-    geo_api_key = 'AIzaSyBAh5BCM7Eo5J6hqSiu_S2V8kAlSubVW3o'
+    geo_api_key = 'AIzaSyDvd8L_RCnc6jy5EMszOqgVOevjaGVYcLU'
 
     for cust_address in customer_list:
         response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(cust_address) + str(', india')+'&key='+geo_api_key)

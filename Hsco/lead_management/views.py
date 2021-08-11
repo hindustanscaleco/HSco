@@ -696,15 +696,16 @@ def lead_home(request):
                                                 owner_of_opportunity=request.user.pk,).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
                 
-            context = {
+            context.update({
                     'lead_list': lead_list,
                     'lead_list_count': True if lead_list_count != 0 else False,
                     'lead_lis': False if lead_list_count != 0 else True,
-            }
+            })
+
             
 
 
-            return render(request, 'lead_management/lead_home.html', context)
+            # return render(request, 'lead_management/lead_home.html', context)
 
         if 'delete_lead_id' in request.POST:
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
@@ -749,10 +750,7 @@ def lead_home(request):
 
             return redirect('/lead_home/')
 
-        # if 'assign_lead' in request.POST:
-        #     print(request.POST)
-        #     delete_lead_id = request.POST.getlist('delete_lead_id')
-        #     print(delete_lead_id)
+
 
 
         if 'sub1' in request.POST:
@@ -1144,32 +1142,23 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-id')
                 
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+            })
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__contact_no__icontains=contact).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity_id=request.user.pk, customer_id__contact_no__icontains=contact).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Lead_Customer_Details.objects.filter(contact_no=contact)
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Contact No: ' + contact,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+            })
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
@@ -1177,42 +1166,26 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__customer_email_id__icontains=email).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_email_id__icontains=email).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Lead_Customer_Details.objects.filter(customer_email_id=email)
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Email ID: ' + email,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+            })
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk, customer_id__customer_name__icontains=customer).order_by(
                     '-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Lead_Customer_Details.objects.filter(customer_name=customer)
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Customer Name: ' + customer,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+            })
 
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
@@ -1220,21 +1193,13 @@ def lead_home(request):
                 cust_list = Lead.objects.filter(owner_of_opportunity__group__icontains=request.user.name,
                                                 owner_of_opportunity__is_deleted=False,
                                                 customer_id__company_name__icontains=company).order_by('-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 customer_id__company_name__icontains=company).order_by('-id')
-                # paginator = Paginator(cust_list, 15)  # Show 25 contacts per page
-                # page = request.GET.get('page')
-                # cust_list = paginator.get_page(page)
-            # cust_list = Lead_Customer_Details.objects.filter(company_name=company)
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
+            })
 
         elif 'submit7' in request.POST:
             serial_no = request.POST.get('serial_no')
@@ -1252,12 +1217,11 @@ def lead_home(request):
                 # page = request.GET.get('page')
                 # cust_list = paginator.get_page(page)
             # cust_list = Lead_Customer_Details.objects.filter(company_name=company)
-            context = {
+            context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for Sr no: ' + serial_no,
-            }
-            return render(request, 'lead_management/lead_home.html', context)
-
+            })
+        # return render(request, 'lead_management/lead_home.html', context)
     context23 = {
         'lead_count': lead_count,
         'from_date': from_date,
