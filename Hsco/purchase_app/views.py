@@ -18,7 +18,7 @@ from customer_app.models import Log, sub_sub_model
 from email.mime.text import MIMEText
 from django.core.mail import send_mail, EmailMessage
 from lead_management.email_content import user
-from customer_app.models import type_purchase,main_model,sub_model,sub_sub_model
+from customer_app.models import type_purchase, main_model, sub_model, sub_sub_model
 from django.db.models.functions import Cast
 from django.db.models import FloatField
 
@@ -35,7 +35,7 @@ from stock_management_system_app.models import GodownTransactions
 from stock_management_system_app.models import AGProducts
 
 from stock_management_system_app.models import AcceptGoods
-from .models import  Purchase_Details, Feedback, Product_Details
+from .models import Purchase_Details, Feedback, Product_Details
 from purchase_app.forms import Product_Details_Form
 from datetime import datetime
 from django.core.mail import send_mail
@@ -44,7 +44,7 @@ import requests
 import json
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
-from django.db.models.signals import pre_save,post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 from customer_app.models import DynamicDropdown
@@ -58,10 +58,11 @@ import calendar
 today_month = datetime.now().month
 today_year = datetime.now().year
 
+
 @receiver(pre_save, sender=Purchase_Details)
 def purchase_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
+        if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
             new_instance = instance
             log = Log()
@@ -75,14 +76,14 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
 
             #########for update action##########
             old_instance = instance
             new_instance = Purchase_Details.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -91,7 +92,6 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -99,11 +99,12 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance,key):
-                        old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(
+                            key + ':Old value= '+str(value) + ', New value='+getattr(instance, key))
                 log = Log()
                 log.entered_by = instance.log_entered_by
                 log.module_name = 'Purchase Module'
@@ -119,14 +120,16 @@ def purchase_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Product_Details)
 def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
+        if instance.id == None or instance.id == '' or instance.id == 'None':
             #########for insert action##########
             new_instance = instance
             log = Log()
-            purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
+            purchase = Purchase_Details.objects.get(
+                id=new_instance.purchase_id_id)
 
             log.entered_by = new_instance.log_entered_by
             # log.entered_by = SiteUser.objects.get(id=new_instance.user_id_id).profile_name
@@ -138,14 +141,14 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
 
             #########for update action##########
             old_instance = instance
             new_instance = Product_Details.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -154,7 +157,6 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -162,25 +164,30 @@ def purchase_product_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
-                    if value != '' and str(value) != getattr(instance,key):
-                        old_list.append(key +':Old value= '+str(value) + ', New value='+getattr(instance,key) )
+                    if value != '' and str(value) != getattr(instance, key):
+                        old_list.append(
+                            key + ':Old value= '+str(value) + ', New value='+getattr(instance, key))
                     # old_list.append('Old value: ' + key )
                 log = Log()
-                purchase = Purchase_Details.objects.get(id=new_instance.purchase_id_id)
+                purchase = Purchase_Details.objects.get(
+                    id=new_instance.purchase_id_id)
                 log.entered_by = instance.log_entered_by
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Update'
                 log.table_name = 'Product_Details'
-                log.reference = 'Purchase No: '+str(purchase.purchase_no)+ ', Product id:' +str(new_instance.id)
+                log.reference = 'Purchase No: ' + \
+                    str(purchase.purchase_no) + \
+                    ', Product id:' + str(new_instance.id)
                 log.action = old_list
                 if old_list != []:
                     log.save()
 
     except:
         pass
+
 
 @login_required(login_url='/')
 def add_purchase_details(request):
@@ -201,9 +208,10 @@ def add_purchase_details(request):
             pass
 
         else:
-            prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
+            prod_list = Product_Details.objects.all().values_list('purchase_id', flat=True)
             if request.session.get('purchase_id') not in prod_list:
-                Purchase_Details.objects.filter(id=request.session.get('purchase_id')).delete()
+                Purchase_Details.objects.filter(
+                    id=request.session.get('purchase_id')).delete()
 
         try:
             del request.session['purchase_id']
@@ -212,23 +220,28 @@ def add_purchase_details(request):
         except:
             pass
     cust_sugg = Customer_Details.objects.all()
-    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
-    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
-    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
-    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY", is_enabled=True)
     if request.user.role == 'Super Admin':
-        sales_person_sugg=SiteUser.objects.filter(Q(id=request.user.id) | Q(group__icontains=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
+        sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(
+            group__icontains=request.user.name), modules_assigned__icontains='Customer Module', is_deleted=False)
 
     elif request.user.role == 'Admin':
         sales_person_sugg = SiteUser.objects.filter(admin=request.user.name,
-                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+                                                    modules_assigned__icontains='Customer Module', is_deleted=False)
     elif request.user.role == 'Manager':
-        sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=request.user.name),modules_assigned__icontains='Customer Module', is_deleted=False)
-    else: #display colleague
+        sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(
+            manager=request.user.name), modules_assigned__icontains='Customer Module', is_deleted=False)
+    else:  # display colleague
 
         list_group = SiteUser.objects.get(id=request.user.id).manager
         sales_person_sugg = SiteUser.objects.filter(Q(id=request.user.id) | Q(manager=list_group),
-                                            modules_assigned__icontains='Customer Module', is_deleted=False)
+                                                    modules_assigned__icontains='Customer Module', is_deleted=False)
 
     form = Purchase_Details_Form(request.POST or None, request.FILES or None)
     if request.method == 'POST' or request.method == 'FILES':
@@ -272,10 +285,12 @@ def add_purchase_details(request):
 
         item2 = Purchase_Details()
         item = Customer_Details()
-        if Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count() > 0:
+        if Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).count() > 0:
 
-            item2.crm_no = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
-            item3 = Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
+            item2.crm_no = Customer_Details.objects.filter(
+                customer_name=customer_name, contact_no=contact_no).first()
+            item3 = Customer_Details.objects.filter(
+                customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '':
                 item2.second_company_name = company_name  # new2
 
@@ -295,10 +310,7 @@ def add_purchase_details(request):
                 item2.customer_gst_no = customer_gst_no  # new2
                 item3.save(update_fields=['customer_gst_no'])
 
-
         else:
-
-
 
             item.customer_name = customer_name
             if company_name != '':
@@ -321,11 +333,10 @@ def add_purchase_details(request):
                 item.save()
                 item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
-
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 pass
-        site_user_id=SiteUser.objects.get(profile_name=sales_person).pk
+        site_user_id = SiteUser.objects.get(profile_name=sales_person).pk
         # item2.crm_no = Customer_Details.objects.get(id=item.pk)
         if gst_id == 'on':
             item2.is_gst = True
@@ -345,27 +356,28 @@ def add_purchase_details(request):
         if cheque_date != None and cheque_date != '':
             item2.cheque_date = cheque_date
 
-
         if channel_of_marketing != None and channel_of_marketing != '':
-            item2.channel_of_marketing_id = DynamicDropdown.objects.get(id=channel_of_marketing)
+            item2.channel_of_marketing_id = DynamicDropdown.objects.get(
+                id=channel_of_marketing)
         if channel_of_sales != None and channel_of_sales != '':
-            item2.channel_of_sales_id = DynamicDropdown.objects.get(id=channel_of_sales)
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(
+                id=channel_of_sales)
         if channel_of_dispatch != None and channel_of_dispatch != '':
-            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                id=channel_of_dispatch)
         if industry != None and industry != '':
             item2.industry_id = DynamicDropdown.objects.get(id=industry)
 
-
         item2.new_repeat_purchase = new_repeat_purchase
-        item2.second_person=customer_name  #new1
+        item2.second_person = customer_name  # new1
         # item2.third_person=third_person
-        item2.second_contact_no=contact_no  #new2
+        item2.second_contact_no = contact_no  # new2
 
         # item2.third_contact_no=third_contact_no
         item2.date_of_purchase = date_of_purchase
         item2.product_purchase_date = product_purchase_date
         item2.sales_person = sales_person
-        item2.user_id=SiteUser.objects.get(id=site_user_id)
+        item2.user_id = SiteUser.objects.get(id=site_user_id)
         item2.bill_no = bill_no
         item2.bill_address = bill_address
         item2.shipping_address = shipping_address
@@ -378,9 +390,9 @@ def add_purchase_details(request):
         item2.feedback_form_filled = False
         # item2.user_id = SiteUser.objects.get(id=request.user.pk)
         item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no+1
+        item2.purchase_no = Purchase_Details.objects.latest(
+            'purchase_no').purchase_no+1
         item2.log_entered_by = request.user.profile_name
-
 
         item2.save()
 
@@ -393,18 +405,18 @@ def add_purchase_details(request):
         request.session['purchase_id'] = item2.pk
         request.session['user_id'] = request.user.pk
         if channel_of_dispatch != None and channel_of_dispatch != "":
-            dispatch_text = DynamicDropdown.objects.get(id=channel_of_dispatch).name
+            dispatch_text = DynamicDropdown.objects.get(
+                id=channel_of_dispatch).name
         else:
             dispatch_text = None
-        if not (dispatch_text == 'Franchisee Store') :
+        if not (dispatch_text == 'Franchisee Store'):
             dispatch = Dispatch()
 
             if Customer_Details.objects.filter(customer_name=customer_name,
                                                contact_no=contact_no).count() > 0:
 
-
                 dispatch.crm_no = Customer_Details.objects.filter(customer_name=customer_name,
-                                                               contact_no=contact_no).first()
+                                                                  contact_no=contact_no).first()
 
             else:
                 dispatch.crm_no = Customer_Details.objects.get(id=item.pk)
@@ -414,47 +426,50 @@ def add_purchase_details(request):
             dispatch.company_email = customer_email_id
             dispatch.company_address = address  # new2
             # dispatch.channel_of_dispatch = channel_of_dispatch   # new2
-            if channel_of_dispatch!=None and channel_of_dispatch!="":
-                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)   # new2
+            if channel_of_dispatch != None and channel_of_dispatch != "":
+                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                    id=channel_of_dispatch)   # new2
             dispatch.bill_address = bill_address   # new2
             dispatch.shipping_address = shipping_address   # new2
             if notes != None or notes != 'None' or notes != '':
                 dispatch.notes = notes   # new2
             dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-            dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            dispatch.manager_id = SiteUser.objects.get(
+                id=request.user.pk).group
             if Dispatch.objects.all().count() == 0:
                 dispatch.dispatch_no = 1
             else:
-                dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                dispatch.dispatch_no = Dispatch.objects.latest(
+                    'dispatch_no').dispatch_no + 1
             # dispatch.customer_email = customer_email_id
             # dispatch.customer_name = customer_name
             # dispatch.company_name = company_name
             # dispatch.customer_address = address
 
             dispatch.save()
-            current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+            current_stage_in_db = Dispatch.objects.get(
+                id=dispatch.pk).current_stage  # updatestage1
             if (current_stage_in_db == '' or current_stage_in_db == None):
-                Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
-
+                Dispatch.objects.filter(id=dispatch.pk).update(
+                    current_stage='dispatch q')
 
             # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
             # dispatch2.dispatch_id = dispatch.pk
             # dispatch2.save(update_fields=['dispatch_id'])
             customer_id = Purchase_Details.objects.get(id=item2.pk)
-            customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk) #str(dispatch.pk + 00000)
+            customer_id.dispatch_id_assigned = Dispatch.objects.get(
+                id=dispatch.pk)  # str(dispatch.pk + 00000)
             customer_id.save(update_fields=['dispatch_id_assigned'])
 
         # customer_id = Purchase_Details.objects.get(id=item2.pk)
         # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
         # customer_id.save(update_fields=['dispatch_id_assigned'])
 
-
-
-
         # send_mail('Feedback Form','Click on the link to give feedback http://139.59.76.87/feedback_purchase/'+str(request.user.pk)+'/'+str(item.id)+'/'+str(item2.id) , settings.EMAIL_HOST_USER, [customer_email_id])
 
-        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(user_id=site_user_id)).count() > 0:
-            Employee_Analysis_date.objects.filter(user_id=site_user_id,entry_date=datetime.now().date(),year = datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
+        if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()), Q(user_id=site_user_id)).count() > 0:
+            Employee_Analysis_date.objects.filter(user_id=site_user_id, entry_date=datetime.now().date(
+            ), year=datetime.now().year).update(total_sales_done_today=F("total_sales_done_today") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -469,8 +484,9 @@ def add_purchase_details(request):
             ead.year = datetime.now().year
             ead.save()
 
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=site_user_id)).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=site_user_id,entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + 0.0)
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month), Q(user_id=site_user_id)).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=site_user_id, entry_date__month=datetime.now(
+            ).month, year=datetime.now().year).update(total_sales_done=F("total_sales_done") + 0.0)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -487,7 +503,6 @@ def add_purchase_details(request):
 
         return redirect('/add_product_details/'+str(item2.pk))
 
-
     context = {
         'form': form,
         'cust_sugg': cust_sugg,
@@ -498,11 +513,12 @@ def add_purchase_details(request):
         'indutry': indutry,
     }
 
-    return render(request,'forms/cust_mod_form.html',context)
+    return render(request, 'forms/cust_mod_form.html', context)
+
 
 @login_required(login_url='/')
 def quick_purchase_entry(request):
-    global_count=0
+    global_count = 0
     try:
         del request.session['global_count_sess']
     except:
@@ -512,13 +528,16 @@ def quick_purchase_entry(request):
         godowns = Godown.objects.filter(default_godown_purchase=False)
 
     elif request.user.role == 'Admin':
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+        godowns = Godown.objects.filter(
+            Q(default_godown_purchase=False) & Q(godown_admin__id=request.user.id))
 
     elif request.user.role == 'Manager':
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+            godown_admin__profile_name=request.user.admin))
 
     else:
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+            godown_admin__profile_name=request.user.admin))
     type_of_purchase_list = type_purchase.objects.all()  # 1
     if request.method == 'POST':
         quantity = float(request.POST.get('quantity'))
@@ -536,21 +555,24 @@ def quick_purchase_entry(request):
         global_count = request.POST.get('global_count')
         from datetime import datetime
 
-
-        item2 = Purchase_Details.objects.filter(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
-        if item2.count()>0:
+        item2 = Purchase_Details.objects.filter(
+            sales_person=request.user.profile_name, is_quick_entry=True, date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+        if item2.count() > 0:
 
             if value_of_goods == '' or value_of_goods == None:
                 value_of_goods = 0.0
             item2.update(value_of_goods=F("value_of_goods") + value_of_goods)
-            item2 = Purchase_Details.objects.get(sales_person=request.user.profile_name,is_quick_entry=True,date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
+            item2 = Purchase_Details.objects.get(
+                sales_person=request.user.profile_name, is_quick_entry=True, date_of_purchase=datetime.today().strftime('%Y-%m-%d'))
 
         else:
             item2 = Purchase_Details()
 
-            cust_val =Customer_Details.objects.filter(customer_name = "Small Sale",contact_no = '0000000000')
-            if cust_val.count()>0:
-                item = Customer_Details.objects.get(customer_name = "Small Sale",contact_no = '0000000000')
+            cust_val = Customer_Details.objects.filter(
+                customer_name="Small Sale", contact_no='0000000000')
+            if cust_val.count() > 0:
+                item = Customer_Details.objects.get(
+                    customer_name="Small Sale", contact_no='0000000000')
             else:
                 item = Customer_Details()
                 item.customer_name = "Small Sale"
@@ -564,11 +586,11 @@ def quick_purchase_entry(request):
                 item2.company_email = ''  # new2
                 item.customer_email_id = ''
 
-
                 item.save()
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
-            site_user_id = SiteUser.objects.get(profile_name=request.user.profile_name).pk
+            site_user_id = SiteUser.objects.get(
+                profile_name=request.user.profile_name).pk
             # item2.crm_no = Customer_Details.objects.get(id=item.pk)
             item2.new_repeat_purchase = 'New'
             item2.second_person = "Small Sale"  # new1
@@ -585,25 +607,29 @@ def quick_purchase_entry(request):
             item2.shipping_address = ''
             item2.upload_op_file = ''
             item2.po_number = ''
-            item2.channel_of_sales_id = DynamicDropdown.objects.get(name="Retail Through Physical Store",type="CHANNEL OF SALES")
-            item2.industry_id = DynamicDropdown.objects.get(name="Small Sale",type="INDUSTRY")
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(
+                name="Retail Through Physical Store", type="CHANNEL OF SALES")
+            item2.industry_id = DynamicDropdown.objects.get(
+                name="Small Sale", type="INDUSTRY")
             if value_of_goods == '' or value_of_goods == None:
                 value_of_goods = 0.0
             item2.value_of_goods = value_of_goods
             # item2.channel_of_dispatch = "Franchisee Store"
-            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(name="Franchisee Store",type="CHANNEL OF DISPATCH")
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                name="Franchisee Store", type="CHANNEL OF DISPATCH")
             item2.notes = "Small Sale"
             item2.feedback_form_filled = False
             item2.is_quick_entry = True
             # item2.user_id = SiteUser.objects.get(id=request.user.pk)
             item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
-            item2.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+            item2.purchase_no = Purchase_Details.objects.latest(
+                'purchase_no').purchase_no + 1
             item2.log_entered_by = request.user.profile_name
 
             item2.save()
 
         if value_of_goods == '' or value_of_goods == None:
-            value_of_goods=0.0
+            value_of_goods = 0.0
 
         item = Product_Details()
 
@@ -645,8 +671,9 @@ def quick_purchase_entry(request):
             ead.year = datetime.now().year
             ead.save()
 
-        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
-            Employee_Analysis_month.objects.filter(user_id=SiteUser.objects.get(id=request.user.pk),entry_date__month=datetime.now().month,year = datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
+        if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month), Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
+            Employee_Analysis_month.objects.filter(user_id=SiteUser.objects.get(id=request.user.pk), entry_date__month=datetime.now(
+            ).month, year=datetime.now().year).update(total_sales_done=F("total_sales_done") + value_of_goods)
             # ead.total_sales_done_today=.filter(category_id_id=id).update(total_views=F("total_views") + value_of_goods)
 
             # ead.save(update_fields=['total_sales_done_today'])
@@ -661,52 +688,57 @@ def quick_purchase_entry(request):
             ead.year = datetime.now().year
             ead.save()
 
-
-
         try:
             if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                    sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                                                 sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity:
+                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                             quantity=F("quantity") - quantity)
-                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                            messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
-                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                            return redirect('/add_product_details/' + str(purchase_id))
+                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                        messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
+                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                        return redirect('/add_product_details/' + str(purchase_id))
                 else:
-                    messages.success(request, "Selected Product does not exist in selected godown !!!")
+                    messages.success(
+                        request, "Selected Product does not exist in selected godown !!!")
 
             elif sub_model != '':
                 product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                    sub_category__name=sub_model, sub_sub_category__name=None)
-                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                        if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                            GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                                                 sub_category__name=sub_model, sub_sub_category__name=None)
+                if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity:
+                        GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                             quantity=F("quantity") - quantity)
-                        elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                            messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
-                                GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                            return redirect('/add_product_details/' + str(purchase_id))
+                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                        messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
+                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                        return redirect('/add_product_details/' + str(purchase_id))
                 else:
-                    messages.success(request, "Selected Product does not exist in selected godown !!!")
+                    messages.success(
+                        request, "Selected Product does not exist in selected godown !!!")
         except:
-            messages.success(request, "Selected Product does not exist in product master !!!")
-            return redirect('/quick_purchase_entry/' )
+            messages.success(
+                request, "Selected Product does not exist in product master !!!")
+            return redirect('/quick_purchase_entry/')
         item.save()
 
-        pro_sum = Product_Details.objects.filter(purchase_id__id=item2.id).aggregate(Sum('amount'))
-        total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + item2.total_pf if item2.total_pf != None else 0  + item2.tax_amount if item2.tax_amount  != None else 0 
-        Purchase_Details.objects.filter(id=item2.id).update(total_amount=total_value )
-        
+        pro_sum = Product_Details.objects.filter(
+            purchase_id__id=item2.id).aggregate(Sum('amount'))
+        total_value = pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + \
+            item2.total_pf if item2.total_pf != None else 0 + \
+            item2.tax_amount if item2.tax_amount != None else 0
+        Purchase_Details.objects.filter(
+            id=item2.id).update(total_amount=total_value)
+
         if is_last_product_yes == 'yes':
             try:
                 del request.session['global_count_sess']
             except:
                 pass
-            return redirect('/view_customer_details/' )
+            return redirect('/view_customer_details/')
         elif is_last_product_yes == 'no':
             try:
                 del request.session['global_count_sess']
@@ -714,49 +746,56 @@ def quick_purchase_entry(request):
                 pass
             request.session['global_count_sess'] = global_count
             return redirect('/quick_purchase_entry/')
-    context={
-        'global_count':global_count,
+    context = {
+        'global_count': global_count,
         'godowns': godowns,
         'type_purchase': type_of_purchase_list,  # 2
     }
     return render(request, 'dashboardnew/add_product.html', context)
 
+
 @login_required(login_url='/')
-def edit_product_customer(request,product_id_rec):
+def edit_product_customer(request, product_id_rec):
     purchase = Product_Details.objects.get(id=product_id_rec)
     purchase_id = Purchase_Details.objects.get(id=purchase.purchase_id)
     type_of_purchase_list = type_purchase.objects.all()  # 1
-    
+
     # dispatch_id_assigned = str(purchase_id.dispatch_id_assigned)
     try:
         dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     except:
-        dispatch_id_assigned=None
+        dispatch_id_assigned = None
     product_id = purchase
 
     if request.user.role == 'Super Admin':
         try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False))
+            godowns = Godown.objects.filter(
+                ~Q(id=product_id.godown_id.id) & Q(default_godown_purchase=False))
         except:
             godowns = Godown.objects.filter(Q(default_godown_purchase=False))
 
     elif request.user.role == 'Admin':
         try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id) & Q(
+                default_godown_purchase=False) & Q(godown_admin__id=request.user.id))
         except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id) )
+            godowns = Godown.objects.filter(
+                Q(default_godown_purchase=False) & Q(godown_admin__id=request.user.id))
     elif request.user.role == 'Manager':
         try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id) & Q(
+                default_godown_purchase=False) & Q(godown_admin__profile_name=request.user.admin))
         except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+                godown_admin__profile_name=request.user.admin))
 
     else:
         try:
-            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id)&Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+            godowns = Godown.objects.filter(~Q(id=product_id.godown_id.id) & Q(
+                default_godown_purchase=False) & Q(godown_admin__profile_name=request.user.admin))
         except:
-            godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
-
+            godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+                godown_admin__profile_name=request.user.admin))
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -778,7 +817,7 @@ def edit_product_customer(request,product_id_rec):
         godown = request.POST.get('godown')
         return_reason = request.POST.get('return_reason')
         cost2 = purchase.amount
-            
+
         if sub_sub_model != '' and sub_sub_model != 'None':
             godown_product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                                     sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
@@ -797,8 +836,8 @@ def edit_product_customer(request,product_id_rec):
                                                      sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
             else:
                 product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
-                                                        main_category__name=item.model_of_purchase,
-                                                        sub_category__name=item.sub_model)
+                                                     main_category__name=item.model_of_purchase,
+                                                     sub_category__name=item.sub_model)
             # adding old products quantity to old/current godown
             GodownProduct.objects.filter(godown_id=purchase.godown_id.id, product_id=product_id_old).update(
                 quantity=F("quantity") + item.quantity)
@@ -820,20 +859,26 @@ def edit_product_customer(request,product_id_rec):
             item2.save()
 
             new_transaction = GodownTransactions()
-            new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+            new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                id=item3.id)
             new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                     + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
-                                    '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                    '\nPurchase Id:' + \
+                str(purchase_id.id) + \
+                ', Purchase Product Id: ' + str(product_id.id)
             new_transaction.save()
             Purchase_Details.objects.filter(id=purchase_id.id).update(
                 value_of_goods=F("value_of_goods") - item.amount)
-            Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
-            Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
+            Purchase_Details.objects.filter(id=purchase_id).update(
+                tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=purchase_id).update(
+                total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
             Product_Details.objects.filter(id=product_id_rec).delete()
-            messages.success(request, 'Purchase Product with ID:-'+str(product_id_rec)+' returned to Godown successfully!')
+            messages.success(request, 'Purchase Product with ID:-' +
+                             str(product_id_rec)+' returned to Godown successfully!')
             if return_reason == 'Exchanged for another product':
-                return redirect('/add_product_details/'+str(purchase_id.id))                                                
-            return redirect('/update_customer_details/'+str(purchase_id.id))                                                
+                return redirect('/add_product_details/'+str(purchase_id.id))
+            return redirect('/update_customer_details/'+str(purchase_id.id))
         # if product changed then update stock
         if item.type_of_scale != type_of_scale or item.model_of_purchase != model_of_purchase or item.sub_model != sub_model or item.sub_sub_model != sub_sub_model or is_return == 'on':
             product_id_new = Product.objects.get(id=godown_product_id.id)
@@ -843,11 +888,12 @@ def edit_product_customer(request,product_id_rec):
                                                      sub_category__name=item.sub_model, sub_sub_category__name=item.sub_sub_model)
             else:
                 product_id_old = Product.objects.get(scale_type__name=item.type_of_scale,
-                                                        main_category__name=item.model_of_purchase,
-                                                        sub_category__name=item.sub_model)
+                                                     main_category__name=item.model_of_purchase,
+                                                     sub_category__name=item.sub_model)
 
             if GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).count() == 0:
-                messages.error(request, "Selected Product does not exist In Selected Godown !!! ")
+                messages.error(
+                    request, "Selected Product does not exist In Selected Godown !!! ")
                 return redirect("/edit_product_customer/" + str(product_id_rec))
 
             # adding old products quantity to old/current godown
@@ -871,20 +917,26 @@ def edit_product_customer(request,product_id_rec):
             item2.save()
 
             new_transaction = GodownTransactions()
-            new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+            new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                id=item3.id)
             new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                     + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
-                                    '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                    '\nPurchase Id:' + \
+                str(purchase_id.id) + \
+                ', Purchase Product Id: ' + str(product_id.id)
             new_transaction.save()
             # subtracting new products quantity from current godown
             GodownProduct.objects.filter(godown_id=godown, product_id=product_id_new).update(
                 quantity=F("quantity") - quantity)
             new_transaction = GodownTransactions()
-            new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+            new_transaction.purchase_product_id = Product_Details.objects.get(
+                id=product_id_rec)
             new_transaction.purchase_quantity = float(quantity)
-            new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number)+ ',\nName: ' + str(request.user.profile_name) \
-                                    + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed'+ \
-                                    '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+            new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
+                                    + ', Contact: ' + str(request.user.mobile) + ',\nProduct changed' + \
+                                    '\nPurchase Id:' + \
+                str(purchase_id.id) + \
+                ', Purchase Product Id: ' + str(product_id.id)
             new_transaction.save()
         else:
             new_godown_name = Godown.objects.get(id=godown).name_of_godown
@@ -892,10 +944,11 @@ def edit_product_customer(request,product_id_rec):
             if (quantity != '') or (godown != ''):
                 if float(purchase.godown_id.id) != float(godown) and float(quantity) != float(purchase.quantity):
                     if GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).count() == 0:
-                        messages.error(request, "Selected Product does not exist In Selected Godown !!! ")
+                        messages.error(
+                            request, "Selected Product does not exist In Selected Godown !!! ")
                         return redirect("/edit_product_customer/" + str(product_id_rec))
 
-                    if (float(quantity)) > GodownProduct.objects.get(godown_id=godown,product_id=godown_product_id).quantity:
+                    if (float(quantity)) > GodownProduct.objects.get(godown_id=godown, product_id=godown_product_id).quantity:
                         messages.error(request, "Insufficient stock !!! Available Quantity:" + str(
                             GodownProduct.objects.get(godown_id=godown, product_id=godown_product_id).quantity))
                         return redirect("/edit_product_customer/" + str(product_id_rec))
@@ -904,7 +957,8 @@ def edit_product_customer(request,product_id_rec):
                                                  product_id=godown_product_id).update(
                         quantity=F("quantity") + purchase.quantity)
                     item3 = AcceptGoods()
-                    item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                    item3.from_godown = Godown.objects.get(
+                        id=purchase.godown_id.id)
                     item3.good_added = True
                     item3.log_entered_by = request.user.name
                     item3.notes = 'Returned from Sales'
@@ -913,36 +967,45 @@ def edit_product_customer(request,product_id_rec):
                     item2 = AGProducts()
                     item2.type = 'Individual'
                     item2.quantity = purchase.quantity
-                    item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
-                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                    item2.godown_id = Godown.objects.get(
+                        id=purchase.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(
+                        id=item3.id)
                     item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
                                                                         product_id=godown_product_id)
                     item2.log_entered_by = request.user.name
                     item2.save()
 
                     new_transaction = GodownTransactions()
-                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                        id=item3.id)
                     new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                             + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
-                                            '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                            '\nPurchase Id:' + \
+                        str(purchase_id.id) + \
+                        ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
 
                     # subtracting new quantity from new godown
                     GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).update(
                         quantity=F("quantity") - quantity)
                     new_transaction = GodownTransactions()
-                    new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                    new_transaction.purchase_product_id = Product_Details.objects.get(
+                        id=product_id_rec)
                     new_transaction.purchase_quantity = quantity
                     new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                             + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
-                                            '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                            '\nPurchase Id:' + \
+                        str(purchase_id.id) + \
+                        ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
                 elif float(purchase.godown_id.id) != float(godown):
                     if GodownProduct.objects.filter(godown_id=godown, product_id=godown_product_id).count() == 0:
-                        messages.error(request, "Selected Product does not exist In Selected Godown !!! ")
+                        messages.error(
+                            request, "Selected Product does not exist In Selected Godown !!! ")
                         return redirect("/edit_product_customer/" + str(product_id_rec))
 
-                    if (float(quantity)) > GodownProduct.objects.get(godown_id=godown,product_id=godown_product_id).quantity:
+                    if (float(quantity)) > GodownProduct.objects.get(godown_id=godown, product_id=godown_product_id).quantity:
                         messages.error(request, "Insufficient stock !!! Available Quantity:" + str(
                             GodownProduct.objects.get(godown_id=godown, product_id=godown_product_id).quantity))
                         return redirect("/edit_product_customer/" + str(product_id_rec))
@@ -951,7 +1014,8 @@ def edit_product_customer(request,product_id_rec):
                                                  product_id=godown_product_id).update(
                         quantity=F("quantity") + purchase.quantity)
                     item3 = AcceptGoods()
-                    item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                    item3.from_godown = Godown.objects.get(
+                        id=purchase.godown_id.id)
                     item3.good_added = True
                     item3.log_entered_by = request.user.name
                     item3.notes = 'Returned from Sales'
@@ -960,18 +1024,23 @@ def edit_product_customer(request,product_id_rec):
                     item2 = AGProducts()
                     item2.type = 'Individual'
                     item2.quantity = purchase.quantity
-                    item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
-                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                    item2.godown_id = Godown.objects.get(
+                        id=purchase.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(
+                        id=item3.id)
                     item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
                                                                         product_id=godown_product_id.id)
                     item2.log_entered_by = request.user.name
                     item2.save()
 
                     new_transaction = GodownTransactions()
-                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                        id=item3.id)
                     new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                             + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
-                                            '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                            '\nPurchase Id:' + \
+                        str(purchase_id.id) + \
+                        ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
 
                     # subtracting new quantity from new godown
@@ -979,15 +1048,18 @@ def edit_product_customer(request,product_id_rec):
                         quantity=F("quantity") - purchase.quantity)
 
                     new_transaction = GodownTransactions()
-                    new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
+                    new_transaction.purchase_product_id = Product_Details.objects.get(
+                        id=product_id_rec)
                     new_transaction.purchase_quantity = quantity
                     new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                             + ', Contact: ' + str(request.user.mobile) + ',\nGodown changed:- Old: ' + str(purchase.godown_id.name_of_godown) + ', New: ' + str(new_godown_name) + \
-                                            '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                            '\nPurchase Id:' + \
+                        str(purchase_id.id) + \
+                        ', Purchase Product Id: ' + str(product_id.id)
                     new_transaction.save()
                 elif quantity != purchase.quantity:
                     # adding old quantity to current godown
-                    if (float(quantity)-float(purchase.quantity)) > GodownProduct.objects.get(godown_id=purchase.godown_id.id,product_id=godown_product_id).quantity:
+                    if (float(quantity)-float(purchase.quantity)) > GodownProduct.objects.get(godown_id=purchase.godown_id.id, product_id=godown_product_id).quantity:
                         messages.error(request, "Insufficient stock !!! Available Quantity:" + str(
                             GodownProduct.objects.get(godown_id=godown, product_id=godown_product_id).quantity))
                         return redirect("/edit_product_customer/" + str(product_id_rec))
@@ -1003,7 +1075,8 @@ def edit_product_customer(request,product_id_rec):
 
                     if quantity < purchase.quantity:
                         item3 = AcceptGoods()
-                        item3.from_godown = Godown.objects.get(id=purchase.godown_id.id)
+                        item3.from_godown = Godown.objects.get(
+                            id=purchase.godown_id.id)
                         item3.good_added = True
                         item3.log_entered_by = request.user.name
                         item3.notes = 'Returned from Sales'
@@ -1011,32 +1084,43 @@ def edit_product_customer(request,product_id_rec):
 
                         item2 = AGProducts()
                         item2.type = 'Individual'
-                        item2.quantity = float(purchase.quantity) - float(quantity)
-                        item2.godown_id = Godown.objects.get(id=purchase.godown_id.id)
-                        item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
+                        item2.quantity = float(
+                            purchase.quantity) - float(quantity)
+                        item2.godown_id = Godown.objects.get(
+                            id=purchase.godown_id.id)
+                        item2.accept_product_id = AcceptGoods.objects.get(
+                            id=item3.id)
                         item2.godown_product_id = GodownProduct.objects.get(godown_id=purchase.godown_id.id,
                                                                             product_id=godown_product_id)
                         item2.log_entered_by = request.user.name
                         item2.save()
 
                         new_transaction = GodownTransactions()
-                        new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                        new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                            id=item3.id)
                         new_transaction.notes = 'Product Returned from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                                 + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + str(purchase.quantity) + ', New: ' + str(quantity) + \
-                                                '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                                '\nPurchase Id:' + \
+                            str(purchase_id.id) + \
+                            ', Purchase Product Id: ' + str(product_id.id)
                         new_transaction.save()
                     elif quantity > purchase.quantity:
                         new_transaction = GodownTransactions()
-                        new_transaction.purchase_product_id = Product_Details.objects.get(id=product_id_rec)
-                        new_transaction.purchase_quantity = float(quantity) - float(purchase.quantity)
+                        new_transaction.purchase_product_id = Product_Details.objects.get(
+                            id=product_id_rec)
+                        new_transaction.purchase_quantity = float(
+                            quantity) - float(purchase.quantity)
                         new_transaction.notes = 'Product Added to Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                                 + ', Contact: ' + str(request.user.mobile) + ',\nQuantity changed:- Old: ' + str(purchase.quantity) + ', New: ' + str(quantity) + \
-                                                '\nPurchase Id:' + str(purchase_id.id)+ ', Purchase Product Id: ' + str(product_id.id)
+                                                '\nPurchase Id:' + \
+                            str(purchase_id.id) + \
+                            ', Purchase Product Id: ' + str(product_id.id)
                         new_transaction.save()
                 else:
                     print('no godown changes')
 
-            Purchase_Details.objects.filter(id=purchase_id.pk).update(value_of_goods=F("value_of_goods") - cost2)
+            Purchase_Details.objects.filter(id=purchase_id.pk).update(
+                value_of_goods=F("value_of_goods") - cost2)
             Employee_Analysis_month.objects.filter(user_id=purchase_id.user_id,
                                                    entry_date__month=product_id.entry_timedate.month,
                                                    year=product_id.entry_timedate.year).update(
@@ -1046,7 +1130,6 @@ def edit_product_customer(request,product_id_rec):
                                                   entry_date=product_id.entry_timedate,
                                                   year=product_id.entry_timedate.year).update(
                 total_sales_done_today=F("total_sales_done_today") - cost2)
-
 
         item.quantity = quantity
         item.type_of_scale = type_of_scale
@@ -1065,8 +1148,8 @@ def edit_product_customer(request,product_id_rec):
         # item.purchase_type = purchase_type
         # item.user_id = SiteUser.objects.get(id=request.user.pk)
         # item.manager_id = SiteUser.objects.get(id=request.user.pk).group
-        item.save(update_fields=['log_entered_by','quantity', 'type_of_scale', 'model_of_purchase', 'sub_model','sub_sub_model',
-                                 'serial_no_scale', 'brand', 'capacity', 'unit','amount','godown_id'
+        item.save(update_fields=['log_entered_by', 'quantity', 'type_of_scale', 'model_of_purchase', 'sub_model', 'sub_sub_model',
+                                 'serial_no_scale', 'brand', 'capacity', 'unit', 'amount', 'godown_id'
                                  ])
 
         Purchase_Details.objects.filter(id=purchase_id.pk).update(
@@ -1084,11 +1167,10 @@ def edit_product_customer(request,product_id_rec):
                                               year=purchase_id.entry_timedate.year).update(
             total_sales_done_today=F("total_sales_done_today") + amount)
 
-
-
         if product_id.product_dispatch_id != '' and product_id.product_dispatch_id != None:
-            if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count()>0:
-                dispatch_pro = Product_Details_Dispatch.objects.get(id=product_id.product_dispatch_id.pk)
+            if Product_Details_Dispatch.objects.filter(id=product_id.product_dispatch_id.pk).count() > 0:
+                dispatch_pro = Product_Details_Dispatch.objects.get(
+                    id=product_id.product_dispatch_id.pk)
 
                 # dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
                 # dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
@@ -1103,15 +1185,16 @@ def edit_product_customer(request,product_id_rec):
                 dispatch_pro.capacity = capacity
                 dispatch_pro.unit = unit
                 dispatch_pro.value_of_goods = amount
-                dispatch_pro.godown_id = Godown.objects.get(id=product_id.godown_id.pk)
+                dispatch_pro.godown_id = Godown.objects.get(
+                    id=product_id.godown_id.pk)
 
                 # dispatch_pro.dispatch_id = dispatch_id
                 # dispatch_pro.sales_person = sales_person
                 # dispatch_pro.purchase_type = purchase_type
                 dispatch_pro.save(
-                    update_fields=['quantity', 'type_of_scale','value_of_goods', 'model_of_purchase', 'sub_model',
+                    update_fields=['quantity', 'type_of_scale', 'value_of_goods', 'model_of_purchase', 'sub_model',
                                    'sub_sub_model',
-                                   'serial_no_scale', 'brand', 'capacity', 'unit','godown_id'
+                                   'serial_no_scale', 'brand', 'capacity', 'unit', 'godown_id'
                                    ])
 
         # try:
@@ -1120,12 +1203,16 @@ def edit_product_customer(request,product_id_rec):
         # except:
         #     pass
         try:
-            product = Product_Details.objects.filter(purchase_id=purchase_id.id).aggregate(Sum('amount'))
-            Purchase_Details.objects.filter(id=purchase_id.id).update(value_of_goods=product['amount__sum'])
+            product = Product_Details.objects.filter(
+                purchase_id=purchase_id.id).aggregate(Sum('amount'))
+            Purchase_Details.objects.filter(id=purchase_id.id).update(
+                value_of_goods=product['amount__sum'])
             if purchase_id.is_gst == True:
-                Purchase_Details.objects.filter(id=purchase_id.id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
-            Purchase_Details.objects.filter(id=purchase_id.id).update(total_amount=product['amount__sum']+ purchase_id.tax_amount + purchase_id.total_pf)
-        except Exception  as e:
+                Purchase_Details.objects.filter(id=purchase_id.id).update(
+                    tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+            Purchase_Details.objects.filter(id=purchase_id.id).update(
+                total_amount=product['amount__sum'] + purchase_id.tax_amount + purchase_id.total_pf)
+        except Exception as e:
             print(e)
             pass
         return redirect('/update_customer_details/' + str(purchase_id.id))
@@ -1136,54 +1223,61 @@ def edit_product_customer(request,product_id_rec):
         'type_purchase': type_of_purchase_list,  # 2
     }
 
-    return render(request,'edit_product/edit_product_customer.html',context)
+    return render(request, 'edit_product/edit_product_customer.html', context)
 
 
 @login_required(login_url='/')
 def view_customer_details(request):
-    
-    date_today= datetime.now().strftime('%Y-%m-%d')
+
+    date_today = datetime.now().strftime('%Y-%m-%d')
     message_list = Employee_Leave.objects.filter(entry_date=str(date_today))
 
     # for updating total amount in all sales entry
     sales_list = Purchase_Details.objects.all()
-    
-        
+
     for sale in sales_list:
         if (sale.value_of_goods == None and sale.total_amount == None) or (sale.value_of_goods == 'None' and sale.total_amount == 'None'):
             print(sale.id)
-            pro_sum = Product_Details.objects.filter(purchase_id__id=sale.id).aggregate(Sum('amount'))
-            total_value =  pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + sale.total_pf if sale.total_pf != None else 0  + sale.tax_amount if sale.tax_amount  != None else 0 
+            pro_sum = Product_Details.objects.filter(
+                purchase_id__id=sale.id).aggregate(Sum('amount'))
+            total_value = pro_sum['amount__sum'] if pro_sum['amount__sum'] != None else 0 + \
+                sale.total_pf if sale.total_pf != None else 0 + \
+                sale.tax_amount if sale.tax_amount != None else 0
             print(total_value)
-            Purchase_Details.objects.filter(id=sale.id).update(total_amount=total_value )
-            Purchase_Details.objects.filter(id=sale.id).update(value_of_goods=pro_sum['amount__sum'] )
+            Purchase_Details.objects.filter(
+                id=sale.id).update(total_amount=total_value)
+            Purchase_Details.objects.filter(id=sale.id).update(
+                value_of_goods=pro_sum['amount__sum'])
         if sale.total_amount == 0 or sale.total_amount == None or sale.total_amount == 'None':
             try:
-                Purchase_Details.objects.filter(id=sale.id).update(total_amount=F("value_of_goods") )
+                Purchase_Details.objects.filter(id=sale.id).update(
+                    total_amount=F("value_of_goods"))
             except:
                 pass
 
-    #for deleting purchase entries
+    # for deleting purchase entries
     if request.method == 'POST' and 'delete_purchase_id' in request.POST:
         purchase_ids = request.POST.getlist('id[]')
         for id in purchase_ids[1:]:
             try:
-                purchase_obj=Purchase_Details.objects.get(purchase_no=id)
+                purchase_obj = Purchase_Details.objects.get(purchase_no=id)
                 log = Log()
                 log.entered_by = request.user.profile_name
                 log.module_name = 'Purchase Module'
                 log.action_type = 'Delete'
                 log.table_name = 'Purchase_Details'
-                log.reference = 'Purchase Id:' +str(id)
+                log.reference = 'Purchase Id:' + str(id)
                 log.save()
 
-                purchase_products= Product_Details.objects.filter(purchase_id__purchase_no=id)
+                purchase_products = Product_Details.objects.filter(
+                    purchase_id__purchase_no=id)
                 for product in purchase_products:
-                    GodownProduct.objects.filter(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale,product_id__main_category__name=product.model_of_purchase,product_id__sub_category__name=product.sub_model,product_id__sub_sub_category__name=product.sub_sub_model).update(
-                    quantity=F("quantity") + product.quantity)
+                    GodownProduct.objects.filter(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale, product_id__main_category__name=product.model_of_purchase, product_id__sub_category__name=product.sub_model, product_id__sub_sub_category__name=product.sub_sub_model).update(
+                        quantity=F("quantity") + product.quantity)
 
                     item3 = AcceptGoods()
-                    item3.from_godown = Godown.objects.get(id=product.godown_id.id)
+                    item3.from_godown = Godown.objects.get(
+                        id=product.godown_id.id)
                     item3.good_added = True
                     item3.log_entered_by = request.user.name
                     item3.notes = 'Deleted from Sales'
@@ -1192,17 +1286,23 @@ def view_customer_details(request):
                     item2 = AGProducts()
                     item2.type = 'Individual'
                     item2.quantity = float(product.quantity)
-                    item2.godown_id = Godown.objects.get(id=product.godown_id.id)
-                    item2.accept_product_id = AcceptGoods.objects.get(id=item3.id)
-                    item2.godown_product_id = GodownProduct.objects.get(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale,product_id__main_category__name=product.model_of_purchase,product_id__sub_category__name=product.sub_model,product_id__sub_sub_category__name=product.sub_sub_model)
+                    item2.godown_id = Godown.objects.get(
+                        id=product.godown_id.id)
+                    item2.accept_product_id = AcceptGoods.objects.get(
+                        id=item3.id)
+                    item2.godown_product_id = GodownProduct.objects.get(godown_id=product.godown_id.id, product_id__scale_type__name=product.type_of_scale,
+                                                                        product_id__main_category__name=product.model_of_purchase, product_id__sub_category__name=product.sub_model, product_id__sub_sub_category__name=product.sub_sub_model)
                     item2.log_entered_by = request.user.name
                     item2.save()
 
                     new_transaction = GodownTransactions()
-                    new_transaction.accept_goods_id = AcceptGoods.objects.get(id=item3.id)
+                    new_transaction.accept_goods_id = AcceptGoods.objects.get(
+                        id=item3.id)
                     new_transaction.notes = 'Product Deleted from Sales by Emp id: ' + str(request.user.employee_number) + ',\nName: ' + str(request.user.profile_name) \
                                             + ', Contact: ' + str(request.user.mobile) + ',\nProduct Deleted' + \
-                                            '\nPurchase Id:' + str(purchase_obj.id)+ ', Purchase Product Id: ' + str(product.id)
+                                            '\nPurchase Id:' + \
+                        str(purchase_obj.id) + \
+                        ', Purchase Product Id: ' + str(product.id)
                     new_transaction.save()
                 Purchase_Details.objects.filter(purchase_no=id).delete()
 
@@ -1219,10 +1319,12 @@ def view_customer_details(request):
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(
+                    user_id__group__icontains=request.user.name), date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,date_of_purchase__range=[start_date, end_date]).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk, date_of_purchase__range=[
+                                                            start_date, end_date]).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
@@ -1232,11 +1334,12 @@ def view_customer_details(request):
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,second_contact_no__icontains=contact).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, second_contact_no__icontains=contact).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_contact_no__icontains=contact).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, second_contact_no__icontains=contact).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
@@ -1247,11 +1350,12 @@ def view_customer_details(request):
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,company_email__icontains=email).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, company_email__icontains=email).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,company_email__icontains=email).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, company_email__icontains=email).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
@@ -1261,54 +1365,58 @@ def view_customer_details(request):
         elif 'submit4' in request.POST:
             customer = request.POST.get('customer')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,second_person__icontains=customer).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, second_person__icontains=customer).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_person__icontains=customer).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, second_person__icontains=customer).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
-                'search_msg': 'Search result for Customer Name: ' +customer,
+                'search_msg': 'Search result for Customer Name: ' + customer,
             }
             return render(request, 'dashboardnew/cm.html', context)
 
-        elif  'submit5' in request.POST:
+        elif 'submit5' in request.POST:
             company = request.POST.get('company')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,second_company_name__icontains=company).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, second_company_name__icontains=company).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,second_company_name__icontains=company).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, second_company_name__icontains=company).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for Company Name: ' + company,
             }
             return render(request, 'dashboardnew/cm.html', context)
-        elif request.method=='POST' and 'submit6' in request.POST:
+        elif request.method == 'POST' and 'submit6' in request.POST:
             crm = request.POST.get('crm')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,crm_no__pk=crm).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, crm_no__pk=crm).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,crm_no__pk=crm).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, crm_no__pk=crm).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
                 'search_msg': 'Search result for CRM No. : ' + crm,
             }
             return render(request, 'dashboardnew/cm.html', context)
-        elif  'submit7' in request.POST:
+        elif 'submit7' in request.POST:
             purchase_no = request.POST.get('purchase_no')
             if check_admin_roles(request):  # For ADMIN
-                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                                                            user_id__is_deleted=False,purchase_no__icontains=purchase_no).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                                                            user_id__is_deleted=False, purchase_no__icontains=purchase_no).order_by('-purchase_no')
 
             else:  # For EMPLOYEE
-                cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,purchase_no__icontains=purchase_no).order_by('-purchase_no')
+                cust_list = Purchase_Details.objects.filter(
+                    user_id=request.user.pk, purchase_no__icontains=purchase_no).order_by('-purchase_no')
 
             context = {
                 'customer_list': cust_list,
@@ -1323,8 +1431,8 @@ def view_customer_details(request):
                                                         user_id__modules_assigned__icontains='Customer Module').order_by(
                 '-purchase_no')
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
-            
+            cust_list = Purchase_Details.objects.filter(
+                user_id=request.user.pk).order_by('-purchase_no')
 
         context = {
             'customer_list': cust_list,
@@ -1333,29 +1441,27 @@ def view_customer_details(request):
         }
         return render(request, 'dashboardnew/cm.html', context)
 
-
-    
-    
     else:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(
-                Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module',entry_timedate__month=today_month,entry_timedate__year=today_year).order_by('-purchase_no')
-            
+                Q(user_id__name=request.user.name) | Q(
+                    user_id__group__icontains=request.user.name),
+                user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module', entry_timedate__month=today_month, entry_timedate__year=today_year).order_by('-purchase_no')
+
         else:  # For EMPLOYEE
             cust_list = Purchase_Details.objects.filter(user_id=request.user.pk,
-                                                        entry_timedate__month=today_month,entry_timedate__year=today_year).order_by('-purchase_no')
-            
-
+                                                        entry_timedate__month=today_month, entry_timedate__year=today_year).order_by('-purchase_no')
 
         context = {
             'customer_list': cust_list,
             'message': message_list,
         }
-        return render(request,'dashboardnew/cm.html',context )
+        return render(request, 'dashboardnew/cm.html', context)
+
 
 def one_time_dd():
-    purchase_id = Purchase_Details.objects.filter(Q(channel_of_dispatch_id=None)&Q(channel_of_marketing_id=None)&Q(channel_of_sales_id=None)&Q(industry_id=None)).values('id')
+    purchase_id = Purchase_Details.objects.filter(Q(channel_of_dispatch_id=None) & Q(
+        channel_of_marketing_id=None) & Q(channel_of_sales_id=None) & Q(industry_id=None)).values('id')
     for item in purchase_id:
         purchase_id_id = Purchase_Details.objects.get(id=item['id'])
         print(purchase_id_id.channel_of_sales+'fh')
@@ -1363,20 +1469,22 @@ def one_time_dd():
         if purchase_id_id.channel_of_sales != None and purchase_id_id.channel_of_sales != "":
             refined_sales = purchase_id_id.channel_of_sales
             if purchase_id_id.channel_of_sales == 'IndiaMart' or purchase_id_id.channel_of_sales == 'Indiamart':
-                refined_sales= 'India Mart'
-            if purchase_id_id.channel_of_sales == 'Market' or purchase_id_id.channel_of_sales == 'Retail through Physical Storebhan' or purchase_id_id.channel_of_sales =='Retail through Physical Store+':
+                refined_sales = 'India Mart'
+            if purchase_id_id.channel_of_sales == 'Market' or purchase_id_id.channel_of_sales == 'Retail through Physical Storebhan' or purchase_id_id.channel_of_sales == 'Retail through Physical Store+':
                 refined_sales = 'Retail through Physical Store'
-            purchase_id_id.channel_of_sales_id=DynamicDropdown.objects.get(name=refined_sales.replace("'",""),type="CHANNEL OF SALES")
-        if purchase_id_id.channel_of_marketing!=None and purchase_id_id.channel_of_marketing!="":
+            purchase_id_id.channel_of_sales_id = DynamicDropdown.objects.get(
+                name=refined_sales.replace("'", ""), type="CHANNEL OF SALES")
+        if purchase_id_id.channel_of_marketing != None and purchase_id_id.channel_of_marketing != "":
             print(purchase_id_id.channel_of_marketing)
             refined = purchase_id_id.channel_of_marketing
-            if purchase_id_id.channel_of_marketing == 'markett' or purchase_id_id.channel_of_marketing =='MARKRT':
+            if purchase_id_id.channel_of_marketing == 'markett' or purchase_id_id.channel_of_marketing == 'MARKRT':
                 refined = 'Market'
             if purchase_id_id.channel_of_marketing == 'IndiaMart' or purchase_id_id.channel_of_marketing == 'Indiamart':
-                refined= 'India Mart'
+                refined = 'India Mart'
 
-            purchase_id_id.channel_of_marketing_id=DynamicDropdown.objects.get(name=refined,type="CHANNEL OF MARKETING")
-        if purchase_id_id.industry != None and purchase_id_id.industry!="e" and purchase_id_id.industry!="" and purchase_id_id.industry!='2238':
+            purchase_id_id.channel_of_marketing_id = DynamicDropdown.objects.get(
+                name=refined, type="CHANNEL OF MARKETING")
+        if purchase_id_id.industry != None and purchase_id_id.industry != "e" and purchase_id_id.industry != "" and purchase_id_id.industry != '2238':
             print(purchase_id_id.industry)
             refined_d = purchase_id_id.industry
             if purchase_id_id.industry == 'Grocery/Retailp':
@@ -1393,54 +1501,63 @@ def one_time_dd():
             if purchase_id_id.industry == ' Bakery':
                 refined_d = 'Bakery'
 
-
-
-
-            purchase_id_id.industry_id=DynamicDropdown.objects.get(name=refined_d,type="INDUSTRY",)
-        if purchase_id_id.channel_of_dispatch != None and purchase_id_id.channel_of_dispatch!="" and purchase_id_id.channel_of_dispatch!="NA" and purchase_id_id.channel_of_dispatch!="XYZ" and purchase_id_id.channel_of_dispatch!= 'Na':
+            purchase_id_id.industry_id = DynamicDropdown.objects.get(
+                name=refined_d, type="INDUSTRY",)
+        if purchase_id_id.channel_of_dispatch != None and purchase_id_id.channel_of_dispatch != "" and purchase_id_id.channel_of_dispatch != "NA" and purchase_id_id.channel_of_dispatch != "XYZ" and purchase_id_id.channel_of_dispatch != 'Na':
             print(purchase_id_id.channel_of_dispatch+'f23')
-            refine_s= purchase_id_id.channel_of_dispatch
-            if purchase_id_id.channel_of_dispatch=='Franchisee StoreSure' or purchase_id_id.channel_of_dispatch=='Franchisee StoreTejas' or \
-                    purchase_id_id.channel_of_dispatch=='Franchisee StoreBhairav Jwellers' or purchase_id_id.channel_of_dispatch=='Franchisee Storecas' or purchase_id_id.channel_of_dispatch=='Franchisee Storecasc':
+            refine_s = purchase_id_id.channel_of_dispatch
+            if purchase_id_id.channel_of_dispatch == 'Franchisee StoreSure' or purchase_id_id.channel_of_dispatch == 'Franchisee StoreTejas' or \
+                    purchase_id_id.channel_of_dispatch == 'Franchisee StoreBhairav Jwellers' or purchase_id_id.channel_of_dispatch == 'Franchisee Storecas' or purchase_id_id.channel_of_dispatch == 'Franchisee Storecasc':
                 refine_s = 'Franchisee Store'
-            if purchase_id_id.channel_of_dispatch =='FraDE Store':
+            if purchase_id_id.channel_of_dispatch == 'FraDE Store':
                 refine_s = 'Franchisee Store'
 
             if purchase_id_id.channel_of_dispatch == 'Taxi' or purchase_id_id.channel_of_dispatch == 'wefast' or purchase_id_id.channel_of_dispatch == 'Wefast':
                 refine_s = 'Transport'
 
-            if purchase_id_id.channel_of_dispatch == 'By Hand' or purchase_id_id.channel_of_dispatch == 'By hand' or purchase_id_id.channel_of_dispatch =='Self':
+            if purchase_id_id.channel_of_dispatch == 'By Hand' or purchase_id_id.channel_of_dispatch == 'By hand' or purchase_id_id.channel_of_dispatch == 'Self':
                 refine_s = 'Delivery Boys'
-            if purchase_id_id.channel_of_dispatch == 'DTDC' or purchase_id_id.channel_of_dispatch =='DTDC Courier':
+            if purchase_id_id.channel_of_dispatch == 'DTDC' or purchase_id_id.channel_of_dispatch == 'DTDC Courier':
                 refine_s = 'Courier'
 
-            purchase_id_id.channel_of_dispatch_id=DynamicDropdown.objects.get(name=refine_s.replace("`",""),type="CHANNEL OF DISPATCH",)
-        purchase_id_id.save(update_fields=['channel_of_sales_id','channel_of_marketing_id','channel_of_dispatch_id','industry_id'])
+            purchase_id_id.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                name=refine_s.replace("`", ""), type="CHANNEL OF DISPATCH",)
+        purchase_id_id.save(update_fields=[
+                            'channel_of_sales_id', 'channel_of_marketing_id', 'channel_of_dispatch_id', 'industry_id'])
+
 
 @login_required(login_url='/')
-def update_customer_details(request,id):
+def update_customer_details(request, id):
     purchase_id_id = Purchase_Details.objects.get(id=id)
     customer_id = Purchase_Details.objects.get(id=id).crm_no
     # customer_id = Customer_Details.objects.get(id=customer_id)
     product_id = Product_Details.objects.filter(purchase_id=id)
-    context ={}
+    context = {}
     # one_time_dd()
-    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
-    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
-    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
-    industry_list = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
-    
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    industry_list = DynamicDropdown.objects.filter(
+        type="INDUSTRY", is_enabled=True)
 
     try:
-        total_amt = purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf
+        total_amt = purchase_id_id.value_of_goods + \
+            purchase_id_id.tax_amount + purchase_id_id.total_pf
         print('total')
-        print(purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf)
+        print(purchase_id_id.value_of_goods +
+              purchase_id_id.tax_amount + purchase_id_id.total_pf)
         print(purchase_id_id.total_amount)
-        round_off = abs(purchase_id_id.total_amount - (purchase_id_id.value_of_goods + purchase_id_id.tax_amount + purchase_id_id.total_pf))
-        #for updating total amount in all sales entry
+        round_off = abs(purchase_id_id.total_amount - (purchase_id_id.value_of_goods +
+                        purchase_id_id.tax_amount + purchase_id_id.total_pf))
+        # for updating total amount in all sales entry
         if purchase_id_id.total_amount == 0 or purchase_id_id.total_amount == "None":
-            Purchase_Details.objects.filter(id=id).update(total_amount=total_amt)
-        Purchase_Details.objects.filter(id=id).update(round_off_total=round_off)
+            Purchase_Details.objects.filter(
+                id=id).update(total_amount=total_amt)
+        Purchase_Details.objects.filter(
+            id=id).update(round_off_total=round_off)
     except Exception as e:
         print('error updating total amount in all sales entry')
         print(e)
@@ -1453,9 +1570,10 @@ def update_customer_details(request,id):
             # request.session['product_saved'] = True
 
         else:
-            prod_list=Product_Details.objects.all().values_list('purchase_id', flat=True)
+            prod_list = Product_Details.objects.all().values_list('purchase_id', flat=True)
             if request.session.get('purchase_id') not in prod_list:
-                Purchase_Details.objects.filter(id=request.session.get('purchase_id')).delete()
+                Purchase_Details.objects.filter(
+                    id=request.session.get('purchase_id')).delete()
 
         try:
             del request.session['purchase_id']
@@ -1464,18 +1582,18 @@ def update_customer_details(request,id):
         except:
             pass
 
-
     try:
-        feedback = Feedback.objects.get(customer_id=customer_id.pk,purchase_id=id)
+        feedback = Feedback.objects.get(
+            customer_id=customer_id.pk, purchase_id=id)
     except:
         feedback = None
 
-    if request.method=='POST':
+    if request.method == 'POST':
         if 'generate_bill' in request.POST:
             bill_company_type = request.POST.get('bill_company_type')
-            if bill_company_type == '' :
+            if bill_company_type == '':
                 bill_company_type = None
-            if Bill.objects.filter(purchase_id=purchase_id_id.id).count() > 0 :
+            if Bill.objects.filter(purchase_id=purchase_id_id.id).count() > 0:
                 return redirect('/showBill/'+str(id)+'/'+str(Bill.objects.get(purchase_id=purchase_id_id.id).company_type))
             return redirect('/showBill/'+str(id)+'/'+str(bill_company_type))
         customer_name = request.POST.get('customer_name')
@@ -1498,13 +1616,13 @@ def update_customer_details(request,id):
             return render(request, 'update_forms/update_cust_mod_form.html', context)
         else:
 
-            item=customer_id
+            item = customer_id
 
             item.customer_name = customer_name
             item.contact_no = contact_no
-            if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name :
-                item.save(update_fields=['customer_name','contact_no'])  #new3
-
+            if customer_id.contact_no != item.contact_no or customer_id.customer_name != item.customer_name:
+                item.save(update_fields=[
+                          'customer_name', 'contact_no'])  # new3
 
             date_of_purchase = request.POST.get('date_of_purchase')
             # second_person=request.POST.get('second_person')
@@ -1550,7 +1668,6 @@ def update_customer_details(request,id):
             else:
                 item2.is_gst = False
 
-
             item2.payment_mode = payment_type
             if total_pf != '' and total_pf != None:
                 item2.total_pf = float(total_pf)
@@ -1576,10 +1693,11 @@ def update_customer_details(request,id):
 
             if channel_of_marketing != None and channel_of_marketing != '':
                 # item2.channel_of_marketing = channel_of_marketing
-                item2.channel_of_marketing_id = DynamicDropdown.objects.get(id=channel_of_marketing)
+                item2.channel_of_marketing_id = DynamicDropdown.objects.get(
+                    id=channel_of_marketing)
 
-            item2.save(update_fields=['payment_mode','bank_name','cheque_no','cheque_date','channel_of_marketing_id','tax_amount','total_amount','value_of_goods',
-                                      'total_pf','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','is_gst','bill_notes'])
+            item2.save(update_fields=['payment_mode', 'bank_name', 'cheque_no', 'cheque_date', 'channel_of_marketing_id', 'tax_amount', 'total_amount', 'value_of_goods',
+                                      'total_pf', 'neft_bank_name', 'reference_no', 'neft_date', 'credit_pending_amount', 'credit_authorised_by', 'is_gst', 'bill_notes'])
 
             item2.crm_no = Customer_Details.objects.get(id=item.pk)
 
@@ -1601,28 +1719,28 @@ def update_customer_details(request,id):
                 item.customer_gst_no = customer_gst_no
                 item.save(update_fields=['customer_gst_no'])
 
-
-
             item2.date_of_purchase = date_of_purchase
-            item2.second_person=customer_name   #new4
+            item2.second_person = customer_name  # new4
             # item2.third_person=third_person
-            item2.second_contact_no=contact_no   #new5
+            item2.second_contact_no = contact_no  # new5
             # item2.third_contact_no=third_contact_no
             item2.sales_person = sales_person
             item2.new_repeat_purchase = new_repeat_purchase
             item2.bill_no = bill_no
             item2.bill_address = bill_address
             item2.shipping_address = shipping_address
-            if upload_op_file!= None and upload_op_file!="":
+            if upload_op_file != None and upload_op_file != "":
                 item2.upload_op_file = upload_op_file
-                item2.save(update_fields=['upload_op_file',])
+                item2.save(update_fields=['upload_op_file', ])
             item2.po_number = po_number
-            item2.channel_of_sales_id = DynamicDropdown.objects.get(id=channel_of_sales)
+            item2.channel_of_sales_id = DynamicDropdown.objects.get(
+                id=channel_of_sales)
             item2.industry_id = DynamicDropdown.objects.get(id=industry)
             # item2.value_of_goods = value_of_goods
 
-            channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
-            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store')  :
+            channel_of_dispatch_test = DynamicDropdown.objects.get(
+                id=channel_of_dispatch).name
+            if (purchase_id_id.dispatch_id_assigned == None and channel_of_dispatch_test != 'Franchisee Store'):
                 dispatch = Dispatch()
 
                 if Customer_Details.objects.filter(customer_name=customer_name,
@@ -1640,24 +1758,29 @@ def update_customer_details(request,id):
                 dispatch.company_email = customer_email_id
                 dispatch.company_address = address  # new2
                 # dispatch.channel_of_dispatch = channel_of_dispatch  # new2
-                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)  # new2
+                dispatch.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                    id=channel_of_dispatch)  # new2
                 dispatch.bill_address = bill_address  # new2
                 dispatch.shipping_address = shipping_address  # new2
                 dispatch.user_id = SiteUser.objects.get(id=request.user.pk)
-                dispatch.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                dispatch.manager_id = SiteUser.objects.get(
+                    id=request.user.pk).group
                 if Dispatch.objects.all().count() == 0:
                     dispatch.dispatch_no = 1
                 else:
-                    dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
+                    dispatch.dispatch_no = Dispatch.objects.latest(
+                        'dispatch_no').dispatch_no + 1
                 # dispatch.customer_email = customer_email_id
                 # dispatch.customer_name = customer_name
                 # dispatch.company_name = company_name
                 # dispatch.customer_address = address
 
                 dispatch.save()
-                current_stage_in_db = Dispatch.objects.get(id=dispatch.pk).current_stage  # updatestage1
+                current_stage_in_db = Dispatch.objects.get(
+                    id=dispatch.pk).current_stage  # updatestage1
                 if (current_stage_in_db == '' or current_stage_in_db == None):
-                    Dispatch.objects.filter(id=dispatch.pk).update(current_stage='dispatch q')
+                    Dispatch.objects.filter(id=dispatch.pk).update(
+                        current_stage='dispatch q')
 
                 # dispatch2 = Dispatch.objects.get(id=dispatch.pk)
                 # dispatch2.dispatch_id = dispatch.pk
@@ -1665,20 +1788,23 @@ def update_customer_details(request,id):
                 customer_id = Purchase_Details.objects.get(id=item2.pk)
                 print('sales entry')
                 print(customer_id)
-                customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
+                customer_id.dispatch_id_assigned = Dispatch.objects.get(
+                    id=dispatch.pk)  # str(dispatch.pk + 00000)
                 customer_id.save(update_fields=['dispatch_id_assigned'])
                 print(customer_id.dispatch_id_assigned)
 
+                prod_list = list(Product_Details.objects.filter(
+                    purchase_id=customer_id.pk).values_list('id', flat=True))
+                for item in prod_list:  # newold
 
-                prod_list= list(Product_Details.objects.filter(purchase_id=customer_id.pk).values_list('id', flat=True))
-                for item in prod_list:   #newold
+                    oobj = Product_Details.objects.get(id=item)
 
-                    oobj=Product_Details.objects.get(id=item)
+                    dispatch_pro = Product_Details_Dispatch()
 
-                    dispatch_pro=Product_Details_Dispatch()
-
-                    dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                    dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                    dispatch_pro.user_id = SiteUser.objects.get(
+                        id=request.user.pk)
+                    dispatch_pro.manager_id = SiteUser.objects.get(
+                        id=request.user.pk).group
                     # dispatch_pro.product_name = product_name
                     dispatch_pro.quantity = oobj.quantity
                     dispatch_pro.type_of_scale = oobj.type_of_scale
@@ -1690,15 +1816,18 @@ def update_customer_details(request,id):
                     dispatch_pro.capacity = oobj.capacity
                     dispatch_pro.unit = oobj.unit
                     dispatch_pro.value_of_goods = oobj.amount
-                    dispatch_pro.dispatch_id = Dispatch.objects.get(id=dispatch.pk)
+                    dispatch_pro.dispatch_id = Dispatch.objects.get(
+                        id=dispatch.pk)
                     dispatch_pro.save()
 
-                    #aaao
+                    # aaao
 
                     # nobj.__dict__ = oobj.__dict__.copy()
-                    Product_Details.objects.filter(id=item).update(product_dispatch_id=dispatch_pro.pk)
+                    Product_Details.objects.filter(id=item).update(
+                        product_dispatch_id=dispatch_pro.pk)
 
-            channel_of_dispatch_test = DynamicDropdown.objects.get(id=channel_of_dispatch).name
+            channel_of_dispatch_test = DynamicDropdown.objects.get(
+                id=channel_of_dispatch).name
             # if item2.channel_of_dispatch_id !='None' or ( item2.channel_of_dispatch_id.name != 'Franchisee Store' and channel_of_dispatch_test == 'Franchisee Store' ):
             #     customer_id = Purchase_Details.objects.get(id=item2.pk)
             #     customer_id.dispatch_id_assigned = None  # str(dispatch.pk + 00000)
@@ -1709,18 +1838,18 @@ def update_customer_details(request,id):
             #         pass
 
             # item2.channel_of_dispatch = channel_of_dispatch
-            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
+            item2.channel_of_dispatch_id = DynamicDropdown.objects.get(
+                id=channel_of_dispatch)
             item2.notes = notes
             # item2.feedback_form_filled = feedback_form_filled
             # item2.user_id = SiteUser.objects.get(id=request.user.pk)
             # item2.manager_id = SiteUser.objects.get(id=request.user.pk).group
             item2.log_entered_by = request.user.profile_name
 
-            item2.save(update_fields=['log_entered_by','date_of_purchase','sales_person','po_number','new_repeat_purchase',
-                                      'channel_of_sales_id','shipping_address','bill_address','industry_id','channel_of_dispatch_id','notes','second_person',
-                                      'second_contact_no','second_company_name','company_address','company_email',
-                                      ])  #new6
-
+            item2.save(update_fields=['log_entered_by', 'date_of_purchase', 'sales_person', 'po_number', 'new_repeat_purchase',
+                                      'channel_of_sales_id', 'shipping_address', 'bill_address', 'industry_id', 'channel_of_dispatch_id', 'notes', 'second_person',
+                                      'second_contact_no', 'second_company_name', 'company_address', 'company_email',
+                                      ])  # new6
 
             # purchase_id_id = Purchase_Details.objects.get(id=id)
             # customer_id = Purchase_Details.objects.get(id=id).crm_no
@@ -1742,7 +1871,7 @@ def update_customer_details(request,id):
             return redirect('/view_customer_details/')
 
     context2 = {
-        'product_id':product_id,
+        'product_id': product_id,
         'customer_id': customer_id,
         'purchase_id_id': purchase_id_id,
         'feedback': feedback,
@@ -1753,35 +1882,36 @@ def update_customer_details(request,id):
     }
     context.update(context2)
 
-
-    return render(request,'update_forms/update_cust_mod_form.html',context)
-
+    return render(request, 'update_forms/update_cust_mod_form.html', context)
 
 
 @login_required(login_url='/')
-def add_product_details(request,id):
+def add_product_details(request, id):
     purchase = Purchase_Details.objects.get(id=id)
     purchase_id = purchase.id
     if request.user.role == 'Super Admin':
         godowns = Godown.objects.filter(default_godown_purchase=False)
 
     elif request.user.role == 'Admin':
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__id = request.user.id ))
+        godowns = Godown.objects.filter(
+            Q(default_godown_purchase=False) & Q(godown_admin__id=request.user.id))
 
     elif request.user.role == 'Manager':
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+            godown_admin__profile_name=request.user.admin))
 
     else:
-        godowns = Godown.objects.filter(Q(default_godown_purchase=False)&Q(godown_admin__profile_name = request.user.admin))
+        godowns = Godown.objects.filter(Q(default_godown_purchase=False) & Q(
+            godown_admin__profile_name=request.user.admin))
 
-    type_of_purchase_list =type_purchase.objects.all() #1
+    type_of_purchase_list = type_purchase.objects.all()  # 1
     if 'purchase_id' in request.session:
         request.session['product_saved'] = False
 
     try:
         dispatch_id_assigned = str(purchase.dispatch_id_assigned)
     except:
-        dispatch_id_assigned=None
+        dispatch_id_assigned = None
     form = Product_Details_Form(request.POST or None)
     context = {
         'form': form,
@@ -1804,7 +1934,7 @@ def add_product_details(request,id):
         godown = request.POST.get('godown')
 
         if value_of_goods == '' or value_of_goods == None:
-            value_of_goods=0.0
+            value_of_goods = 0.0
 
         item = Product_Details()
 
@@ -1827,49 +1957,51 @@ def add_product_details(request,id):
         item.godown_id = Godown.objects.get(id=godown)
         if sub_sub_model != '' and sub_sub_model != None and sub_sub_model != 'None':
             product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                                             sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
 
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity:
+                    GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                         quantity=F("quantity") - quantity)
-                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                        messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
-                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                        return redirect('/add_product_details/' + str(purchase_id))
+                elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                    messages.success(request, "Insufficient stock !!! Available Quantity:" + str(
+                        GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                    return redirect('/add_product_details/' + str(purchase_id))
             else:
-                messages.success(request, "Selected Product does not exist in selected godown !!!")
+                messages.success(
+                    request, "Selected Product does not exist in selected godown !!!")
 
         elif sub_model != '':
             product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                                  sub_category__name=sub_model, sub_sub_category__name=None)
-            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0 :
-                    if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity :
-                        GodownProduct.objects.filter(godown_id=godown,product_id=product_id).update(
+                                             sub_category__name=sub_model, sub_sub_category__name=None)
+            if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
+                if GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity >= quantity:
+                    GodownProduct.objects.filter(godown_id=godown, product_id=product_id).update(
                         quantity=F("quantity") - quantity)
-                    elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
-                        messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
-                            GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
-                        return redirect('/add_product_details/' + str(purchase_id))
+                elif GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity < quantity:
+                    messages.success(request, "Insufficient stock !!! Available Quantity:"+str(
+                        GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity))
+                    return redirect('/add_product_details/' + str(purchase_id))
             else:
-                messages.success(request, "Selected Product does not exist in selected godown !!!")
+                messages.success(
+                    request, "Selected Product does not exist in selected godown !!!")
         item.save()
         new_transaction = GodownTransactions()
-        new_transaction.purchase_product_id = Product_Details.objects.get(id=item.id)
+        new_transaction.purchase_product_id = Product_Details.objects.get(
+            id=item.id)
         new_transaction.purchase_quantity = quantity
-        new_transaction.notes = 'Product Added to Sales by Emp id:' + str(request.user.employee_number) + ', Name' + str(request.user.profile_name) + ', Contact:-' + str(request.user.mobile)+ ', Purchase Product Id: ' + str(item.pk)
+        new_transaction.notes = 'Product Added to Sales by Emp id:' + str(request.user.employee_number) + ', Name' + str(
+            request.user.profile_name) + ', Contact:-' + str(request.user.mobile) + ', Purchase Product Id: ' + str(item.pk)
         new_transaction.save()
-
-
-
 
         if is_last_product_yes == 'yes':
             Purchase_Details.objects.filter(id=id).update(is_last_product=True)
 
             product_list = ''' '''
-            pro_lis=  Product_Details.objects.filter(purchase_id_id=purchase_id)
+            pro_lis = Product_Details.objects.filter(
+                purchase_id_id=purchase_id)
 
-            for idx,item in enumerate(pro_lis):
+            for idx, item in enumerate(pro_lis):
                 # for it in item:
 
                 email_body_text = (
@@ -1888,31 +2020,25 @@ def add_product_details(request,id):
                     item.capacity,
                     item.amount,
                 )
-                product_list=product_list+''+ str(email_body_text)
-
+                product_list = product_list+'' + str(email_body_text)
 
             try:
 
                 import smtplib
 
-
-
                 sent_from = settings.EMAIL_HOST_USER
                 to = [purchase.company_email]
                 subject = 'Your HSCo Purchase'
 
-                message= 'Dear ' + str(
+                message = 'Dear ' + str(
                     purchase.second_person) + ',' \
-                         ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
-                purchase.purchase_no) + '.' \
-                         ' We will love to hear your feedback to help us improve' \
-                       ' our customer experience. Please click on the link' \
-                         ' below: <br> http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(
-                purchase.id) + '<br> For more details contact us on - 7045922250 <br> Order Details:<br>     '+ product_list
-
-
-
+                    ' Thank you for purchasing from HSCo, Your Purchase ID is ' + str(
+                    purchase.purchase_no) + '.' \
+                    ' We will love to hear your feedback to help us improve' \
+                    ' our customer experience. Please click on the link' \
+                    ' below: <br> http://139.59.76.87/feedback_purchase/' + str(request.user.pk) + '/' + str(
+                    purchase.crm_no.pk) + '/' + str(
+                    purchase.id) + '<br> For more details contact us on - 7045922250 <br> Order Details:<br>     ' + product_list
 
                 body = message
 
@@ -1924,7 +2050,7 @@ def add_product_details(request,id):
                 try:
                     email_send = EmailMessage('Thank you for purchasing from HSCo',
                                               user(request, email_text),
-                                              settings.EMAIL_HOST_USER, to )
+                                              settings.EMAIL_HOST_USER, to)
                     email_send.content_subtype = 'html'
                     email_send.send()
                     # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -1937,11 +2063,9 @@ def add_product_details(request,id):
                 except:
                     print('Something went wrong...Email not send!!!')
 
-
             except:
                 print("exception occured!!")
                 pass
-
 
             message = 'Dear ' + str(
                 purchase.second_person) + ' ,' \
@@ -1954,19 +2078,25 @@ def add_product_details(request,id):
                 purchase.crm_no.pk) + '/' + str(
                 purchase.id) + '\n For more details contact us on - 7045922250'
 
-            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + purchase.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt" +"&tid=1207161866138738855"
+            url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + \
+                purchase.second_contact_no + "&message=" + message + "&senderid=" + \
+                settings.senderid + "&type=txt" + "&tid=1207161866138738855"
             payload = ""
             headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-            response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+            response = requests.request(
+                "GET", url, data=json.dumps(payload), headers=headers)
             x = response.text
             print('sending sms')
             print(x)
 
-        Purchase_Details.objects.filter(id=purchase_id).update(value_of_goods=F("value_of_goods") + value_of_goods)
+        Purchase_Details.objects.filter(id=purchase_id).update(
+            value_of_goods=F("value_of_goods") + value_of_goods)
         if purchase.is_gst == True:
-            Purchase_Details.objects.filter(id=purchase_id).update(tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
-        Purchase_Details.objects.filter(id=purchase_id).update(total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
+            Purchase_Details.objects.filter(id=purchase_id).update(
+                tax_amount=(F("value_of_goods")+F("total_pf")) * 0.18)
+        Purchase_Details.objects.filter(id=purchase_id).update(
+            total_amount=F("value_of_goods") + F("tax_amount") + F("total_pf"))
 
         # if Employee_Analysis_date.objects.filter(Q(entry_date=datetime.now().date()),Q(year=datetime.now.year()),
         #                                          Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
@@ -1988,7 +2118,6 @@ def add_product_details(request,id):
         #     ead.year = datetime.now().year
         #     ead.save()
 
-
         # if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),Q(year=datetime.now.year()),
         #                                           Q(user_id=SiteUser.objects.get(id=request.user.pk))).count() > 0:
         #     if Employee_Analysis_month.objects.get(user_id=purchase.user_id,
@@ -2002,7 +2131,6 @@ def add_product_details(request,id):
         #                                            entry_date__month=datetime.now().month,
         #                                            year=datetime.now().year).update(
         #         total_sales_done=F("total_sales_done") + value_of_goods)
-
 
         # else:
         #     ead = Employee_Analysis_month()
@@ -2024,12 +2152,12 @@ def add_product_details(request,id):
         #                                       year=datetime.now().year).update(
         #     total_sales_done_today=F("total_sales_done_today") + value_of_goods)
 
-
         try:
-            dispatch_id=Dispatch.objects.get(id=dispatch_id_assigned)
+            dispatch_id = Dispatch.objects.get(id=dispatch_id_assigned)
             dispatch_pro = Product_Details_Dispatch()
             dispatch_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-            dispatch_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+            dispatch_pro.manager_id = SiteUser.objects.get(
+                id=request.user.pk).group
             dispatch_pro.quantity = quantity
             dispatch_pro.type_of_scale = type_of_scale
             dispatch_pro.model_of_purchase = model_of_purchase
@@ -2048,15 +2176,14 @@ def add_product_details(request,id):
             # dispatch_pro.purchase_type = purchase_type
             dispatch_pro.save()
 
-            Product_Details.objects.filter(id=item.pk).update(product_dispatch_id=dispatch_pro.pk)
+            Product_Details.objects.filter(id=item.pk).update(
+                product_dispatch_id=dispatch_pro.pk)
             # item.product_dispatch_id = dispatch_pro.pk
             # item.save(update_fields=['product_dispatch_id'])
         except:
             print("Franchisee Store selected")
 
-
         if 'purchase_id' in request.session:
-
 
             request.session['product_saved'] = True
         if is_last_product_yes == 'yes':
@@ -2064,22 +2191,20 @@ def add_product_details(request,id):
         elif is_last_product_yes == 'no':
             return redirect('/add_product_details/'+str(purchase_id))
 
-
-
     try:
         default_godown = Godown.objects.get(default_godown_purchase=True)
-        context1={
+        context1 = {
             'default_godown': default_godown,
         }
         context.update(context1)
     except:
         pass
-    return render(request,'dashboardnew/add_product.html',context)
+    return render(request, 'dashboardnew/add_product.html', context)
 
 
 @login_required(login_url='/')
 def report(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         selected_purchase_list = request.POST.getlist('checks[]')
         selected_product_list = request.POST.getlist('products[]')
         selected_customer_list = request.POST.getlist('customer[]')
@@ -2090,7 +2215,6 @@ def report(request):
         string = ','.join(selected_purchase_list)
         string_product = ','.join(selected_product_list)
 
-
         request.session['start_date'] = start_date
         request.session['end_date'] = end_date
         request.session['string'] = selected_purchase_list
@@ -2100,7 +2224,7 @@ def report(request):
         request.session['selected_customer_list'] = selected_customer_list
         request.session['payment_details'] = payment_details
         return redirect('/final_report/')
-    return render(request,"report/report_cust_mod_form.html",)
+    return render(request, "report/report_cust_mod_form.html",)
 
 
 @login_required(login_url='/')
@@ -2108,11 +2232,13 @@ def final_report(request):
     start_date = request.session.get('start_date')
     end_date = request.session.get('end_date')
     string_purchase = request.session.get('string') + ['crm_no_id'] + ['id']
-    string_product = request.session.get('string_product')  + ['id'] + ['purchase_id']
+    string_product = request.session.get(
+        'string_product') + ['id'] + ['purchase_id']
 
     selected_customer_list = request.session.get('selected_customer_list')
     selected_list = request.session.get('selected_list') + ['crm_no_id']
-    selected_product_list = request.session.get('selected_product_list') + ['Purchase ID']
+    selected_product_list = request.session.get(
+        'selected_product_list') + ['Purchase ID']
     payment_details = request.session.get('payment_details')
     print('payment details')
     print(payment_details)
@@ -2128,31 +2254,34 @@ def final_report(request):
             selected_list[n] = 'Entry Date'
         if i == 'second_person':
             selected_list[n] = 'Customer Name'
-    
-    #work area report for different users   
+
+    # work area report for different users
     if check_admin_roles(request):  # For ADMIN
         product_query = Product_Details.objects.filter(
-            Q(purchase_id__user_id__name=request.user.name) | Q(purchase_id__user_id__group__icontains=request.user.name),entry_timedate__range=(start_date, end_date),
+            Q(purchase_id__user_id__name=request.user.name) | Q(purchase_id__user_id__group__icontains=request.user.name), entry_timedate__range=(start_date, end_date),
             purchase_id__user_id__is_deleted=False, purchase_id__user_id__modules_assigned__icontains='Customer Module').values(*string_product)
     else:  # For EMPLOYEE
-        product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date),purchase_id__user_id=request.user.pk).values(*string_product)
+        product_query = Product_Details.objects.filter(entry_timedate__range=(
+            start_date, end_date), purchase_id__user_id=request.user.pk).values(*string_product)
 
     # product_query = Product_Details.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_product)
     for product in product_query:
-        sales_query = Purchase_Details.objects.filter(id=product['purchase_id']).values(*string_purchase)
-        
+        sales_query = Purchase_Details.objects.filter(
+            id=product['purchase_id']).values(*string_purchase)
+
         print(sales_query)
         try:
             if selected_customer_list:
-                customer_query = Customer_Details.objects.filter(id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
+                customer_query = Customer_Details.objects.filter(
+                    id=list(sales_query)[0]['crm_no_id']).values(*selected_customer_list)
                 for item in customer_query:
                     product.update(item)
         except:
             print('no customer error')
             pass
-        
+
         for item in sales_query:
-            #payment details in sales report
+            # payment details in sales report
             if payment_details == 'payment_details':
                 print('payment details')
                 print(payment_details)
@@ -2161,8 +2290,10 @@ def final_report(request):
                     item['payment_mode'] = sale.payment_mode
                 elif sale.payment_mode == 'Credit':
                     item['payment_mode'] = sale.payment_mode
-                    item['credit_authorised_by'] = 'Authorised by: '+str(sale.credit_authorised_by)
-                    item['credit_pending_amount'] = 'Pending Amount: '+str(sale.credit_pending_amount)
+                    item['credit_authorised_by'] = 'Authorised by: ' + \
+                        str(sale.credit_authorised_by)
+                    item['credit_pending_amount'] = 'Pending Amount: ' + \
+                        str(sale.credit_pending_amount)
                 elif sale.payment_mode == 'Cheque':
                     item['payment_mode'] = sale.payment_mode
                     item['bank_name'] = 'Bank Name: '+str(sale.bank_name)
@@ -2170,11 +2301,12 @@ def final_report(request):
                     item['cheque_date'] = 'Cheque Date: '+str(sale.cheque_date)
                 elif sale.payment_mode == 'NEFT':
                     item['payment_mode'] = sale.payment_mode
-                    item['neft_bank_name'] = 'Bank Name: '+str(sale.neft_bank_name)
+                    item['neft_bank_name'] = 'Bank Name: ' + \
+                        str(sale.neft_bank_name)
                     item['neft_date'] = 'NEFT Date: '+str(sale.neft_date)
-                    item['reference_no'] = 'Reference No: '+str(sale.reference_no)
+                    item['reference_no'] = 'Reference No: ' + \
+                        str(sale.reference_no)
             product.update(item)
-    
 
     try:
         del request.session['start_date']
@@ -2186,32 +2318,36 @@ def final_report(request):
     except:
         pass
 
-    context={
-        'final_row':final_row,
-        'final_row_product':final_row_product,
-        'selected_list':selected_list,
-        'selected_product_list':selected_product_list+selected_list,
-        'sales_query':product_query,
+    context = {
+        'final_row': final_row,
+        'final_row_product': final_row_product,
+        'selected_list': selected_list,
+        'selected_product_list': selected_product_list+selected_list,
+        'sales_query': product_query,
     }
-    return render(request,"dashboardnew/final_report.html",context)
+    return render(request, "dashboardnew/final_report.html", context)
 
 
 @login_required(login_url='/')
-def manager_report(request) :
+def manager_report(request):
     employee_list = SiteUser.objects.all()
-    context={
-        'employee_list':employee_list,
+    context = {
+        'employee_list': employee_list,
     }
-    return render(request, 'dashboardnew/manager_report.html',context)
+    return render(request, 'dashboardnew/manager_report.html', context)
 
 # @login_required(login_url='/')
+
+
 def feedbacka(request):
     return render(request, 'feedback/feedbacka.html')
+
 
 @login_required(login_url='/')
 def purchase_analytics(request):
     mon = datetime.now().month
-    this_month = Employee_Analysis_month.objects.all().values('entry_date').annotate(data_sum=Sum('total_sales_done'))
+    this_month = Employee_Analysis_month.objects.all().values(
+        'entry_date').annotate(data_sum=Sum('total_sales_done'))
     this_lis_date = []
     this_lis_sum = []
     for i in this_month:
@@ -2219,22 +2355,23 @@ def purchase_analytics(request):
         this_lis_date.append(x['entry_date'].strftime("%B-%Y"))
         this_lis_sum.append(x['data_sum'])
 
-
-
     from django.db.models import Max
     # Generates a "SELECT MAX..." query
-    value=Employee_Analysis_month.objects.aggregate(Max('total_sales_done'))
+    value = Employee_Analysis_month.objects.aggregate(Max('total_sales_done'))
     print("value['total_sales_done__max']")
     print(value['total_sales_done__max'])
     try:
 
-        value = Employee_Analysis_month.objects.get(total_sales_done=value['total_sales_done__max'])
+        value = Employee_Analysis_month.objects.get(
+            total_sales_done=value['total_sales_done__max'])
     except:
         value = None
-    value_low = Employee_Analysis_month.objects.filter(Q(total_sales_done__gte=100.0)).aggregate(Min('total_sales_done'))
+    value_low = Employee_Analysis_month.objects.filter(
+        Q(total_sales_done__gte=100.0)).aggregate(Min('total_sales_done'))
     print("value_low['total_sales_done__min']")
     print(value_low['total_sales_done__min'])
-    value_low = Employee_Analysis_month.objects.filter(Q(total_sales_done=value_low['total_sales_done__min']),).order_by('total_sales_done')[0]
+    value_low = Employee_Analysis_month.objects.filter(
+        Q(total_sales_done=value_low['total_sales_done__min']),).order_by('total_sales_done')[0]
     # for item in value_low:
     #     print("item.entry_timedate")
     #     print(item.entry_timedate)
@@ -2247,28 +2384,31 @@ def purchase_analytics(request):
         'value_low': value_low,
 
     }
-    return render(request, 'analytics/purchase_analytics_new.html',context)
+    return render(request, 'analytics/purchase_analytics_new.html', context)
 
 # @login_required(login_url='/')
-def customer_employee_sales_graph(request,user_id):
+
+
+def customer_employee_sales_graph(request, user_id):
     #x=Employee_Analysis_date.objects.annotate(date=TruncMonth('entry_timedate')).values('date').annotate(c=Count('id')).values('date', 'c')
-    #print(x)
+    # print(x)
 
     feeback = Feedback.objects.filter(user_id=user_id)
-    #this month sales
-    knowledge_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('knowledge_of_person'))
-    timeliness_of_person = Feedback.objects.filter(user_id=user_id).aggregate(Avg('timeliness_of_person'))
-    price_of_product = Feedback.objects.filter(user_id=user_id).aggregate(Avg('price_of_product'))
-    overall_interaction = Feedback.objects.filter(user_id=user_id).aggregate(Avg('overall_interaction'))
-
-
-
+    # this month sales
+    knowledge_of_person = Feedback.objects.filter(
+        user_id=user_id).aggregate(Avg('knowledge_of_person'))
+    timeliness_of_person = Feedback.objects.filter(
+        user_id=user_id).aggregate(Avg('timeliness_of_person'))
+    price_of_product = Feedback.objects.filter(
+        user_id=user_id).aggregate(Avg('price_of_product'))
+    overall_interaction = Feedback.objects.filter(
+        user_id=user_id).aggregate(Avg('overall_interaction'))
 
     mon = datetime.now().month
 
     # this_month = Employee_Analysis_date.objects.filter(user_id=user_id,entry_date__month=mon).values('entry_date',
     #                                                                                                      'total_sales_done_today').order_by('entry_date')
-    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
+    this_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name, date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year).order_by('date_of_purchase')\
         .values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     this_lis_date = []
     this_lis_sum = []
@@ -2277,13 +2417,14 @@ def customer_employee_sales_graph(request,user_id):
         this_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         this_lis_sum.append(x['data_sum'])
 
-    #previous month sales
+    # previous month sales
     mon = (datetime.now().month)
     if mon == 1:
         previous_mon = 12
     else:
         previous_mon = (datetime.now().month) - 1
-    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__month=previous_mon,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    previous_month = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name, date_of_purchase__month=previous_mon, date_of_purchase__year=datetime.now(
+    ).year).order_by('date_of_purchase').values('date_of_purchase').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
     previous_lis_date = []
     previous_lis_sum = []
     for i in previous_month:
@@ -2291,17 +2432,19 @@ def customer_employee_sales_graph(request,user_id):
         previous_lis_date.append(x['date_of_purchase'].strftime('%Y-%m-%d'))
         previous_lis_sum.append(x['data_sum'])
 
-    if request.method=='POST' and 'date1' in request.POST :
+    if request.method == 'POST' and 'date1' in request.POST:
         start_date = request.POST.get('date1')
         end_date = request.POST.get('date2')
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__range=(start_date, end_date)).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name, date_of_purchase__range=(start_date, end_date)).order_by(
+            'date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
         lis_date = []
         lis_sum = []
         for i in qs:
             if i:
                 x = i
-                lis_date.append(calendar.month_name[x['date_of_purchase__month']])
+                lis_date.append(
+                    calendar.month_name[x['date_of_purchase__month']])
                 lis_sum.append(x['data_sum'])
         context = {
             'final_list': lis_date,
@@ -2315,10 +2458,14 @@ def customer_employee_sales_graph(request,user_id):
 
         }
         try:
-            knowledge_of_person_avg = round(knowledge_of_person['knowledge_of_person__avg'])
-            timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
-            overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
-            price_of_product_avg = round(price_of_product['price_of_product__avg'])
+            knowledge_of_person_avg = round(
+                knowledge_of_person['knowledge_of_person__avg'])
+            timeliness_of_person_avg = round(
+                timeliness_of_person['timeliness_of_person__avg'])
+            overall_interaction_avg = round(
+                overall_interaction['overall_interaction__avg'])
+            price_of_product_avg = round(
+                price_of_product['price_of_product__avg'])
             context23 = {
                 'knowledge_of_person_avg': knowledge_of_person_avg,
                 'timeliness_of_person_avg': timeliness_of_person_avg,
@@ -2329,21 +2476,21 @@ def customer_employee_sales_graph(request,user_id):
         except:
             pass
         return render(request, "graphs/sales_graph2.html", context)
-    elif request.method=='POST' and 'defect_submit' in request.POST:
+    elif request.method == 'POST' and 'defect_submit' in request.POST:
         defect = request.POST.get('defect')
 
         def_obj = Defects_Warning()
-
 
         if defect != None or defect != '' or defect != 'None':
             def_obj.content = defect
             def_obj.type = 'defect'
 
         def_obj.user_id = SiteUser.objects.get(id=user_id)
-        def_obj.given_by = SiteUser.objects.get(id=request.user.id).profile_name
+        def_obj.given_by = SiteUser.objects.get(
+            id=request.user.id).profile_name
         def_obj.save()
         return HttpResponse('Defect Submitted!!!')
-    elif request.method=='POST' and 'warning_submit' in request.POST:
+    elif request.method == 'POST' and 'warning_submit' in request.POST:
         warning = request.POST.get('warning')
 
         def_obj = Defects_Warning()
@@ -2352,23 +2499,25 @@ def customer_employee_sales_graph(request,user_id):
             def_obj.content = warning
             def_obj.type = 'warning'
         def_obj.user_id = SiteUser.objects.get(id=user_id)
-        def_obj.given_by = SiteUser.objects.get(id=request.user.id).profile_name
+        def_obj.given_by = SiteUser.objects.get(
+            id=request.user.id).profile_name
         def_obj.save()
         return HttpResponse('Warning Submitted!!!')
 
     else:
 
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name,date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=user_id).profile_name, date_of_purchase__year=datetime.now(
+        ).year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
         lis_date = []
         lis_sum = []
         for i in qs:
-            x=i
+            x = i
             lis_date.append(calendar.month_name[x['date_of_purchase__month']])
             lis_sum.append(x['data_sum'])
 
-        context={
-            'final_list':lis_date,
-            'final_list2':lis_sum,
+        context = {
+            'final_list': lis_date,
+            'final_list2': lis_sum,
             'previous_lis_date': previous_lis_date,
             'previous_lis_sum': previous_lis_sum,
             'this_lis_date': this_lis_date,
@@ -2377,10 +2526,14 @@ def customer_employee_sales_graph(request,user_id):
 
         }
         try:
-            knowledge_of_person_avg = round(knowledge_of_person['knowledge_of_person__avg'])
-            timeliness_of_person_avg = round(timeliness_of_person['timeliness_of_person__avg'])
-            overall_interaction_avg = round(overall_interaction['overall_interaction__avg'])
-            price_of_product_avg = round(price_of_product['price_of_product__avg'])
+            knowledge_of_person_avg = round(
+                knowledge_of_person['knowledge_of_person__avg'])
+            timeliness_of_person_avg = round(
+                timeliness_of_person['timeliness_of_person__avg'])
+            overall_interaction_avg = round(
+                overall_interaction['overall_interaction__avg'])
+            price_of_product_avg = round(
+                price_of_product['price_of_product__avg'])
             context2 = {
                 'knowledge_of_person_avg': knowledge_of_person_avg,
                 'timeliness_of_person_avg': timeliness_of_person_avg,
@@ -2390,15 +2543,17 @@ def customer_employee_sales_graph(request,user_id):
             context.update(context2)
         except:
             pass
-        return render(request,"graphs/sales_graph2.html",context)
+        return render(request, "graphs/sales_graph2.html", context)
 
 # @login_required(login_url='/')
-def feedback_purchase(request,user_id,customer_id,purchase_id):
+
+
+def feedback_purchase(request, user_id, customer_id, purchase_id):
     feedback_form = Feedback_Form(request.POST or None, request.FILES or None)
     if Purchase_Details.objects.get(id=purchase_id).feedback_form_filled:
         return HttpResponse('Feedback Already Submitted.')
     else:
-        if request.method == 'POST' :
+        if request.method == 'POST':
             knowledge_of_person = request.POST.get('knowledge_of_person')
             timeliness_of_person = request.POST.get('timeliness_of_person')
             price_of_product = request.POST.get('price_of_product')
@@ -2419,10 +2574,12 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
             try:
                 item.save()
 
-                purchase=Purchase_Details.objects.get(id=purchase_id)
-                purchase.feedback_stars= (float(knowledge_of_person)+float(timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
-                purchase.feedback_form_filled= True
-                purchase.save(update_fields=['feedback_stars','feedback_form_filled'])
+                purchase = Purchase_Details.objects.get(id=purchase_id)
+                purchase.feedback_stars = (float(knowledge_of_person)+float(
+                    timeliness_of_person)+float(price_of_product)+float(overall_interaction))/float(4.0)
+                purchase.feedback_form_filled = True
+                purchase.save(
+                    update_fields=['feedback_stars', 'feedback_form_filled'])
 
                 if Employee_Analysis_month.objects.filter(Q(entry_date__month=datetime.now().month),
                                                           Q(user_id=SiteUser.objects.get(id=user_id))).count() > 0:
@@ -2436,7 +2593,8 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
                 else:
                     ead = Employee_Analysis_month()
                     ead.user_id = SiteUser.objects.get(id=user_id)
-                    ead.start_rating_feedback_sales = Purchase_Details.objects.get(id=purchase_id).feedback_stars
+                    ead.start_rating_feedback_sales = Purchase_Details.objects.get(
+                        id=purchase_id).feedback_stars
                     # ead.total_dispatch_done = value_of_goods
                     ead.manager_id = SiteUser.objects.get(id=user_id).group
                     ead.month = datetime.now().month
@@ -2446,39 +2604,35 @@ def feedback_purchase(request,user_id,customer_id,purchase_id):
             except:
                 pass
 
-
-
             return HttpResponse('Feedback Submitted!!! Thankyou For Your Response.')
-        context={
+        context = {
             'feedback_form': feedback_form,
         }
-        return render(request,"feedback/feedback_customer.html",context)
-
+        return render(request, "feedback/feedback_customer.html", context)
 
 
 @login_required(login_url='/')
 def load_users(request):
-
 
     selected = request.GET.get('loc_id')
     sel_month = request.GET.get('sel_month')
     sel_year = request.GET.get('sel_year')
     sel_month_text = request.GET.get('sel_month_text')
 
-    if selected=='true':
+    if selected == 'true':
         if (sel_month == 0 or sel_month == 'true'):
             current_month = datetime.now().month
             current_year = datetime.now().year
-            
-            sales_employee_list = SiteUser.objects.filter(modules_assigned__icontains='Customer Module',group__icontains=request.user.profile_name) 
+
+            sales_employee_list = SiteUser.objects.filter(
+                modules_assigned__icontains='Customer Module', group__icontains=request.user.profile_name)
 
             sales_list = []
             for employee in sales_employee_list:
-                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=datetime.now().month,date_of_purchase__year=datetime.now().year)\
-                .values('sales_person','user_id','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name, date_of_purchase__month=datetime.now().month, date_of_purchase__year=datetime.now().year)\
+                    .values('sales_person', 'user_id', 'date_of_purchase__month', 'date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
                 sales_list.append(current_month_sales)
-            
 
             # user_list = Employee_Analysis_month.objects.filter(entry_date__month=current_month,
             #                                                    entry_date__year=current_year,
@@ -2501,19 +2655,18 @@ def load_users(request):
 
             }
 
-
         else:
-            
 
             current_month = sel_month
             current_year = sel_year
 
-            sales_employee_list = SiteUser.objects.filter(modules_assigned__icontains='Customer Module',group__icontains=request.user.profile_name) 
+            sales_employee_list = SiteUser.objects.filter(
+                modules_assigned__icontains='Customer Module', group__icontains=request.user.profile_name)
 
             sales_list = []
             for employee in sales_employee_list:
-                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name,date_of_purchase__month=current_month,date_of_purchase__year=current_year)\
-                .values('sales_person','user_id','date_of_purchase__month','date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+                current_month_sales = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(profile_name=employee).profile_name, date_of_purchase__month=current_month, date_of_purchase__year=current_year)\
+                    .values('sales_person', 'user_id', 'date_of_purchase__month', 'date_of_purchase__year').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
                 sales_list.append(current_month_sales)
 
@@ -2533,8 +2686,6 @@ def load_users(request):
             else:
                 error_msg_225 = 'Result Not Found For ' + sel_month_text + ', ' + current_year
 
-
-
             context = {
                 'error_exist_225': error_exist_225,
                 'success_exist_225': success_exist_225,
@@ -2548,10 +2699,12 @@ def load_users(request):
     else:
         if check_admin_roles(request):  # For ADMIN
             cust_list = Purchase_Details.objects.filter(
-                Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+                Q(user_id__name=request.user.name) | Q(
+                    user_id__group__icontains=request.user.name),
                 user_id__is_deleted=False, user_id__modules_assigned__icontains='Customer Module').order_by('-purchase_no')
         else:  # For EMPLOYEE
-            cust_list = Purchase_Details.objects.filter(user_id=request.user.pk).order_by('-purchase_no')
+            cust_list = Purchase_Details.objects.filter(
+                user_id=request.user.pk).order_by('-purchase_no')
 
         context = {
             'customer_list': cust_list,
@@ -2559,6 +2712,7 @@ def load_users(request):
         }
 
         return render(request, 'AJAX/load_users.html', context)
+
 
 @login_required(login_url='/')
 def check_admin_roles(request):
@@ -2568,18 +2722,19 @@ def check_admin_roles(request):
         return False
 
 
-
 @login_required(login_url='/')
 def purchase_logs(request):
-    purchase_logs = Log.objects.filter(module_name='Purchase Module').order_by('-id')
+    purchase_logs = Log.objects.filter(
+        module_name='Purchase Module').order_by('-id')
     paginator = Paginator(purchase_logs, 15)  # Show 25 contacts per page
     page = request.GET.get('page')
     purchase_logs = paginator.get_page(page)
-    context={
-    'purchase_logs': purchase_logs,
+    context = {
+        'purchase_logs': purchase_logs,
 
     }
-    return render(request,"logs/purchase_logs.html",context)
+    return render(request, "logs/purchase_logs.html", context)
+
 
 def stock_does_not_exist(request):
     model_of_purchase = request.GET.get('model_of_purchase')
@@ -2589,7 +2744,7 @@ def stock_does_not_exist(request):
     product_id = request.GET.get('product_id')
 
     godown = request.GET.get('godown')
-    quantity =request.GET.get('quantity')
+    quantity = request.GET.get('quantity')
     godown = Godown.objects.get(id=godown)
     # print('stock')
     # print(request.GET)
@@ -2606,36 +2761,39 @@ def stock_does_not_exist(request):
     else:
         if sub_sub_model != '':
             product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                            sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
+                                             sub_category__name=sub_model, sub_sub_category__name=sub_sub_model)
         elif sub_model != '':
             product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
-                                            sub_category__name=sub_model, sub_sub_category__name=None)
+                                             sub_category__name=sub_model, sub_sub_category__name=None)
     if GodownProduct.objects.filter(godown_id=godown, product_id=product_id).count() > 0:
-        godown_product_quantity = GodownProduct.objects.get(godown_id=godown, product_id=product_id).quantity
-        godown_product_critical_limit = GodownProduct.objects.get(godown_id=godown, product_id=product_id).critical_limit
+        godown_product_quantity = GodownProduct.objects.get(
+            godown_id=godown, product_id=product_id).quantity
+        godown_product_critical_limit = GodownProduct.objects.get(
+            godown_id=godown, product_id=product_id).critical_limit
         if quantity > godown_product_quantity:
-            error1 = 'Insufficient Stock !!! Available Quantity:' + str(godown_product_quantity)
+            error1 = 'Insufficient Stock !!! Available Quantity:' + \
+                str(godown_product_quantity)
             context1 = {
-                'error1_msg':error1,
-                'error1':True,
+                'error1_msg': error1,
+                'error1': True,
             }
             context.update(context1)
         elif godown_product_quantity <= godown_product_critical_limit and quantity <= godown_product_quantity:
-            error3 = 'Stock Below Critical Limit !!! Available Quantity:' + str(godown_product_quantity)
+            error3 = 'Stock Below Critical Limit !!! Available Quantity:' + \
+                str(godown_product_quantity)
             context4 = {
                 'error3_msg': error3,
                 'error3': True,
             }
             context.update(context4)
         elif godown_product_quantity > godown_product_critical_limit and quantity <= godown_product_quantity:
-            success_message = 'Stock Available !!! Available Quantity:' + str(godown_product_quantity)
+            success_message = 'Stock Available !!! Available Quantity:' + \
+                str(godown_product_quantity)
             context4 = {
                 'success_message': success_message,
                 'success': True,
             }
             context.update(context4)
-
-
 
     else:
         error4 = 'Selected product does not exist in the selected godown !!!'
@@ -2644,87 +2802,79 @@ def stock_does_not_exist(request):
             'error4': True,
         }
         context.update(context4)
-    return render(request, 'AJAX/stock_does_not_exist.html',context)
+    return render(request, 'AJAX/stock_does_not_exist.html', context)
+
 
 def modules_map(request):
-    import requests
-    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[0:100]
-    print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
-    print(customer_list)
-    # print(cust0)
-    geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
-
-    for cust_address in customer_list:
-        response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(cust_address) + str(', india')+'&key='+geo_api_key)
-
-        resp_json_payload = response.json()
-        print(resp_json_payload)
-        print('response')
-        latitude = resp_json_payload['results'][0]['geometry']['location']["lat"]
-        longitude = resp_json_payload['results'][0]['geometry']['location']["lng"]
-        print(resp_json_payload['results'][0]['geometry']['location']["lat"])
-        print(resp_json_payload['results'][0]['geometry']['location']["lng"])
-        Customer_Details.objects.filter(address=cust_address).update(latitude=latitude)
-        Customer_Details.objects.filter(address=cust_address).update(longitude=longitude)
-    
 
     # from geopy.geocoders import Nominatim
     # geolocator = Nominatim(user_agent="hsc")
     # location = geolocator.geocode("175 5th Avenue NYC")
     # print((location.latitude, location.longitude))
-    lat_lon_list=[
+    lat_lon_list = [
     ]
     # from geopy.geocoders import Nominatim
-    if request.method =='POST':
+    if request.method == 'POST':
         ####### map all data using a button  (commented) #########
 
-        # if 'map_all_data' in request.POST:
-        #     customer_list = Customer_Details.objects.all()[:200]
-        #     for cust in customer_list:
-        #         try:
-                    
-        #             geolocator = Nominatim(user_agent="hsc")
-        #             address = str(cust.address) + str(', india')
-        #             location = geolocator.geocode(address)
-        #             Customer_Details.objects.filter(id=cust.id).update(latitude=location.latitude)
-        #             Customer_Details.objects.filter(id=cust.id).update(longitude=location.longitude)
-        #         except Exception  as e:
-        #             print(e)
-        #             pass
-        #     messages.success(request, "Latest Customers Address Data mapped successfully!")
-        #     return redirect('/modules_map')
- 
+        if 'map_all_data' in request.POST:
+            import requests
+            customer_list = Customer_Details.objects.filter(
+                latitude=None, longitude=None).values_list('address').distinct()[0:100]
+
+            geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
+
+            for cust_address in customer_list:
+                response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(
+                    cust_address) + str(', india')+'&key='+geo_api_key)
+
+                resp_json_payload = response.json()
+
+                latitude = resp_json_payload['results'][0]['geometry']['location']["lat"]
+                longitude = resp_json_payload['results'][0]['geometry']['location']["lng"]
+
+                Customer_Details.objects.filter(
+                    address=cust_address).update(latitude=latitude)
+                Customer_Details.objects.filter(
+                    address=cust_address).update(longitude=longitude)
+            messages.success(
+                request, "Latest Customers Address Data mapped successfully!")
+            return redirect('/modules_map')
+
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         selected_module = request.POST.get('selected_module')
 
-
         if 'sales' in selected_module:
-            customers_id = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+            customers_id = Purchase_Details.objects.filter(
+                entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
         elif 'restamping' in selected_module:
-            customers_id = Restamping_after_sales_service.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+            customers_id = Restamping_after_sales_service.objects.filter(
+                entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
         elif 'amc' in selected_module:
-            customers_id = Amc_After_Sales.objects.filter(entry_timedate__range=[from_date, to_date]).values_list("crm_no__id",flat=True)
+            customers_id = Amc_After_Sales.objects.filter(
+                entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
 
-        address_list = Customer_Details.objects.filter(pk__in=customers_id).values("latitude","longitude","customer_name")
-        
-        lat_lon_list=[]
+        address_list = Customer_Details.objects.filter(
+            pk__in=customers_id).values("latitude", "longitude", "customer_name")
+
+        lat_lon_list = []
 
         for obj in address_list:
 
-            if obj['latitude'] != None and obj['longitude']!= None:
+            if obj['latitude'] != None and obj['longitude'] != None:
                 temp_list = []
                 temp_list.append(obj['customer_name'])
                 temp_list.append(float(obj['latitude']))
                 temp_list.append(float(obj['longitude']))
                 lat_lon_list.append(temp_list)
-    
+
                 print("lat_lon_list")
                 print(lat_lon_list)
-    context={
-        "address_list":lat_lon_list,
+    context = {
+        "address_list": lat_lon_list,
     }
-    return render(request, 'location_analytics/moduleswise_map.html',context)
+    return render(request, 'location_analytics/moduleswise_map.html', context)
 
 
 def get_product_details(request):
@@ -2733,50 +2883,55 @@ def get_product_details(request):
     sub_model_var = request.GET.get('sub_model')
     sub_sub_model_var = request.GET.get('sub_sub_model')
 
+    context = {}
 
-    context={}
-
-    if sub_sub_model_var != '' and sub_sub_model_var != None  and sub_model_var != 'None':
-        sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+    if sub_sub_model_var != '' and sub_sub_model_var != None and sub_model_var != 'None':
+        sub_sub_model_var = sub_sub_model.objects.filter(
+            id=sub_sub_model_var).first()
 
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model_var, sub_sub_category__name=sub_sub_model_var)
-        context1={
-            'product_id' : product_id,
+        context1 = {
+            'product_id': product_id,
         }
         context.update(context1)
-    elif sub_model_var != '' and sub_model_var != None  and sub_model_var != 'None':
+    elif sub_model_var != '' and sub_model_var != None and sub_model_var != 'None':
         sub_model_var = sub_model.objects.filter(id=sub_model_var).first()
 
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model_var, sub_sub_category__name=None)
-        context2={
-            'product_id' : product_id,
+        context2 = {
+            'product_id': product_id,
         }
         context.update(context2)
-    return render(request, 'AJAX/get_product_details.html',context)
+    return render(request, 'AJAX/get_product_details.html', context)
 
 
-def return_product(type_of_scale,model_of_purchase,sub_model,sub_sub_model):
+def return_product(type_of_scale, model_of_purchase, sub_model, sub_sub_model):
     pro_obj = Product.objects.get(scale_type=type_of_scale,
-                        main_category=model_of_purchase,
-                        sub_category=sub_model,
-                        sub_sub_category=sub_sub_model)
+                                  main_category=model_of_purchase,
+                                  sub_category=sub_model,
+                                  sub_sub_category=sub_sub_model)
     return pro_obj
 
-def return_product_sub_model(type_of_scale,model_of_purchase,sub_model):
+
+def return_product_sub_model(type_of_scale, model_of_purchase, sub_model):
     pro_obj = Product.objects.get(scale_type=type_of_scale,
-                        main_category=model_of_purchase,
-                        sub_category=sub_model)
+                                  main_category=model_of_purchase,
+                                  sub_category=sub_model)
     return pro_obj
 
-def return_godown_pro(godown_id,product):
-    godown_pro = GodownProduct.objects.filter(godown_id=godown_id, product_id=product)
+
+def return_godown_pro(godown_id, product):
+    godown_pro = GodownProduct.objects.filter(
+        godown_id=godown_id, product_id=product)
     return godown_pro
+
 
 def autocomplete(request):
     if request.is_ajax():
-        queryset = Customer_Details.objects.filter(customer_name__startswith=request.GET.get('search', None))
+        queryset = Customer_Details.objects.filter(
+            customer_name__startswith=request.GET.get('search', None))
         print(queryset)
         print(queryset)
         print(queryset)
@@ -2791,15 +2946,16 @@ def autocomplete(request):
 # def bills_dashboard(request):
 #     return render()
 
+
 def gstvsCash(request):
-    gst_sales=[]
+    gst_sales = []
     total_gst = 0.0
     total_cash = 0.0
-    if request.method =='POST':
+    if request.method == 'POST':
         from_date = request.POST.get('date1')
         to_date = request.POST.get('date2')
 
-        gst_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date],is_gst=True).values('date_of_purchase').annotate(
+        gst_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date], is_gst=True).values('date_of_purchase').annotate(
             data_sum=Cast(Sum('total_amount'), FloatField())).values('date_of_purchase', 'data_sum',)
 
         cash_sales = Purchase_Details.objects.filter(date_of_purchase__range=[from_date, to_date],  is_gst=False).values(
@@ -2814,37 +2970,39 @@ def gstvsCash(request):
             total_gst = total_gst + elm2['data_sum']
             for elm1 in cash_sales:
                 if elm2['date_of_purchase'] == elm1['date_of_purchase']:
-                    elm2.update({'cash_sum':elm1['cash_sum']})
+                    elm2.update({'cash_sum': elm1['cash_sum']})
 
-    context={
-        "gst_sales":gst_sales,
-        "total_gst":total_gst,
-        "total_cash":total_cash,
+    context = {
+        "gst_sales": gst_sales,
+        "total_gst": total_gst,
+        "total_cash": total_cash,
     }
-    return render(request,'gstVScash/gstvscash.html',context)
+    return render(request, 'gstVScash/gstvscash.html', context)
+
 
 def reportCustomerPage(request):
-    this_month=[]
+    this_month = []
     if request.method == 'POST':
         from_date = request.POST.get('date1')
         to_date = request.POST.get('date2')
         this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('crm_no__id').annotate(
             data_count=Count('crm_no__id')).annotate(
-            data_sum=Sum('total_amount')).values('date_of_purchase','crm_no__id', 'crm_no__customer_name','data_sum','crm_no__customer_email_id','crm_no__contact_no','data_count').order_by('-data_sum')
-        
-        
+            data_sum=Sum('total_amount')).values('date_of_purchase', 'crm_no__id', 'crm_no__customer_name', 'data_sum', 'crm_no__customer_email_id', 'crm_no__contact_no', 'data_count').order_by('-data_sum')
+
     context = {
         "this_month": this_month,
     }
-    return render(request,'gstVScash/customerDetailsinReportSales.html',context)
+    return render(request, 'gstVScash/customerDetailsinReportSales.html', context)
+
 
 def payment_mode_report(request):
-    this_month=[]
+    this_month = []
     if request.method == 'POST':
         from_date = request.POST.get('date1')
         to_date = request.POST.get('date2')
-        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values('payment_mode').annotate(data_count=Sum('total_amount')).values('payment_mode','data_count',)
+        this_month = Purchase_Details.objects.filter(entry_timedate__range=[from_date, to_date]).values(
+            'payment_mode').annotate(data_count=Sum('total_amount')).values('payment_mode', 'data_count',)
     context = {
         "this_month": this_month,
     }
-    return render(request,'gstVScash/payment_mode_report.html',context)
+    return render(request, 'gstVScash/payment_mode_report.html', context)
