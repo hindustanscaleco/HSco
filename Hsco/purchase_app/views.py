@@ -2820,7 +2820,7 @@ def modules_map(request):
         if 'map_all_data' in request.POST:
             import requests
             customer_list = Customer_Details.objects.filter(
-                latitude=None, longitude=None).values_list('address').distinct()[100:]
+                latitude=None, longitude=None).values_list('address').distinct()[0:100]
 
             geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
 
@@ -2869,8 +2869,6 @@ def modules_map(request):
                 temp_list.append(float(obj['longitude']))
                 lat_lon_list.append(temp_list)
 
-                print("lat_lon_list")
-                print(lat_lon_list)
     context = {
         "address_list": lat_lon_list,
     }
