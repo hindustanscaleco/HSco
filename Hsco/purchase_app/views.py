@@ -2648,11 +2648,11 @@ def stock_does_not_exist(request):
 
 def modules_map(request):
     import requests
-    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[1]
+    customer_list = Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct()[0:100]
     print(Customer_Details.objects.filter(latitude=None,longitude=None).values_list('address').distinct().count())
     print(customer_list)
     # print(cust0)
-    geo_api_key = 'AIzaSyBlUZvgK-0FjsnoVmYEXLvacmbzUEYi8no'
+    geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
 
     for cust_address in customer_list:
         response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(cust_address) + str(', india')+'&key='+geo_api_key)
