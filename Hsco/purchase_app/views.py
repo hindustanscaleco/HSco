@@ -2806,9 +2806,10 @@ def stock_does_not_exist(request):
 
 
 def modules_map(request):
-    customer_list = Customer_Details.objects.filter(
-                latitude=None, longitude=None).values_list('address').distinct()
-    print(customer_list.count())
+    # customer_list = Customer_Details.objects.filter(
+    #             latitude=None, longitude=None).values_list('address','latitude','longitude').distinct()[0]
+    # print(customer_list)
+    # print(customer_list.count())
     # from geopy.geocoders import Nominatim
     # geolocator = Nominatim(user_agent="hsc")
     # location = geolocator.geocode("175 5th Avenue NYC")
@@ -2835,10 +2836,8 @@ def modules_map(request):
                 latitude = resp_json_payload['results'][0]['geometry']['location']["lat"]
                 longitude = resp_json_payload['results'][0]['geometry']['location']["lng"]
 
-                Customer_Details.objects.filter(
-                    address=cust_address).update(latitude=latitude)
-                Customer_Details.objects.filter(
-                    address=cust_address).update(longitude=longitude)
+                Customer_Details.objects.filter(latitude=None,address=cust_address).update(latitude=latitude)
+                Customer_Details.objects.filter(longitude=None,address=cust_address).update(longitude=longitude)
             messages.success(
                 request, "Latest Customers Address Data mapped successfully!")
             return redirect('/modules_map')
