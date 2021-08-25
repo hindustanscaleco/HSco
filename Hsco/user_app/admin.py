@@ -54,11 +54,11 @@ class UserAdmin(ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'employee_number', 'name','mobile',  'role', 'is_active')
+    list_display = ('email', 'employee_number', 'name','mobile',  'role', 'is_active',)
     list_filter = ( 'role','is_deleted')
 
     fieldsets = (
-                ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password','is_active')}),
+                ('Login Credentials', {'fields': ('mobile', 'password', 'name','employee_number','can_reply_to_sa','product_master_access','professional_email','professional_email_password','incorrect_pass_count','is_active')}),
         ('Personal info', {'fields': ('modules_assigned','login_sms_number','email', 'profile_name', 'role','manager','admin','super_admin','date_of_joining','average_rating','group','pancard','aadhar_card','photo','upload_pancard','upload_aadhar_card','is_deleted','is_admin')}),
         ('Bank Details', {'fields': ('bank_name', 'account_number', 'branch_name','ifsc_code')}),
         ('Seen', {'fields': ('last_login','password_text')}),

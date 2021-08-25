@@ -167,12 +167,35 @@ color:;
 
            <div class="row table-responsive"  id="id_deleted_view">
 
+{% if messages %}
+{% for message in messages %}
+         {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% endif %}
+
+
+         {% endfor %}
+
+{% endif %}
                <table class="table">
                    <tr>
                        <th>Name</th>
                        <th>Contact No</th>
                        <th> Email Id</th>
                        <th>Role</th>
+                       <th>Blocked</th>
                    </tr>
 
                     {% if deleted %}
@@ -187,6 +210,15 @@ color:;
                        <td>{{list.mobile}}</td>
                        <td>{{list.email}}</td>
                        <td>{{list.role}}</td>
+                       <td>
+                         {% if list.incorrect_pass_count == 10.0 %}
+                         <form method="POST" autocomplete="off" >{% csrf_token %}
+                         <button  id="unlock_button_id" type="submit" value="unlock"
+                        class="btn btn-primary btn-sm">Unlock
+                </button><input value="{{ list.employee_number }}" name="employee_number" hidden>
+                </form>
+                        {% endif %}
+              </td>
                    </tr>
                    {% endfor %}
 

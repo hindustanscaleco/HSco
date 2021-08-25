@@ -2806,7 +2806,9 @@ def stock_does_not_exist(request):
 
 
 def modules_map(request):
-
+    customer_list = Customer_Details.objects.filter(
+                latitude=None, longitude=None).values_list('address').distinct()
+    print(customer_list.count())
     # from geopy.geocoders import Nominatim
     # geolocator = Nominatim(user_agent="hsc")
     # location = geolocator.geocode("175 5th Avenue NYC")
@@ -2820,7 +2822,7 @@ def modules_map(request):
         if 'map_all_data' in request.POST:
             import requests
             customer_list = Customer_Details.objects.filter(
-                latitude=None, longitude=None).values_list('address').distinct()[0:100]
+                latitude=None, longitude=None).values_list('address').distinct()
 
             geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
 

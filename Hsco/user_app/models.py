@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,
     User)
 from simple_history.models import HistoricalRecords
+from django.contrib import messages
 
 choices = (('Super Admin', 'Super Admin'),
     ('Admin', 'Admin'),
@@ -125,6 +126,7 @@ class SiteUser(AbstractBaseUser):
     photo_of_cancelled_cheque = models.ImageField(upload_to='cheque_photo/', null=True, blank=True)
     product_master_access = models.BooleanField(default=False)
     auto_timedate = models.DateTimeField(default=timezone.now, blank=True)
+    incorrect_pass_count = models.FloatField(default=0.0)
     history = HistoricalRecords()
 
     objects = SiteUserManager()

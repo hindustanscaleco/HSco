@@ -295,7 +295,12 @@ def ess_all_user(request):
         list = SiteUser.objects.filter(is_deleted=False,admin__icontains=request.user.name,)
     elif request.user.role == 'Manager':
         list = SiteUser.objects.filter(is_deleted=False,manager__icontains=request.user.name,)
-
+    
+    if request.method == 'POST' :
+        print('function executed')
+        employee_number = request.POST.get('employee_number')
+        SiteUser.objects.filter(employee_number=employee_number).update(incorrect_pass_count=0.0)
+        messages.success(request, "Employee id: "+employee_number+" profile has been unlocked !")
 
     context={
         'list': list,
