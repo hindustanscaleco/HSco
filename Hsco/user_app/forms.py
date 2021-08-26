@@ -61,7 +61,7 @@ class LoginForm(forms.Form):
 
         # deleted user cannot be logged in !!!
         if SiteUser.objects.get(employee_number=mobile).is_deleted == True:
-            raise forms.ValidationError("Deleted user cannot be logged in !")
+            raise forms.ValidationError("Deleted user cannot be logged in!")
 
         if not user or not user.is_active:
 
@@ -72,11 +72,11 @@ class LoginForm(forms.Form):
             # incorrect password for 10 times will locked the account !!!
             if SiteUser.objects.get(employee_number=mobile).role != 'Super Admin' :
                 if SiteUser.objects.get(employee_number=mobile).incorrect_pass_count == 10:
-                    raise forms.ValidationError("You have entered an incorrect pin several times ! Your profile has been locked !!!")
+                    raise forms.ValidationError("You have entered an incorrect pin several times! Your profile has been locked !!!")
                 else:
                     SiteUser.objects.filter(employee_number=mobile).update(incorrect_pass_count=(F("incorrect_pass_count") + 1))
             
-            raise forms.ValidationError("Incorrect Mobile Number or Password. Please try again !!!")
+            raise forms.ValidationError("Incorrect Employee Number or Password. Please try again!!!")
         SiteUser.objects.filter(employee_number=mobile).update(incorrect_pass_count=0)
         return self.cleaned_data
 
