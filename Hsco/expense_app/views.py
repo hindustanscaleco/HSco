@@ -996,7 +996,7 @@ def showBillModule(request):
         
             
     else:  # For EMPLOYEE
-        bills_list = Bill.objects.filter(user_id=request.user.pk, entry_date__month=8).order_by('-id')
+        bills_list = Bill.objects.filter(user_id=request.user.pk, entry_date__month=today_month).order_by('-id')
 
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
