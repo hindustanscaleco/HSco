@@ -990,13 +990,7 @@ def showBill(request,sales_id,bill_company_type):
         
 
 def showBillModule(request):
-    if check_admin_roles(request):  # For ADMIN
-        bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, entry_date__month=today_month).order_by('-id')
-        
-            
-    else:  # For EMPLOYEE
-        bills_list = Bill.objects.filter(user_id=request.user.pk, entry_date__month=today_month).order_by('-id')
+    bills_list = Bill.objects.filter(entry_date__month=today_month).order_by('-id')
 
     #filter by company type (sales or scales)
     if request.method == 'GET' and 'company_type' in request.GET:
