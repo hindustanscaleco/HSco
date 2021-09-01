@@ -518,17 +518,20 @@ td {
           <td>{{item.purchase_id.bill_no}}</td>
           <td>{{item.purchase_id.second_company_name}}</td>
           <td>{{item.purchase_id.second_contact_no}}</td>
-          <td>{{item.purchase_id.value_of_goods}}</td>
-          <td>{{item.purchase_id.total_pf}}</td>
-          {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
-            <td>{{item.purchase_id.tax_amount|div:2}} </td>
-            <td>{{item.purchase_id.tax_amount|div:2}} </td>
+          {% if request.user.is_authenticated %}
+              {% if request.user.role == 'Super Admin' or request.user.role == 'Admin' or request.user.role == 'Manager' %}
+                <td>{{item.purchase_id.value_of_goods}}</td>
+                <td>{{item.purchase_id.total_pf}}</td>
+              {% if item.purchase_id.crm_no.customer_gst_no|slice:":2" == "27" or item.purchase_id.crm_no.customer_gst_no|length < 5 or item.purchase_id.crm_no.customer_gst_no == None  %}
+                <td>{{item.purchase_id.tax_amount|div:2}} </td>
+                <td>{{item.purchase_id.tax_amount|div:2}} </td>
+                <td></td>
+              {% else %}
             <td></td>
-          {% else %}
-          <td></td>
-            <td></td>
-            <td>{{item.purchase_id.tax_amount}}</td>
-            
+              <td></td>
+              <td>{{item.purchase_id.tax_amount}}</td>
+          {% endif %}
+          {% endif %}  
           {% endif %}
           <td></td>
           <td>{{item.purchase_id.total_amount}}</td>
