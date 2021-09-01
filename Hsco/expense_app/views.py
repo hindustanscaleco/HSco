@@ -1019,14 +1019,7 @@ def showBillModule(request):
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
             end_date = request.POST.get('date2')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, entry_date__range=[start_date, end_date]).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, entry_date__range=[start_date, end_date]).order_by('-id')
-            # bills_list = Bill.objects.filter( entry_date__range=[start_date, end_date]).order_by('-id')
+            bills_list = Bill.objects.filter( entry_date__range=[start_date, end_date]).order_by('-id')
             context = {
                 'bills_list': bills_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -1034,14 +1027,7 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit2' in request.POST:
             contact = request.POST.get('contact')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, purchase_id__crm_no__contact_no__icontains=contact).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, purchase_id__crm_no__contact_no__icontains=contact).order_by('-id')
-            # bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no__icontains=contact).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__crm_no__contact_no__icontains=contact).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1051,14 +1037,8 @@ def showBillModule(request):
 
         elif 'submit3' in request.POST:
             email = request.POST.get('email')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, purchase_id__crm_no__customer_email_id__icontains=email).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, purchase_id__crm_no__customer_email_id__icontains=email).order_by('-id')
-            # bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id__icontains=email).order_by('-id')
+
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_email_id__icontains=email).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1067,14 +1047,8 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif 'submit4' in request.POST:
             name = request.POST.get('name')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, purchase_id__crm_no__customer_name__icontains=name).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, purchase_id__crm_no__customer_name__icontains=name).order_by('-id')
-            # bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name__icontains=name).order_by('-id')
+
+            bills_list = Bill.objects.filter(purchase_id__crm_no__customer_name__icontains=name).order_by('-id')
 
 
             context = {
@@ -1085,15 +1059,8 @@ def showBillModule(request):
 
         elif 'submit5' in request.POST:
             company = request.POST.get('company')
-            name = request.POST.get('name')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, purchase_id__crm_no__company_name__icontains=company).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, purchase_id__crm_no__company_name__icontains=company).order_by('-id')
-            # bills_list = Bill.objects.filter(purchase_id__crm_no__company_name__icontains=company).order_by('-id')
+
+            bills_list = Bill.objects.filter(purchase_id__crm_no__company_name__icontains=company).order_by('-id')
 
             context = {
                 'bills_list': bills_list,
@@ -1102,14 +1069,8 @@ def showBillModule(request):
             return render(request,'bills/billsModuleDashboard.html',context)
         elif request.method == 'POST' and 'submit6' in request.POST:
             bill_id = request.POST.get('id')
-            # bills_list = Bill.objects.filter(purchase_id__purchase_no__icontains=bill_id).order_by('-id')
-            if check_admin_roles(request):  # For ADMIN
-                bills_list = Bill.objects.filter(Q(user_id__name=request.user.name)|Q(user_id__group__icontains=request.user.name),
-                        user_id__is_deleted=False, purchase_id__purchase_no__icontains=bill_id).order_by('-id')
-        
-            
-            else:  # For EMPLOYEE
-                bills_list = Bill.objects.filter(user_id=request.user.pk, purchase_id__purchase_no__icontains=bill_id).order_by('-id')
+            bills_list = Bill.objects.filter(purchase_id__purchase_no__icontains=bill_id).order_by('-id')
+
             context = {
                 'bills_list': bills_list,
                 'search_msg': 'Search result for Sales ID : ' + str(id),
