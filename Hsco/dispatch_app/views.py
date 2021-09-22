@@ -322,7 +322,9 @@ def add_dispatch_details(request):
         item2.shipping_address = shipping_address
         item2.bill_address = bill_address
         item2.lr_no = lr_no
-        item2.photo_lr_no = photo_lr_no
+
+        if photo_lr_no != '':
+            item2.photo_lr_no = photo_lr_no
 
         # item2.channel_of_dispatch = channel_of_dispatch
         item2.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
@@ -1159,7 +1161,9 @@ def update_dispatch_details(request,update_id):
         item.no_bundles = no_bundles
         item.transport_name = transport_name
         item.lr_no = lr_no
-        item.photo_lr_no = photo_lr_no
+
+        if  photo_lr_no != None:
+            item.photo_lr_no = photo_lr_no
         # item.channel_of_dispatch = channel_of_dispatch
         item.channel_of_dispatch_id = DynamicDropdown.objects.get(id=channel_of_dispatch)
         item.notes = notes
