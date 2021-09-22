@@ -2073,10 +2073,7 @@ def add_product_details(request, id):
                 purchase.purchase_no) + '.' \
                                         ' We will love to hear your feedback to help us improve' \
                                         ' our customer experience. Please click on the link' \
-                                        ' below: \n http://139.59.76.87/feedback_purchase/' + str(
-                request.user.pk) + '/' + str(
-                purchase.crm_no.pk) + '/' + str(
-                purchase.id) + '\n For more details contact us on - 7045922250'
+                                        ' below: \n bit.ly/3As5OIA' + '\n For more details contact us on - 7045922250'
 
             url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + \
                 purchase.second_contact_no + "&message=" + message + "&senderid=" + \
@@ -2809,7 +2806,9 @@ def modules_map(request):
     import requests
     geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
     
-    
+    customer_list = Customer_Details.objects.filter(
+                latitude=None, longitude=None).values_list('address').exclude(address=None).distinct()
+    print(customer_list.count())
     # from geopy.geocoders import Nominatim
     # geolocator = Nominatim(user_agent="hsc")
     # location = geolocator.geocode("175 5th Avenue NYC")
@@ -2823,7 +2822,7 @@ def modules_map(request):
         if 'map_all_data' in request.POST:
             
             customer_list = Customer_Details.objects.filter(
-                latitude=None, longitude=None).values_list('address').distinct()
+                latitude=None, longitude=None).values_list('address').exclude(address=None).distinct()
 
             
             
@@ -2841,6 +2840,7 @@ def modules_map(request):
                     Customer_Details.objects.filter(latitude=None,address=cust_address).update(latitude=latitude)
                     Customer_Details.objects.filter(longitude=None,address=cust_address).update(longitude=longitude)
                 except Exception as e:
+                    print(resp_json_payload)
                     print('exception')
                     print(e)
 
