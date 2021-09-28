@@ -1,10 +1,9 @@
 <!--Do not edit without permission-->
-<input hidden type="text"  id="latest_sale_industry_id" value="{{customer_latest_sale.industry}}"/>
-<input hidden type="text"  id="latest_sale_channel_dispatch_id" value="{{customer_latest_sale.channel_of_dispatch}}"/>
-<input hidden type="text"  id="latest_sale_channel_sales_id" value="{{customer_latest_sale.channel_of_sales}}"/>
+
 <textarea hidden id="latest_sale_notes_id">{{customer_latest_sale.notes}}</textarea>
 <textarea hidden id="latest_sale_shipping_id">{{customer_latest_sale.shipping_address}}</textarea>
 <textarea hidden id="latest_sale_billing_id">{{customer_latest_sale.bill_address}}</textarea>
+
 <div class="form-group row">
 
 
@@ -149,3 +148,161 @@
 
 <input hidden name="latest_lead_channel" id="latest_lead_channel_id" value="{{customer_latest_lead.channel}}"/>
 {% endif %}
+
+
+{% if not customer_latest_lead %}
+
+<hr style="background-color: gray;">
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">New/Repeat Sale *
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+<select name="new_repeat_purchase" id="new_repeat_purchase_id" required class="form-control">
+  <option value="Repeat">Repeat</option>
+<option value="New">New</option>
+</select>
+</div>
+</div>
+
+
+
+
+
+
+<label id="label_bill_no" class="col-md-2 control-label">Bill No
+
+</label>
+
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+<input  name="bill_no" id="bill_no" placeholder="Bill No" class="form-control"  type="text">
+</div>
+</div>
+</div>
+<hr style="background-color: gray;">
+
+
+
+
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Marketing
+
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+<select name="channel_of_marketing" id="channel_of_marketing" class="form-control">
+  {% if customer_latest_sale.channel_of_marketing_id %}
+  <option value="{{customer_latest_sale.channel_of_marketing_id.id}}">{{customer_latest_sale.channel_of_marketing_id.name}}</option>
+  {% else %}
+  <option value="">Select Channel of Marketing</option>
+  {% endif %}
+  {% for item in channel_marketing %}
+  <option value="{{item.id}}">{{item.name}}</option>
+  {% endfor %}
+</select>
+
+
+
+</div>
+</div>
+
+
+
+<label class="col-md-2 control-label">Industry *
+
+</label>
+
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+<select name="industry" id="industry" required class="form-control">
+  {% if customer_latest_sale.industry_id %}
+<option value="{{customer_latest_sale.industry_id.id}}">{{customer_latest_sale.industry_id.name}}</option>
+{% else %}
+  <option value="">Select Industry</option>
+  {% endif %}
+{% for item in indutry %}
+  <option value="{{item.id}}">{{item.name}}</option>
+  {% endfor %}
+</select>
+
+</div>
+</div>
+</div>
+
+
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Sales *
+
+
+</label>
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+    <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control">
+      {% if customer_latest_sale.channel_of_sales_id %}
+<option value="{{customer_latest_sale.channel_of_sales_id.id}}">{{customer_latest_sale.channel_of_sales_id.name}}</option>
+{% else %}
+  <option value="">Select Channel of Sales</option>
+  {% endif %}
+{% for item in channel_sales %}
+  <option value="{{item.id}}">{{item.name}}</option>
+  {% endfor %}
+</select>
+
+
+
+</div>
+</div>
+
+<label class="col-md-2 control-label">Channel of Dispatch *
+
+
+</label>
+
+<div class="col-md-4 inputGroupContainer">
+<div class="input-group">
+<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+
+   <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control">
+    {% if customer_latest_sale.channel_of_dispatch_id %}
+
+    <option value="{{customer_latest_sale.channel_of_dispatch_id.id}}">{{customer_latest_sale.channel_of_dispatch_id.name}}</option>
+    {% else %}
+  <option value="">Select Channel of Dispatch</option>
+  {% endif %}
+    {% for item in channel_dispatch %}
+  <option value="{{item.id}}">{{item.name}}</option>
+  {% endfor %}
+</select>
+
+
+<!--  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">-->
+<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+
+<!--    <datalist style="height:20px;" id="channel">-->
+<!--              <option value="Franchisee Store">-->
+<!--              <option value="Transport">-->
+<!--      <option value="Courier">-->
+<!--      <option value="Online Market Places">-->
+<!--      <option value="Delivery Boys">-->
+<!--    </datalist>-->
+</div>
+</div>
+</div>
+
+{% endif%}

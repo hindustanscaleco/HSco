@@ -1,3 +1,4 @@
+from customer_app.models import DynamicDropdown
 from django.db import connection
 from django.core.paginator import Paginator
 from django.db.models import Min, Sum, Q, F, Avg
@@ -2042,8 +2043,18 @@ def load_reparing_manager(request):
 @login_required(login_url='/')
 def load_customer(request):
     cust_id = request.GET.get('item_id')
-    context = {
-
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY", is_enabled=True)
+    main_context = {
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'indutry': indutry,
     }
     # for lead management customer details are fetched from lead_customer_details
     if request.GET.get('type') == 'lead':
@@ -2051,14 +2062,14 @@ def load_customer(request):
         context = {
             'cust_list': cust_list,
         }
-        context.update(context)
+        main_context.update(context)
         try:
             customer_latest_lead = Lead.objects.filter(customer_id=cust_id).latest('customer_id')
             context = {
                 'cust_list': cust_list,
                 'customer_latest_lead': customer_latest_lead,
             }
-            context.update(context)
+            main_context.update(context)
         except Exception as e:
             print(e)
             pass
@@ -2070,23 +2081,24 @@ def load_customer(request):
         context = {
             'cust_list': cust_list,
         }
-        context.update(context)
+        main_context.update(context)
 
         try:
             customer_latest_sale = Purchase_Details.objects.filter(crm_no_id=cust_id).latest('crm_no')
             print(customer_latest_sale.industry)
             print(customer_latest_sale.channel_of_dispatch)
             print(customer_latest_sale.channel_of_sales)
+            print(customer_latest_sale.purchase_no)
             context = {
                 'cust_list': cust_list,
                 'customer_latest_sale': customer_latest_sale,
             }
-            context.update(context)
+            main_context.update(context)
         except Exception as e:
             print(e)
             pass
 
-    return render(request, 'AJAX/load_customer.html', context)
+    return render(request, 'AJAX/load_customer.html', main_context)
 
 
 
