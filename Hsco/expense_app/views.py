@@ -1067,7 +1067,7 @@ def showBillModule(request):
 
             context = {
                 'bills_list': bills_list,
-                'search_msg': 'Search result for Sales ID : ' + str(id),
+                'search_msg': 'Search result for Sales ID : ' + str(bill_id),
             }
             return render(request, 'bills/billsModuleDashboard.html', context)
         elif request.method == 'POST' and 'delete_bill' in request.POST:
