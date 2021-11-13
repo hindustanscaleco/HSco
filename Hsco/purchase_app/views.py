@@ -2826,8 +2826,8 @@ def modules_map(request):
         if 'map_all_data' in request.POST:
             #check if current api count is less than count of customers
             if first_customer_api_count < customer_list.count():
-                #iterate through next 50 customers until last one
-                for cust_address in customer_list[first_customer_api_count:first_customer_api_count+50.0]:
+                #iterate through next 30 customers until last one
+                for cust_address in customer_list[first_customer_api_count:first_customer_api_count+30.0]:
                     try:
                         response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(
                             cust_address) + str(', india')+'&key='+geo_api_key)
@@ -2845,8 +2845,8 @@ def modules_map(request):
                         print('exception')
                         print(e)
 
-                messages.success(request, "Latest Customers Address Data(upto 50) mapped successfully!")
-                Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+50.0)
+                messages.success(request, "Latest Customers Address Data(upto 30) mapped successfully!")
+                Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+30.0)
             return redirect('/modules_map')
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
