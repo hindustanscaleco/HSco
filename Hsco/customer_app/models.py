@@ -23,7 +23,8 @@ class Customer_Details(models.Model):
     entry_timedate = models.DateField(default=datetime.date.today)
     latitude = models.DecimalField(max_digits=22, decimal_places=15,null=True,blank=True)
     longitude = models.DecimalField(max_digits=22, decimal_places=15,null=True,blank=True)
-
+    api_cal_count = models.FloatField(default=0.0, null=True, blank=True)
+    
     class Meta:
         unique_together = ('customer_name','contact_no','customer_gst_no')
 
