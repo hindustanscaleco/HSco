@@ -2847,10 +2847,10 @@ def modules_map(request):
 
                 messages.success(request, "Latest Customers Address Data(upto 30) mapped successfully!")
                 Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+30.0)
+            else:
+                messages.success(request, "Already mapped all existing customers in db!")
             return redirect('/modules_map')
-        else:
-            messages.success(request, "Already mapped all existing customers in db!")
-            return redirect('/modules_map')
+        
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         selected_module = request.POST.get('selected_module')
