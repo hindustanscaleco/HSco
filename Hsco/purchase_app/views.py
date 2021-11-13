@@ -2861,6 +2861,9 @@ def modules_map(request):
         elif 'amc' in selected_module:
             customers_id = Amc_After_Sales.objects.filter(
                 entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
+        else:
+            customers_id = Purchase_Details.objects.filter(
+                entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
 
         address_list = Customer_Details.objects.filter(
             pk__in=customers_id).values("latitude", "longitude", "customer_name")
