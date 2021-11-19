@@ -20,6 +20,7 @@
 		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
 		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 		<!--end::Global Theme Styles-->
 		<!--begin::Layout Themes(used by all pages)-->
@@ -165,13 +166,13 @@ td {
       <br>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <center>  <h1 style="color: black; font-size: 25px;">Custom Report</h1>  </center>
-            <a href="#report" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-          </div>
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"  onclick="ExportToExcel('xlsx')" ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    </div>
 
 
 
 {% load replace_underscore %}
-                 <table class="table2excel" data-tableName="Test Table 2">
+                 <table class="table2excel" id="tbl_exporttable_to_xls" data-tableName="Test Table 2">
         <tr>
             {% for lead in lead_list %}
                 {% if forloop.first %}
@@ -370,21 +371,28 @@ td {
   <!-- End of Page Wrapper -->
 
 
-<!--<script>-->
+  <script>
+      function ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('tbl_exporttable_to_xls');
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('LeadReport.' + (type || 'xlsx')));
+        }
 
-<!--var tableToExcel = (function() {-->
-<!--  var uri = 'data:application/vnd.ms-excel;base64,'-->
-<!--    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head>&lt;!&ndash;[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]&ndash;&gt;</head><body><table>{table}</table></body></html>'-->
-<!--    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }-->
-<!--    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }-->
-<!--  return function(table, name) {-->
-<!--    if (!table.nodeType) table = document.getElementById(table)-->
-<!--    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}-->
-<!--    window.location.href = uri + base64(format(template, ctx))-->
-<!--  }-->
-<!--})()-->
-
-<!--</script>-->
+    var tableToExcel = (function() {
+      var uri = 'data:application/vnd.ms-excel;base64,'
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+      return function(table, name) {
+        if (!table.nodeType) table = document.getElementById(table)
+        var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+        window.location.href = uri + base64(format(template, ctx))
+      }
+    })()
+    
+    </script>
 
 <script>
     /*
