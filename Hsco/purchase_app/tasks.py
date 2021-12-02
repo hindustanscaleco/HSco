@@ -33,4 +33,5 @@ def map_all_data():
                 print(resp_json_payload)
                 print('exception')
                 print(e)
+        Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+1000.0)
     return redirect('/modules_map')
