@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from .tasks import map_all_data
 from customer_app.models import Customer_Details
 from user_app.models import SiteUser
 from dispatch_app.models import Dispatch
@@ -2803,70 +2804,32 @@ def stock_does_not_exist(request):
 
 
 def modules_map(request):
-    import requests
-    geo_api_key = 'AIzaSyAX9a8Sct4E4LN-P0MTJoKzb4iqYodyWdo'
-
-    first_customer_api_count = float(Customer_Details.objects.get(id=8089).api_cal_count)
-
-    customer_list = Customer_Details.objects.filter(
-                latitude=None, longitude=None).values_list('address').exclude(address=None).distinct()
     
     
-    # from geopy.geocoders import Nominatim
-    # geolocator = Nominatim(user_agent="hsc")
-    # location = geolocator.geocode("175 5th Avenue NYC")
-    # print((location.latitude, location.longitude))
     lat_lon_list = []
-    # for i in range(first_customer_api_count,first_customer_api_count+100.0):
 
     # from geopy.geocoders import Nominatim
     if request.method == 'POST':
         ####### map all data using a button  (commented) #########
 
         if 'map_all_data' in request.POST:
-            #check if current api count is less than count of customers
-            if first_customer_api_count < customer_list.count():
-                #iterate through next 30 customers until last one
-                for cust_address in customer_list[first_customer_api_count:first_customer_api_count+30.0]:
-                    try:
-                        response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(
-                            cust_address) + str(', india')+'&key='+geo_api_key)
-
-                        resp_json_payload = response.json()
-
-                        latitude = resp_json_payload['results'][0]['geometry']['location']["lat"]
-                        longitude = resp_json_payload['results'][0]['geometry']['location']["lng"]
-
-                        
-                        Customer_Details.objects.filter(latitude=None,address=cust_address).update(latitude=latitude)
-                        Customer_Details.objects.filter(longitude=None,address=cust_address).update(longitude=longitude)
-                    except Exception as e:
-                        print(resp_json_payload)
-                        print('exception')
-                        print(e)
-
-                messages.success(request, "Latest Customers Address Data(upto 30) mapped successfully!")
-                Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+30.0)
-            else:
-                messages.success(request, "Already mapped all existing customers in db!")
-            return redirect('/modules_map')
+            map_all_data.delay()
         
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         selected_module = request.POST.get('selected_module')
 
-        if 'sales' in selected_module:
+        if 'sales' in selected_module and from_date and to_date:
             customers_id = Purchase_Details.objects.filter(
                 entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
-        elif 'restamping' in selected_module:
+        elif 'restamping' in selected_module and from_date and to_date:
             customers_id = Restamping_after_sales_service.objects.filter(
                 entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
-        elif 'amc' in selected_module:
+        elif 'amc' in selected_module and from_date and to_date:
             customers_id = Amc_After_Sales.objects.filter(
                 entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
         else:
-            customers_id = Purchase_Details.objects.filter(
-                entry_timedate__range=[from_date, to_date]).values_list("crm_no__id", flat=True)
+            customers_id = Purchase_Details.objects.all().values_list("crm_no__id", flat=True)
 
         address_list = Customer_Details.objects.filter(
             pk__in=customers_id).values("latitude", "longitude", "customer_name")

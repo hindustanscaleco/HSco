@@ -1,4 +1,8 @@
 import os
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -196,3 +200,7 @@ senderid = 'HSCALE'
 CRONJOBS = [
     ('6 16 * * *','stock_management_system_app.cron_job_daily.main')
 ]
+
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+CELERY_TIMEZONE = "US/Eastern"
+CELERY_TASK_TRACK_STARTED = True
