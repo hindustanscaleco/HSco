@@ -3,6 +3,7 @@ import requests
 from .models import *
 from django.shortcuts import  redirect
 from celery import shared_task
+import traceback
 
 #get customers lat and long stored in database function
 @shared_task
@@ -31,7 +32,7 @@ def map_all_data():
                 Customer_Details.objects.filter(longitude=None,address=cust_address).update(longitude=longitude)
             except Exception as e:
                 print(resp_json_payload)
-                print('exception')
-                print(e)
+                print('exception: '+str(e))
+                print(traceback.print_exc())
         Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+1000.0)
     return redirect('/modules_map')
