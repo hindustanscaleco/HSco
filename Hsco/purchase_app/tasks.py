@@ -16,8 +16,8 @@ def map_all_data():
                 latitude=None, longitude=None).values_list('address').exclude(address=None).distinct()
     #check if current api count is less than count of customers
     if first_customer_api_count < customer_list.count():
-        #iterate through next 1000 customers until last one
-        for cust_address in customer_list[first_customer_api_count:first_customer_api_count+1000.0]:
+        #iterate through next 300 customers until last one
+        for cust_address in customer_list[first_customer_api_count:first_customer_api_count+300.0]:
             try:
                 response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+str(
                     cust_address) + str(', india')+'&key='+geo_api_key)
@@ -32,7 +32,8 @@ def map_all_data():
                 Customer_Details.objects.filter(longitude=None,address=cust_address).update(longitude=longitude)
             except Exception as e:
                 print(resp_json_payload)
+                print('cust address:'+str(cust_address))
                 print('exception: '+str(e))
                 print(traceback.print_exc())
-        Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+1000.0)
+        Customer_Details.objects.filter(id=8089).update(api_cal_count=first_customer_api_count+300.0)
     return redirect('/modules_map')
