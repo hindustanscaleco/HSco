@@ -101,7 +101,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'hsco_db',
     'USER': 'root',
-    'PASSWORD': '',
+    'PASSWORD': '123',
     'HOST': '127.0.0.1',
     'PORT': '3306',
     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -179,11 +179,11 @@ EMAIL_HOST_PASSWORD = 'HindustanScale@@1234'
 # EMAIL_HOST_USER = 'leosagarfcb10@gmail.com'
 # EMAIL_HOST_PASSWORD = 'Vikas@7786'
 # EMAIL_HOST_PASSWORD = 'leosagar10'
-EMAIL_HOST_USER2 = 'jobs.hindustanscalecompany@gmail.com'  #for career module
-EMAIL_HOST_PASSWORD2 = 'Hindustan@@1234'
+EMAIL_HOST_USER2 = 'leosagarfcb10@gmail.com'  #for career module
+EMAIL_HOST_PASSWORD2 = 'leosagar10'
 
-EMAIL_HOST_USER3= 'pi.hindustanscale@gmail.com'    #for lead module pi
-EMAIL_HOST_PASSWORD3= 'Hindustan@@9526'
+EMAIL_HOST_USER3= 'leosagarfcb10@gmail.com'    #for lead module pi
+EMAIL_HOST_PASSWORD3= 'leosagar10'
 
 SESSION_SECURITY_EXPIRE_AFTER = 3600
 SESSION_SECURITY_WARN_AFTER = 3500

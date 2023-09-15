@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from email.mime.text import MIMEText
 from io import BytesIO
 
@@ -45,10 +45,11 @@ from stock_management_system_app.models import Godown,GodownProduct,GodownTransa
 import re
 
 from customer_app.models import DynamicDropdown
+from .utils import render_to_pdf 
 
-today_month = datetime.now().month
+today_month = datetime.datetime.now().month
 host_file = 'smtp.gmail.com'
-today_year = datetime.now().year
+today_year = datetime.datetime.now().year
 
 def one_time_dd_lead():
     lead_id = Lead.objects.filter(Q(channel_id=None)).values('id')
@@ -78,11 +79,9 @@ def lead_home(request):
 
     last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
-    import datetime
     
     to_date = datetime.datetime.today().strftime('%d-%b-%Y')
 
-    from datetime import datetime
     lead_count=0
     error2 = None
     error = None
@@ -617,7 +616,7 @@ def lead_home(request):
                                         item2.is_indiamart_purchased_lead = True
                                     else:
                                         item2.is_indiamart_purchased_lead = False
-                                    import datetime
+
                                     item2.date_of_initiation = datetime.datetime.today().strftime('%Y-%m-%d')
                                     item2.channel = "India Mart"
                                     item2.channel_id = DynamicDropdown.objects.get(name="India Mart",type="CHANNEL OF MARKETING")
@@ -1651,7 +1650,7 @@ def update_view_lead(request,id):
                         sales_customer.save()
 
                     purchase_det = Purchase_Details()
-                    import datetime
+                    # import datetime
                     #purchase details
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
@@ -1952,6 +1951,7 @@ def update_view_lead(request,id):
                 pass
             request.session['is_file_pdf'] = True
             val = request.POST
+            
             try:
                 if request.user.professional_email == None or request.user.professional_email =='' or request.user.professional_email == 'None':
                     messages.error(request, "Invalid Professional Email ID\nplease update professional email id and try again")
@@ -1960,6 +1960,32 @@ def update_view_lead(request,id):
                     messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
                     return redirect('/update_view_lead/' + str(lead_id.id))
 
+
+                
+                
+                history = Pi_History()
+                lead_id = Lead.objects.get(id=id)
+                todays_date = datetime.datetime.today().strftime('%Y-%m-%d')
+                history.medium_of_selection = 'Email'
+                pi_id = Pi_section.objects.get(lead_id=id)
+
+                pi_products = Pi_product.objects.filter(lead_id=id)
+                context22 = {
+                    'lead_id': lead_id,
+                    'todays_date': todays_date,
+                    'pi_id': pi_id,
+                    'pi_products': pi_products,
+                }
+                template = get_template('lead_management/download_pi_pdf.html')
+                html = template.render(context22)
+                file_pdf = ContentFile(html)
+                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
+                history.pi_history_file.save('PI.html', file_pdf, save=False)
+                history.lead_id = Lead.objects.get(id=id)
+                history.log_entered_by = request.user.profile_name
+                history.medium_of_selection = 'Email'
+                history.call_detail = ''
+                history.save()
 
                 with get_connection(
                         host=host_file,
@@ -1987,7 +2013,9 @@ def update_view_lead(request,id):
                     email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
                                           settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
                     email_send.content_subtype = 'html'
-                    email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
+                    # pdf = open(val.get('file_pdf'), 'rb')
+                    pdf = render_to_pdf(history.pi_history_file.path)
+                    email_send.attach('ProformaInvoice.pdf',pdf, 'application/pdf')
                     
                     #add brochure and product document in pi email
                     pi_products = Pi_product.objects.filter(lead_id=lead_id)
@@ -2004,39 +2032,12 @@ def update_view_lead(request,id):
                         except:
                             print('attach error')
                             pass
-
                     email_send.send()
-                
-                history = Pi_History()
-                lead_id = Lead.objects.get(id=id)
-                todays_date = str(datetime.now().strftime("%Y-%m-%d"))
-                history.medium_of_selection = 'Email'
-                pi_id = Pi_section.objects.get(lead_id=id)
-
-                pi_products = Pi_product.objects.filter(lead_id=id)
-                context22 = {
-                    'lead_id': lead_id,
-                    'todays_date': todays_date,
-                    'pi_id': pi_id,
-                    'pi_products': pi_products,
-                }
-                template = get_template('lead_management/download_pi_pdf.html')
-                html = template.render(context22)
-                file_pdf = ContentFile(html)
-                # file =  file_pdf.save('AutoFollowup.pdf', file_pdf, save=False)
-                history.pi_history_file.save('PI.html', file_pdf, save=False)
-                history.lead_id = Lead.objects.get(id=id)
-                history.log_entered_by = request.user.profile_name
-                history.medium_of_selection = 'Email'
-                history.call_detail = ''
-                history.save()
                 messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
             except Exception as e:
                 messages.error(request, str(e))
                 print(e)
-                print('error')
-            print("mail sending...")
-
+                print('pi email error')
 
             try:
                 del request.session['email']
@@ -3903,10 +3904,9 @@ def upload_requirement_hsc(request):
 
 
         item2.current_stage = 'Not Yet Initiated'
-        from datetime import datetime
 
 
-        item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
+        item2.date_of_initiation = datetime.datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
         item2.requirement_indiamart_unique = requirement[:115]
@@ -5165,7 +5165,7 @@ def link_callback(uri, rel):
 @login_required(login_url='/')
 def download_pi_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
-    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    todays_date = str(datetime.datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
     if len(str(id)) == 1 :
         email_pi_id = '000'+str(id)
@@ -5214,7 +5214,7 @@ def download_pi_pdf(request,id,download):
 @login_required(login_url='/')
 def download_pi_second_pdf(request,id,download):
     lead_id=Lead.objects.get(id=id)
-    todays_date = str(datetime.now().strftime("%Y-%m-%d"))
+    todays_date = str(datetime.datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
     if len(str(id)) == 1 :
         email_pi_id = '000'+str(id)
