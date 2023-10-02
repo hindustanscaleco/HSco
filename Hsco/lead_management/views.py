@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from email.mime.text import MIMEText
 from io import BytesIO
@@ -29,7 +30,7 @@ from .models import Lead, Pi_section, Pi_product, Pi_History
 from customer_app.models import sub_model, main_model, sub_sub_model
 import requests
 import json
-from django.db.models.signals import pre_save,post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from .utils import send_html_mail, send_text_mail
 from purchase_app.models import Purchase_Details
@@ -41,7 +42,7 @@ from django.contrib import messages
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 
-from stock_management_system_app.models import Godown,GodownProduct,GodownTransactions
+from stock_management_system_app.models import Godown, GodownProduct, GodownTransactions
 import re
 
 from customer_app.models import DynamicDropdown
@@ -50,74 +51,76 @@ today_month = datetime.now().month
 host_file = 'smtp.gmail.com'
 today_year = datetime.now().year
 
+
 def one_time_dd_lead():
     lead_id = Lead.objects.filter(Q(channel_id=None)).values('id')
     for item in lead_id:
         lead_id_id = Lead.objects.get(id=item['id'])
         # print(DynamicDropdown.objects.get(name=purchase_id_id.channel_of_sales,type="CHANNEL OF SALES").name)
-        if lead_id_id.channel!=None and lead_id_id.channel!="":
+        if lead_id_id.channel != None and lead_id_id.channel != "":
             print(lead_id_id.channel)
             refined = lead_id_id.channel
-            if lead_id_id.channel == 'markett' or lead_id_id.channel =='MARKRT':
+            if lead_id_id.channel == 'markett' or lead_id_id.channel == 'MARKRT':
                 refined = 'Market'
             if lead_id_id.channel == 'IndiaMart' or lead_id_id.channel == 'Indiamart':
-                refined= 'India Mart'
+                refined = 'India Mart'
 
-            lead_id_id.channel_id=DynamicDropdown.objects.get(name=refined,type="CHANNEL OF MARKETING")
+            lead_id_id.channel_id = DynamicDropdown.objects.get(
+                name=refined, type="CHANNEL OF MARKETING")
         lead_id_id.save(update_fields=['channel_id',])
-           
+
+
 @login_required(login_url='/')
 def lead_home(request):
-    # one_time_dd_lead()
-    # print(datetime.now().date)
+
     import requests
     import json
-    
-    mobile = '7045922250'
-    api = 'MTYxMjUxMzg1MC42NDQyIzI5OTI4NzM='
 
-    last_date = IndiamartLeadDetails.objects.latest('to_date').to_date.strftime('%d-%b-%Y')
+    mobile = '7045922250'
+    api = 'mR26F7lp4HzFTfej4XWJ7luHqlHMmjI='
+    # mR26F7lp4HzFTfej4XWJ7luHqlHMmjI=
+    last_date = IndiamartLeadDetails.objects.latest(
+        'to_date').to_date.strftime('%d-%b-%Y')
     from_date = last_date
     import datetime
-    
-    to_date = datetime.datetime.today().strftime('%d-%b-%Y')
 
+    to_date = datetime.datetime.today().strftime('%d-%b-%Y')
+    from_date = (datetime.datetime.today() -
+                 datetime.timedelta(days=6)).strftime('%d-%b-%Y')
     from datetime import datetime
-    lead_count=0
+    lead_count = 0
     error2 = None
     error = None
     error_exist = False
-    context={}
+    context = {}
     response = None
     admin = SiteUser.objects.get(id=request.user.pk).admin
 
-            
     if request.user.role == 'Super Admin':  # For SUPER ADMIN
-        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
-        users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module'))
-        
-        
+        lead_list = Lead.objects.filter(Q(entry_timedate__month=today_month) & Q(
+            entry_timedate__year=today_year)).order_by('-id')
+        users = SiteUser.objects.filter(
+            Q(modules_assigned__icontains='Lead Module'))
+
     elif request.user.role == 'Admin':  # For ADMIN
-        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name) & Q(entry_timedate__month=today_month) & Q(
+            entry_timedate__year=today_year)) | (Q(owner_of_opportunity__admin__icontains=request.user.profile_name) & Q(entry_timedate__month=today_month))).order_by('-id')
 
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(admin__icontains=request.user.profile_name))
-        
-        
+
     elif request.user.role == 'Manager':  # For manager
-        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name)& Q(entry_timedate__month=today_month))).order_by('-id')
+        lead_list = Lead.objects.filter((Q(owner_of_opportunity__profile_name=request.user.profile_name) & Q(entry_timedate__month=today_month) & Q(
+            entry_timedate__year=today_year)) | (Q(owner_of_opportunity__manager__icontains=request.user.profile_name) & Q(entry_timedate__month=today_month))).order_by('-id')
         users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
                                         Q(manager__icontains=request.user.profile_name))
 
-    elif request.user.role == 'Employee': #for employee
-        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)& Q(entry_timedate__month=today_month)&Q(entry_timedate__year=today_year)).order_by('-id')
+    elif request.user.role == 'Employee':  # for employee
+        lead_list = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) & Q(
+            entry_timedate__month=today_month) & Q(entry_timedate__year=today_year)).order_by('-id')
         users = SiteUser.objects.filter(id=request.user.pk)
-        
-        
+
     cust_sugg = Lead_Customer_Details.objects.all()
-
-
-
 
     context23 = {
         'lead_list': lead_list,
@@ -133,25 +136,21 @@ def lead_home(request):
     }
     context.update(context23)
     if request.user.role == 'Super Admin':
-        total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+        total_stages = Lead.objects.all().values(
+            'current_stage').annotate(dcount=Count('current_stage'))
     elif request.user.role == 'Admin':  # For ADMIN
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) |  Q(owner_of_opportunity__admin__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+            owner_of_opportunity__admin__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
     elif request.user.role == 'Manager':  # For manager
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(owner_of_opportunity__manager__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+            owner_of_opportunity__manager__icontains=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
 
-    else: #for employee
-        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).values('current_stage').annotate(dcount=Count('current_stage'))
+    else:  # for employee
+        total_stages = Lead.objects.filter(Q(owner_of_opportunity__profile_name=request.user.profile_name)).values(
+            'current_stage').annotate(dcount=Count('current_stage'))
 
     admin = SiteUser.objects.get(id=request.user.pk).admin
-    # lead = Pi_section.objects.filter(lead_id=Lead.objects.filter(Q(owner_of_opportunity__admin=admin)))
 
-    superadmin_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done'))
-    admin_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
-      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name) )
-    manager_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
-      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))
-    employee_pi = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')|
-      Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) )
     if request.user.role == 'Super Admin':
         po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
@@ -211,7 +210,7 @@ def lead_home(request):
                 pi_sent_stage_total += float(x['data_sum'])
         except:
             pass
-        context13={
+        context13 = {
             'po_no_payment_total': po_no_payment_total,
             'lost_stage_total': lost_stage_total,
             'po_payment_done_total': po_payment_done_total,
@@ -222,7 +221,7 @@ def lead_home(request):
         }
         context.update(context13)
     elif request.user.role == 'Admin':
-        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_no_payment_total = 0.0
         try:
@@ -231,7 +230,7 @@ def lead_home(request):
         except:
             pass
 
-        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_payment_done_total = 0.0
         try:
@@ -240,7 +239,7 @@ def lead_home(request):
         except:
             pass
 
-        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         dispatch_done_stage_total = 0.0
         try:
@@ -248,7 +247,7 @@ def lead_home(request):
                 dispatch_done_stage_total += float(x['data_sum'])
         except:
             pass
-        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         lost_stage_total = 0.0
         try:
@@ -256,7 +255,7 @@ def lead_home(request):
                 lost_stage_total += float(x['data_sum'])
         except:
             pass
-        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         not_relevant_stage_total = 0.0
         try:
@@ -264,7 +263,7 @@ def lead_home(request):
                 not_relevant_stage_total += float(x['data_sum'])
         except:
             pass
-        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -272,7 +271,7 @@ def lead_home(request):
                 postponed_stage_total += float(x['data_sum'])
         except:
             pass
-        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__admin__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
@@ -280,7 +279,7 @@ def lead_home(request):
                 pi_sent_stage_total += float(x['data_sum'])
         except:
             pass
-        context13={
+        context13 = {
             'po_no_payment_total': po_no_payment_total,
             'lost_stage_total': lost_stage_total,
             'po_payment_done_total': po_payment_done_total,
@@ -291,7 +290,7 @@ def lead_home(request):
         }
         context.update(context13)
     elif request.user.role == 'Manager':
-        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_no_payment_total = 0.0
         try:
@@ -300,7 +299,7 @@ def lead_home(request):
         except:
             pass
 
-        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_payment_done_total = 0.0
         try:
@@ -309,7 +308,7 @@ def lead_home(request):
         except:
             pass
 
-        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         dispatch_done_stage_total = 0.0
         try:
@@ -317,7 +316,7 @@ def lead_home(request):
                 dispatch_done_stage_total += float(x['data_sum'])
         except:
             pass
-        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         lost_stage_total = 0.0
         try:
@@ -325,7 +324,7 @@ def lead_home(request):
                 lost_stage_total += float(x['data_sum'])
         except:
             pass
-        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         not_relevant_stage_total = 0.0
         try:
@@ -333,7 +332,7 @@ def lead_home(request):
                 not_relevant_stage_total += float(x['data_sum'])
         except:
             pass
-        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -341,7 +340,7 @@ def lead_home(request):
                 postponed_stage_total += float(x['data_sum'])
         except:
             pass
-        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&(Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) |Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up') & (Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name) | Q(lead_id__owner_of_opportunity__manager__icontains=request.user.profile_name))).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
@@ -349,7 +348,7 @@ def lead_home(request):
                 pi_sent_stage_total += float(x['data_sum'])
         except:
             pass
-        context13={
+        context13 = {
             'po_no_payment_total': po_no_payment_total,
             'lost_stage_total': lost_stage_total,
             'po_payment_done_total': po_payment_done_total,
@@ -360,7 +359,7 @@ def lead_home(request):
         }
         context.update(context13)
     elif request.user.role == 'Employee':
-        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        po_no_payment = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment not done') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_no_payment_total = 0.0
         try:
@@ -369,7 +368,7 @@ def lead_home(request):
         except:
             pass
 
-        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        po_payment_done = Pi_section.objects.filter(Q(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_payment_done_total = 0.0
         try:
@@ -378,7 +377,7 @@ def lead_home(request):
         except:
             pass
 
-        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        dispatch_done_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Dispatch Done - Closed') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         dispatch_done_stage_total = 0.0
         try:
@@ -386,7 +385,7 @@ def lead_home(request):
                 dispatch_done_stage_total += float(x['data_sum'])
         except:
             pass
-        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        lost_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Lost') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         lost_stage_total = 0.0
         try:
@@ -394,7 +393,7 @@ def lead_home(request):
                 lost_stage_total += float(x['data_sum'])
         except:
             pass
-        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        not_relevant_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Not Relevant') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         not_relevant_stage_total = 0.0
         try:
@@ -402,7 +401,7 @@ def lead_home(request):
                 not_relevant_stage_total += float(x['data_sum'])
         except:
             pass
-        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        postponed_stage = Pi_section.objects.filter(Q(lead_id__current_stage='Postponed') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -410,7 +409,7 @@ def lead_home(request):
                 postponed_stage_total += float(x['data_sum'])
         except:
             pass
-        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up')&Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
+        pi_sent_stage = Pi_section.objects.filter(Q(lead_id__current_stage='PI Sent & Follow-up') & Q(lead_id__owner_of_opportunity__profile_name=request.user.profile_name)).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
@@ -418,7 +417,7 @@ def lead_home(request):
                 pi_sent_stage_total += float(x['data_sum'])
         except:
             pass
-        context13={
+        context13 = {
             'po_no_payment_total': po_no_payment_total,
             'lost_stage_total': lost_stage_total,
             'po_payment_done_total': po_payment_done_total,
@@ -485,14 +484,14 @@ def lead_home(request):
                 'pi_sent_stage': pi_sent_stage,
             }
             context.update(context9)
-            
+
     if request.method == 'GET' and 'success' in request.method:
         success = request.GET['success']
         lead_count = request.GET['lead_count']
         if success == 'true':
-            context22={
-                'err':True,
-                'lead_count':lead_count,
+            context22 = {
+                'err': True,
+                'lead_count': lead_count,
             }
         elif success == 'false':
             context22 = {
@@ -501,32 +500,32 @@ def lead_home(request):
             }
         context.update(context22)
 
-
-
     if request.method == 'POST':
         if 'fetch_lead' in request.POST:
-
-            url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
+            print('from data --->', from_date, to_date)
+            # url = "https://mapi.indiamart.com/wservce/enquiry/listing/GLUSR_MOBILE/" + mobile + "/GLUSR_MOBILE_KEY/" + api + "/Start_Time/" + from_date + "/End_Time/" + to_date + "/"
+            url = "https://mapi.indiamart.com/wservce/crm/crmListing/v2/?glusr_crm_key=mR26F7lp4HzFTfej4XWJ7luHqlHMmjI=&start_time=" + \
+                from_date+"&end_time="+to_date
             response = requests.get(url=url).json()
-            lead_count = len(response)
-            print("response")
-            print(response)
+            lead_count = response["TOTAL_RECORDS"]
+            # print("response")
+            # json_file_path = "lead_data.json"
+            # with open(json_file_path, "w") as json_file:
+            #     json.dump(response, json_file, indent=1)
+            # print('data saved to json file--->')
+            # Open the JSON file for reading
+            # with open(json_file_path, "r") as json_file:
+            #     # Load the JSON data from the file
+            #     response = json.load(json_file)
+            lead_count = response["TOTAL_RECORDS"]
 
-            try:
-                if lead_count == 1 and response[0]['Error_Message'] == 'It is advised to hit this API once in every 15 minutes,but it seems that you have crossed this limit. please try again after 15 minutes.':
-                    messages.error(request,"Try after 15 minutes.")
-                if lead_count == 1 and response[0]['Error_Message'] == 'There are no leads in the given time duration.please try for a different duration.':
-                    messages.success(request, "Already Fetched!!!")
-                elif response[0]['Error_Message']:
-                    messages.error(request, response[0]['Error_Message'])
-            except Exception as e:
-                print('str(e)')
-                print(str(e))
-                pass
+            # response = response["RESPONSE"]
+            if response["STATUS"] != "SUCCESS":
+                messages.error(
+                    request, f"Reponse from Indiamart:- {response['MESSAGE']}")
 
-
-            from_date =  request.POST.get('from_date_form')
-            to_date =  request.POST.get('to_date_form')
+            from_date = request.POST.get('from_date_form')
+            to_date = request.POST.get('to_date_form')
             import time
             try:
                 conv = time.strptime(from_date, "%d-%b-%Y")
@@ -538,63 +537,66 @@ def lead_home(request):
                     'err2': 'Something Went Wrong!!!',
                 }
                 context.update(context23)
-
+            print('lead count --->', lead_count)
             if (lead_count > 1 and response != None):
-                for item in response:
-
-                    requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME'] if item[
-                                                                                                      'SUBJECT'] != None and \
-                                                                                                  item[
-                                                                                                      'ENQ_MESSAGE'] != None and \
-                                                                                                  item[
-                                                                                                      'PRODUCT_NAME'] != None else \
-                        item['SUBJECT'] + item['ENQ_MESSAGE'] if item['SUBJECT'] != None and item[
-                            'ENQ_MESSAGE'] != None else item['SUBJECT']
+                for item in response["RESPONSE"]:
+                    print('product --->', item)
+                    requirement = item['SUBJECT'] + item['QUERY_MESSAGE'] + item['QUERY_PRODUCT_NAME'] if item[
+                        'SUBJECT'] != None and \
+                        item[
+                        'QUERY_MESSAGE'] != None and \
+                        item[
+                        'QUERY_PRODUCT_NAME'] != None else \
+                        item['SUBJECT'] + item['QUERY_MESSAGE'] if item['SUBJECT'] != None and item[
+                            'QUERY_MESSAGE'] != None else item['SUBJECT']
                     clean_requirement = requirement.replace('<b>', '\n')[:115]
 
-
-                    if (item['MOB'] != None and item['MOB'] != '' and len(item['MOB']) > 3):
-                        clean_mob = item['MOB'].partition('-')[2]
+                    if (item['SENDER_MOBILE'] != None and item['SENDER_MOBILE'] != '' and len(item['SENDER_MOBILE']) > 3):
+                        clean_mob = item['SENDER_MOBILE'].partition('-')[2]
                     else:
-                        clean_mob = item['MOB']
+                        clean_mob = item['SENDER_MOBILE']
 
-                    if clean_mob!= None and clean_mob!='' and len(clean_mob)>3:
+                    if clean_mob != None and clean_mob != '' and len(clean_mob) > 3:
                         pass
                     else:
                         clean_mob = '0000000000'
 
-
-                    entered_customer_name = item['SENDERNAME']
+                    entered_customer_name = item['SENDER_NAME']
                     if entered_customer_name == None or entered_customer_name == '':
                         entered_customer_name = 'NA'
-                   
-                   
+                    print('lead countt --->', Lead.objects.filter(requirement_indiamart_unique=clean_requirement,
+                                           customer_id__contact_no=clean_mob, customer_id__customer_name=entered_customer_name,
+                                           channel='IndiaMart', indiamart_time=item['QUERY_TIME']).count())
                     if Lead.objects.filter(requirement_indiamart_unique=clean_requirement,
-                                           customer_id__contact_no=clean_mob,customer_id__customer_name=entered_customer_name,
-                                           channel='IndiaMart', indiamart_time=item['DATE_R']).count() == 0:
+                                           customer_id__contact_no=clean_mob, customer_id__customer_name=entered_customer_name,
+                                           channel='IndiaMart', indiamart_time=item['QUERY_TIME']).count() == 0:
 
-                        if entered_customer_name == 'NA' and clean_mob == '0000000000' and (item['SENDEREMAIL']== '' or item['SENDEREMAIL'] == None or item['SENDEREMAIL'] == ' '):
+                        if entered_customer_name == 'NA' and clean_mob == '0000000000' and (item['SENDER_EMAIL'] == '' or item['SENDER_EMAIL'] == None or item['SENDER_EMAIL'] == ' '):
                             lead_count = lead_count - 1
                         else:
                             cust_obj = Lead_Customer_Details.objects.filter(customer_name=entered_customer_name,
-                                                                       contact_no=clean_mob)
+                                                                            contact_no=clean_mob)
                             if cust_obj.exists() and cust_obj.count() > 0:
-                                if item['SENDEREMAIL']== '' and item['SENDEREMAIL'] == None and item['SENDEREMAIL'] == ' ':
-                                    cust_obj.update(customer_email_id=item['SENDEREMAIL'])
-                                if item['GLUSR_USR_COMPANYNAME']!=None and item['GLUSR_USR_COMPANYNAME']!='':
-                                    cust_obj.update(company_name=item['GLUSR_USR_COMPANYNAME'])
-                                if item['ENQ_ADDRESS']!=None and item['ENQ_ADDRESS']!='':
-                                    cust_obj.update(address=item['ENQ_ADDRESS'])
+                                if item['SENDER_EMAIL'] == '' and item['SENDER_EMAIL'] == None and item['SENDER_EMAIL'] == ' ':
+                                    cust_obj.update(
+                                        customer_email_id=item['SENDER_EMAIL'])
+                                if item['SENDER_COMPANY'] != None and item['SENDER_COMPANY'] != '':
+                                    cust_obj.update(
+                                        company_name=item['SENDER_COMPANY'])
+                                if item['SENDER_ADDRESS'] != None and item['SENDER_ADDRESS'] != '':
+                                    cust_obj.update(
+                                        address=item['SENDER_ADDRESS'])
                                 for item23 in cust_obj:
                                     exist_cust = item23.pk
-                                item3 = Lead_Customer_Details.objects.get(id=exist_cust)
+                                item3 = Lead_Customer_Details.objects.get(
+                                    id=exist_cust)
                                 new_existing_customer = 'Existing'
                             else:
                                 item3 = Lead_Customer_Details()
                                 item3.customer_name = entered_customer_name
-                                item3.company_name = item['GLUSR_USR_COMPANYNAME']
-                                item3.address = item['ENQ_ADDRESS']
-                                item3.customer_email_id = item['SENDEREMAIL']
+                                item3.company_name = item['SENDER_COMPANY']
+                                item3.address = item['SENDER_ADDRESS']
+                                item3.customer_email_id = item['SENDER_EMAIL']
 
                                 item3.contact_no = clean_mob
                                 item3.customer_industry = ''
@@ -607,38 +609,43 @@ def lead_home(request):
 
                             try:
 
-                                if Lead.objects.filter(requirement_indiamart_unique = clean_requirement,customer_id=Lead_Customer_Details.objects.get(id=item3.pk),
-                                                    channel='IndiaMart',indiamart_time=item['DATE_R']).count()==0:
+                                if Lead.objects.filter(requirement_indiamart_unique=clean_requirement, customer_id=Lead_Customer_Details.objects.get(id=item3.pk),
+                                                       channel='IndiaMart', indiamart_time=item['QUERY_TIME']).count() == 0:
+                                    print('lead saving starts')
                                     item2 = Lead()
                                     item2.new_existing_customer = new_existing_customer
-                                    item2.customer_id = Lead_Customer_Details.objects.get(id=item3.pk)
+                                    item2.customer_id = Lead_Customer_Details.objects.get(
+                                        id=item3.pk)
                                     item2.current_stage = 'Not Yet Initiated'
-                                    if item['QTYPE'] == 'B':
+                                    if item['QUERY_TYPE'] == 'B':
                                         item2.is_indiamart_purchased_lead = True
                                     else:
                                         item2.is_indiamart_purchased_lead = False
                                     import datetime
                                     item2.date_of_initiation = datetime.datetime.today().strftime('%Y-%m-%d')
                                     item2.channel = "India Mart"
-                                    item2.channel_id = DynamicDropdown.objects.get(name="India Mart",type="CHANNEL OF MARKETING")
+                                    item2.channel_id = DynamicDropdown.objects.get(
+                                        name="India Mart", type="CHANNEL OF MARKETING")
                                     item2.owner_of_opportunity = request.user
 
                                     # requirement = item['SUBJECT'] + item['ENQ_MESSAGE'] + item['PRODUCT_NAME']
-                                    item2.requirement = requirement.replace('<b>', '\n')
-                                    item2.indiamart_time = item['DATE_R']
+                                    item2.requirement = requirement.replace(
+                                        '<b>', '\n')
+                                    item2.indiamart_time = item['QUERY_TIME']
                                     item2.requirement_indiamart_unique = clean_requirement
                                     try:
                                         item2.save()
                                         fp = Follow_up_section()
-                                        fp.lead_id = Lead.objects.get(id=item2.pk)
+                                        fp.lead_id = Lead.objects.get(
+                                            id=item2.pk)
                                         fp.save()
                                     except Exception as e:
-                                        lead_count = lead_count -1
+                                        lead_count = lead_count - 1
                                         # error_exist = True
                                         error_exist = False
                                         # error2 = e
                                         print('error2')
-                                        print(error2)
+                                        print("Exception occured :", str(error2))
                                 else:
                                     print("lead already Exist")
                                     lead_count = lead_count - 1
@@ -682,28 +689,26 @@ def lead_home(request):
         if 'sort_submit' in request.POST:
             YEAR = request.POST.get('YEAR')
             MONTH = request.POST.get('MONTH')
-
+            print('YEAR', YEAR)
+            print('month', MONTH)
             if check_admin_roles(request):  # For ADMIN
-                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
+                lead_list = Lead.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR,
                                                 owner_of_opportunity__group__icontains=request.user.name,
                                                 ).order_by('-id')
-                lead_list_count = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
-                                                owner_of_opportunity__group__icontains=request.user.name,).count()
+                lead_list_count = Lead.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR,
+                                                      owner_of_opportunity__group__icontains=request.user.name,).count()
 
-                
             else:  # For EMPLOYEE
-                lead_list = Lead.objects.filter(entry_timedate__month = MONTH , entry_timedate__year = YEAR,
+                lead_list = Lead.objects.filter(entry_timedate__month=MONTH, entry_timedate__year=YEAR,
                                                 owner_of_opportunity=request.user.pk,).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(entry_timedate__month = MONTH , entry_timedate__year = YEAR)).count()
-                
+                lead_list_count = Lead.objects.filter(Q(owner_of_opportunity__admin=admin) and Q(
+                    entry_timedate__month=MONTH, entry_timedate__year=YEAR)).count()
+
             context.update({
-                    'lead_list': lead_list,
-                    'lead_list_count': True if lead_list_count != 0 else False,
-                    'lead_lis': False if lead_list_count != 0 else True,
+                'lead_list': lead_list,
+                'lead_list_count': True if lead_list_count != 0 else False,
+                'lead_lis': False if lead_list_count != 0 else True,
             })
-
-            
-
 
             # return render(request, 'lead_management/lead_home.html', context)
 
@@ -711,11 +716,11 @@ def lead_home(request):
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
             delete_lead_id = request.POST.getlist('delete_lead_id')
 
-            if owner_of_opportunity!= "" and owner_of_opportunity!= None:
+            if owner_of_opportunity != "" and owner_of_opportunity != None:
                 if delete_lead_id == None or delete_lead_id == "":
                     messages.error(request, "Select Leads To Assign")
                     return redirect('/lead_home/')
-                if owner_of_opportunity!=None and owner_of_opportunity!="":
+                if owner_of_opportunity != None and owner_of_opportunity != "":
                     new_user = SiteUser.objects.get(id=owner_of_opportunity)
                     for item in delete_lead_id:
                         lead_obj = Lead.objects.get(id=item)
@@ -725,24 +730,27 @@ def lead_home(request):
                         log.action_type = 'Update'
                         log.table_name = 'Lead'
                         log.reference = 'Lead Id:' + str(item)
-                        log.action = 'Owner Of Oppurtunity(old value): '+str(lead_obj.owner_of_opportunity.profile_name)+' Owner Of Oppurtunity(updated value): '+str(new_user.profile_name)
+                        log.action = 'Owner Of Oppurtunity(old value): '+str(
+                            lead_obj.owner_of_opportunity.profile_name)+' Owner Of Oppurtunity(updated value): '+str(new_user.profile_name)
 
                         log.save()
-                    Lead.objects.filter(pk__in=delete_lead_id).update(owner_of_opportunity=new_user)
+                    Lead.objects.filter(pk__in=delete_lead_id).update(
+                        owner_of_opportunity=new_user)
 
                     messages.success(request, "Leads assigned Successfully")
                 else:
                     messages.error(request, "Select Valid Employee To Assign")
             else:
                 for item in delete_lead_id:
-                    lead_obj=Lead.objects.get(id=item)
+                    lead_obj = Lead.objects.get(id=item)
                     log = Log()
                     log.entered_by = request.user.profile_name
                     log.module_name = 'Lead Module'
                     log.action_type = 'Delete'
                     log.table_name = 'Lead'
-                    log.reference = 'Lead Id:' +str(item)
-                    log.action = 'Customer Name: '+str(lead_obj.customer_id.customer_name)+' Contact No: '+str(lead_obj.customer_id.contact_no)+' Email: '+str(lead_obj.customer_id.customer_email_id)+' Indiamrt Date: '+str(lead_obj.indiamart_time)
+                    log.reference = 'Lead Id:' + str(item)
+                    log.action = 'Customer Name: '+str(lead_obj.customer_id.customer_name)+' Contact No: '+str(
+                        lead_obj.customer_id.contact_no)+' Email: '+str(lead_obj.customer_id.customer_email_id)+' Indiamrt Date: '+str(lead_obj.indiamart_time)
 
                     log.save()
                 Lead.objects.filter(pk__in=delete_lead_id).delete()
@@ -750,36 +758,37 @@ def lead_home(request):
 
             return redirect('/lead_home/')
 
-
-
-
         if 'sub1' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Not Yet Initiated').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Not Yet Initiated').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Not Yet Initiated').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Not Yet Initiated').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & (Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & (Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__admin__icontains=request.user.profile_name))).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
             elif request.user.role == 'Manager':  # For manager
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & (Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&(Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & (Q(owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
             else:  # for employee
-                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated')&Q(owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
-                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') &Q(owner_of_opportunity__profile_name=request.user.profile_name)).count()
+                lead_list = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & Q(
+                    owner_of_opportunity__profile_name=request.user.profile_name)).order_by('-id')
+                lead_list_count = Lead.objects.filter(Q(current_stage='Not Yet Initiated') & Q(
+                    owner_of_opportunity__profile_name=request.user.profile_name)).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -791,8 +800,10 @@ def lead_home(request):
 
         if 'sub2' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Customer Called').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Customer Called').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Customer Called').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Customer Called').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -833,8 +844,10 @@ def lead_home(request):
 
         if 'sub3' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='PI Sent & Follow-up').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='PI Sent & Follow-up').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='PI Sent & Follow-up').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='PI Sent & Follow-up').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -875,8 +888,10 @@ def lead_home(request):
 
         if 'sub4' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='PO Issued - Payment not done').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='PO Issued - Payment not done').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='PO Issued - Payment not done').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='PO Issued - Payment not done').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -897,7 +912,7 @@ def lead_home(request):
                     owner_of_opportunity__manager__icontains=request.user.profile_name))).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='PO Issued - Payment not done') & Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | (Q(
-                    owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
+                        owner_of_opportunity__manager__icontains=request.user.profile_name))).count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -961,14 +976,16 @@ def lead_home(request):
 
         if 'sub6' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Dispatch Done - Closed').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Dispatch Done - Closed').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Dispatch Done - Closed').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Dispatch Done - Closed').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
 
             elif request.user.role == 'Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') &(Q(
+                lead_list = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & (Q(
                     owner_of_opportunity__profile_name=request.user.profile_name) | Q(
                     owner_of_opportunity__admin__icontains=request.user.profile_name))).order_by('-id')
                 lead_list_count = Lead.objects.filter(Q(current_stage='Dispatch Done - Closed') & (Q(
@@ -1003,8 +1020,10 @@ def lead_home(request):
 
         if 'sub7' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Lost').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Lost').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Lost').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Lost').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -1044,8 +1063,10 @@ def lead_home(request):
             context.update(context44)
         if 'sub8' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Not Relevant').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Not Relevant').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Not Relevant').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Not Relevant').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -1085,8 +1106,10 @@ def lead_home(request):
             context.update(context44)
         if 'sub9' in request.POST:
             if request.user.role == 'Super Admin':  # For ADMIN
-                lead_list = Lead.objects.filter(current_stage='Postponed').order_by('-id')
-                lead_list_count = Lead.objects.filter(current_stage='Postponed').count()
+                lead_list = Lead.objects.filter(
+                    current_stage='Postponed').order_by('-id')
+                lead_list_count = Lead.objects.filter(
+                    current_stage='Postponed').count()
                 # paginator = Paginator(lead_list, 200)  # Show 25 contacts per page
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
@@ -1120,14 +1143,11 @@ def lead_home(request):
                 # page = request.GET.get('page')
                 # lead_list = paginator.get_page(page)
 
-
             context44 = {
                 'lead_list': lead_list,
                 'lead_list_count': True if lead_list_count != 0 else False,
             }
             context.update(context44)
-
-
 
         if 'submit1' in request.POST:
             start_date = request.POST.get('date1')
@@ -1137,11 +1157,10 @@ def lead_home(request):
                                                 owner_of_opportunity__is_deleted=False,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-id')
 
-                
             else:  # For EMPLOYEE
                 cust_list = Lead.objects.filter(owner_of_opportunity=request.user.pk,
                                                 entry_timedate__range=[start_date, end_date]).order_by('-id')
-                
+
             context.update({
                 'lead_list': cust_list,
                 'search_msg': 'Search result for date range: ' + start_date + ' TO ' + end_date,
@@ -1232,25 +1251,29 @@ def lead_home(request):
     }
     context.update(context23)
 
+    return render(request, 'lead_management/lead_home.html', context)
 
-
-    return render(request,'lead_management/lead_home.html',context)
 
 @login_required(login_url='/')
 def add_lead(request):
-    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
-    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
-    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
-    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
-    context={
-        'channel_sales':channel_sales,
-        'channel_marketing':channel_marketing,
-        'channel_dispatch':channel_dispatch,
-        'indutry':indutry,
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY", is_enabled=True)
+    context = {
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'indutry': indutry,
     }
     users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',)
-    under_admin_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',admin__icontains=request.user.profile_name)
-    under_manager_users = SiteUser.objects.filter(modules_assigned__icontains='Lead Module',manager__icontains=request.user.profile_name)
+    under_admin_users = SiteUser.objects.filter(
+        modules_assigned__icontains='Lead Module', admin__icontains=request.user.profile_name)
+    under_manager_users = SiteUser.objects.filter(
+        modules_assigned__icontains='Lead Module', manager__icontains=request.user.profile_name)
     if Lead.objects.all().count() == 0:
         latest_lead_id = 1
     else:
@@ -1259,7 +1282,7 @@ def add_lead(request):
     cust_sugg = Lead_Customer_Details.objects.all()
     form = Customer_detailForm()
     form2 = Deal_detailForm()
-    if request.method == 'POST' or request.method=='FILES':
+    if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('customer_name')
         company_name = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -1281,10 +1304,12 @@ def add_lead(request):
 
         item2 = Lead()
         if Lead_Customer_Details.objects.filter(customer_name=customer_name,
-                                           contact_no=contact_no).count() > 0:
+                                                contact_no=contact_no).count() > 0:
 
-            item2.customer_id = Lead_Customer_Details.objects.filter(contact_no=contact_no).first()
-            item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).first()
+            item2.customer_id = Lead_Customer_Details.objects.filter(
+                contact_no=contact_no).first()
+            item3 = Lead_Customer_Details.objects.filter(
+                customer_name=customer_name, contact_no=contact_no).first()
             if company_name != '' and company_name != None:
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
@@ -1322,10 +1347,10 @@ def add_lead(request):
                 new_cust.optional_email = optional_email
             try:
                 new_cust.save()
-                item2.customer_id = Lead_Customer_Details.objects.get(id=new_cust.pk)
+                item2.customer_id = Lead_Customer_Details.objects.get(
+                    id=new_cust.pk)
             except:
                 pass
-
 
         item2.current_stage = current_stage
         item2.new_existing_customer = new_existing_customer
@@ -1334,80 +1359,92 @@ def add_lead(request):
         item2.requirement = requirement
         item2.lost_reason = lost_reason
         item2.postponed_reason = postponed_reason
-        item2.owner_of_opportunity = SiteUser.objects.filter(profile_name=owner_of_opportunity).first()
+        item2.owner_of_opportunity = SiteUser.objects.filter(
+            profile_name=owner_of_opportunity).first()
         item2.upload_requirement_file = upload_requirement_file
         item2.log_entered_by = request.user.name
         if channel != None and channel != '':
             item2.channel_id = DynamicDropdown.objects.get(id=channel)
-        
+
         try:
             item2.save()
 
-            fp=Follow_up_section()
-            fp.lead_id= Lead.objects.get(id=item2.pk)
+            fp = Follow_up_section()
+            fp.lead_id = Lead.objects.get(id=item2.pk)
             fp.save()
             return redirect('/update_view_lead/'+str(item2.id))
         except Exception as e:
-            context25={
-                'already_exist':True,
-                'error_msg':str(e),
+            context25 = {
+                'already_exist': True,
+                'error_msg': str(e),
             }
             context.update(context25)
 
         # item.save()
-    context22={
-        'form':form,
-        'form2':form2,
-        'latest_lead_id':latest_lead_id,
-        'cust_sugg':cust_sugg,
-        'users':users,
-        'under_admin_users':under_admin_users,
-        'under_manager_users':under_manager_users,
+    context22 = {
+        'form': form,
+        'form2': form2,
+        'latest_lead_id': latest_lead_id,
+        'cust_sugg': cust_sugg,
+        'users': users,
+        'under_admin_users': under_admin_users,
+        'under_manager_users': under_manager_users,
     }
     context.update(context22)
-    return render(request, 'lead_management/add_lead.html',context)
+    return render(request, 'lead_management/add_lead.html', context)
+
 
 @login_required(login_url='/')
-def update_view_lead(request,id):
+def update_view_lead(request, id):
     # one_time_dd_lead()
-    if len(str(id)) == 1 :
+    if len(str(id)) == 1:
         email_pi_id = '000'+str(id)
-    elif len(str(id)) == 2 :
+    elif len(str(id)) == 2:
         email_pi_id = '00'+str(id)
-    elif len(str(id)) == 3 :
+    elif len(str(id)) == 3:
         email_pi_id = '0'+str(id)
-    elif len(str(id)) == 4 :
+    elif len(str(id)) == 4:
         email_pi_id = str(id)
     else:
         email_pi_id = str(id)
 
     lead_id = Lead.objects.get(id=id)
-    users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
-    under_admin_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')&
-                          Q(admin__icontains=request.user.profile_name)& ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
-    under_manager_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module')&
-                          Q(manager__icontains=request.user.profile_name) & ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
+    users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') & ~Q(
+        profile_name=lead_id.owner_of_opportunity.profile_name))
+    under_admin_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
+                                                Q(admin__icontains=request.user.profile_name) & ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
+    under_manager_users = SiteUser.objects.filter(Q(modules_assigned__icontains='Lead Module') &
+                                                  Q(manager__icontains=request.user.profile_name) & ~Q(profile_name=lead_id.owner_of_opportunity.profile_name))
 
     lead_pi_products = Pi_product.objects.filter(lead_id=id)
     hfu = Follow_up_section.objects.filter(lead_id=id).last()
-    history_follow = History_followup.objects.filter(follow_up_section__id=hfu.id).last()
+    history_follow = History_followup.objects.filter(
+        follow_up_section__id=hfu.id).last()
 
     followup_products_list = Followup_product.objects.filter(lead_id=id)
-    channel_sales = DynamicDropdown.objects.filter(type="CHANNEL OF SALES",is_enabled=True)
-    channel_marketing = DynamicDropdown.objects.filter(type="CHANNEL OF MARKETING",is_enabled=True)
-    channel_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH",is_enabled=True)
-    indutry = DynamicDropdown.objects.filter(type="INDUSTRY",is_enabled=True)
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    indutry = DynamicDropdown.objects.filter(type="INDUSTRY", is_enabled=True)
     table = ''
     table2 = ''
     total = 0.0
     try:
         for product in lead_pi_products:
-            single_product_total = float(product.product_id.selling_price) * (product.quantity)
+            single_product_total = float(
+                product.product_id.selling_price) * (product.quantity)
             total += single_product_total
-            row = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+ str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url)+'" height="100" width="100"></td><td>'+str(product.product_id.product_desc) +'</td><td>'+str(product.product_id.selling_price) +'</td><td>'+str(single_product_total) +'</td>  </tr>'
-            row2 = '<tr> <td>'+ str(product.quantity) +' </td><td>'+ str(product.product_id.hsn_code)+'</td><td>'+str(product.product_id.product_desc) +'</td><td></td><td></td>  </tr>'
-            table+=row
-            table2+=row2
+            row = '<tr> <td>' + str(product.quantity) + ' </td><td>' + str(product.product_id.hsn_code)+'</td><td>' + str(product.product_id.sub_sub_category)+'</td><td><img src="'+str(product.product_id.product_image.url) + \
+                '" height="100" width="100"></td><td>'+str(product.product_id.product_desc) + '</td><td>'+str(
+                    product.product_id.selling_price) + '</td><td>'+str(single_product_total) + '</td>  </tr>'
+            row2 = '<tr> <td>' + str(product.quantity) + ' </td><td>' + str(product.product_id.hsn_code) + \
+                '</td><td>'+str(product.product_id.product_desc) + \
+                '</td><td></td><td></td>  </tr>'
+            table += row
+            table2 += row2
     except:
         pass
     customer_id = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
@@ -1439,9 +1476,10 @@ def update_view_lead(request,id):
     form2 = Deal_detailForm(initial=deal_details_initial_data)
     form3 = Pi_sectionForm()
 
-    form4 = Follow_up_sectionForm(initial={'email_auto_manual':hfu.auto_manual_mode,})
+    form4 = Follow_up_sectionForm(
+        initial={'email_auto_manual': hfu.auto_manual_mode, })
 
-    if(history_follow!=None):
+    if (history_follow != None):
         wa_msg = history_follow.wa_msg
         email_msg = history_follow.email_msg
         call_response = history_follow.call_response
@@ -1451,7 +1489,7 @@ def update_view_lead(request,id):
         is_sms = 'is_sms' if history_follow.is_sms else ''
         is_whatsapp = 'is_whatsapp' if history_follow.is_whatsapp else ''
 
-        wa_no = history_follow.wa_no if history_follow.wa_no != None and history_follow.wa_no !='' else customer_id.contact_no
+        wa_no = history_follow.wa_no if history_follow.wa_no != None and history_follow.wa_no != '' else customer_id.contact_no
     else:
         wa_msg = ''
         email_msg = ''
@@ -1463,23 +1501,27 @@ def update_view_lead(request,id):
         wa_no = customer_id.contact_no
         call_response = ''
 
-
-    form6 = History_followupForm(initial={'wa_no':wa_no,'email_subject':hfu.email_subject,'wa_msg':wa_msg,'email_msg':email_msg,
-                                          'sms_msg':sms_msg,'is_email':is_email,'call_response':call_response,'is_call':is_call,'is_sms':is_sms,'is_whatsapp':is_whatsapp})
+    form6 = History_followupForm(initial={'wa_no': wa_no, 'email_subject': hfu.email_subject, 'wa_msg': wa_msg, 'email_msg': email_msg,
+                                          'sms_msg': sms_msg, 'is_email': is_email, 'call_response': call_response, 'is_call': is_call, 'is_sms': is_sms, 'is_whatsapp': is_whatsapp})
     cc_list = []
     if request.user.role == 'Employee':
-        manager_email = SiteUser.objects.get(profile_name=request.user.manager).professional_email
+        manager_email = SiteUser.objects.get(
+            profile_name=request.user.manager).professional_email
         cc_list.append(manager_email)
         cc_list.append(request.user.professional_email)
-        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
+        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(
+            goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Manager':
-        admin_email = SiteUser.objects.get(profile_name=request.user.admin).professional_email
+        admin_email = SiteUser.objects.get(
+            profile_name=request.user.admin).professional_email
         cc_list.append(admin_email)
         cc_list.append(request.user.professional_email)
-        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(goddown_assign_to__profile_name=request.user.profile_name))
+        work_area_godowns = Godown.objects.filter(Q(godown_admin__profile_name=request.user.admin) | Q(
+            goddown_assign_to__profile_name=request.user.profile_name))
     elif request.user.role == 'Admin':
         cc_list.append(request.user.professional_email)
-        work_area_godowns = Godown.objects.filter(godown_admin__profile_name=request.user.profile_name)
+        work_area_godowns = Godown.objects.filter(
+            godown_admin__profile_name=request.user.profile_name)
     elif request.user.role == 'Super Admin':
         cc_list.append(request.user.professional_email)
         work_area_godowns = Godown.objects.all()
@@ -1492,19 +1534,19 @@ def update_view_lead(request,id):
         'form4': form4,
         'lead_id': lead_id,
         'lead_pi_products': lead_pi_products,
-       'followup_products_list': followup_products_list,
-        'hfu':hfu.fields,
-        'hfu_id':hfu.id,
-        'form6':form6,
-        'users':users,
-        'auto_manual_mode':hfu.auto_manual_mode,
-        'customer_id':customer_id,
-        'history_follow':history_follow,
-        'work_area_godowns':work_area_godowns,
-        'channel_sales':channel_sales,
-        'channel_marketing':channel_marketing,
-        'channel_dispatch':channel_dispatch,
-        'indutry':indutry,
+        'followup_products_list': followup_products_list,
+        'hfu': hfu.fields,
+        'hfu_id': hfu.id,
+        'form6': form6,
+        'users': users,
+        'auto_manual_mode': hfu.auto_manual_mode,
+        'customer_id': customer_id,
+        'history_follow': history_follow,
+        'work_area_godowns': work_area_godowns,
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'indutry': indutry,
     }
 
     try:
@@ -1528,8 +1570,8 @@ def update_view_lead(request,id):
         }
         form5 = Payment_detailsForm(initial=payment_detail_initial_data)
         context1 = {
-        'form5': form5,
-        'payment_id':payment_id,
+            'form5': form5,
+            'payment_id': payment_id,
         }
         context.update(context1)
     except:
@@ -1558,7 +1600,6 @@ def update_view_lead(request,id):
             'grand_total': '' if pi_id.grand_total == 0.0 else pi_id.grand_total,
         }
 
-
         form3 = Pi_sectionForm(initial=pi_initial_data)
         context2 = {
             'form': form,
@@ -1572,9 +1613,8 @@ def update_view_lead(request,id):
         context.update(context2)
     else:
         pass
-
-
-
+    
+    #sending pi files in email manually
     if request.method == 'POST' or request.method == 'FILES':
         email = request.session.get('email')
         email_type = request.session.get('email_type')
@@ -1583,62 +1623,65 @@ def update_view_lead(request,id):
         except:
             pass
 
-        if 'send_submit' in request.POST :
+        if 'send_submit' in request.POST:
             delete_id = request.POST.getlist('check[]')
             godown_ids = request.POST.getlist('selected_dodown')
-
 
             pi_pro = Pi_product.objects.filter(pk__in=delete_id)
             list_count = 0
             for item in pi_pro:
 
-                product_id = Product.objects.filter(scale_type=item.product_id.scale_type,main_category=item.product_id.main_category,
-                                                 sub_category=item.product_id.sub_category,sub_sub_category=item.product_id.sub_sub_category)
-                if product_id.count()>0:
+                product_id = Product.objects.filter(scale_type=item.product_id.scale_type, main_category=item.product_id.main_category,
+                                                    sub_category=item.product_id.sub_category, sub_sub_category=item.product_id.sub_sub_category)
+                if product_id.count() > 0:
                     for item2 in product_id:
                         product_id = item2
                 else:
 
-                    messages.error(request, "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name+" Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database")
+                    messages.error(request, "Product Having Scale Type:"+item.product_id.scale_type.name+"Main Category:"+item.product_id.main_category.name +
+                                   " Sub Category:"+item.product_id.sub_category.name+"Sub Sub Category:"+item.product_id.sub_sub_category.name+" Does Not Exist In Product Database")
                     return redirect('/update_view_lead/' + str(id))
                 godown = Godown.objects.get(id=godown_ids[list_count])
-                godown_product_exist = GodownProduct.objects.filter(godown_id=godown.id,product_id=product_id.id)
+                godown_product_exist = GodownProduct.objects.filter(
+                    godown_id=godown.id, product_id=product_id.id)
                 required_quantity = item.quantity
-                quantity_available=0.0
-                if (godown_product_exist.count()>0):
+                quantity_available = 0.0
+                if (godown_product_exist.count() > 0):
                     for item3 in godown_product_exist:
                         quantity_available = item3.quantity
                 else:
 
-                    messages.error(request,"Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:"+product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
+                    messages.error(request, "Product Having Sub Category:"+product_id.sub_category.name+" and Sub Sub Category:" +
+                                   product_id.sub_sub_category.name+" Does Not Exist in Godown:"+godown.name_of_godown)
                     return redirect('/update_view_lead/' + str(id))
-                
+
                 if (quantity_available >= required_quantity):
                     is_sufficient_stock = False
                 else:
 
-                    messages.error(request,"Insufficient Stock in Godown: " + Godown.objects.get(
-                            id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again")
+                    messages.error(request, "Insufficient Stock in Godown: " + Godown.objects.get(
+                        id=godown_ids[list_count]).name_of_godown + " Please Select Different Godown And Try Again")
                     return redirect('/update_view_lead/' + str(id))
                 list_count = list_count + 1
-            list_count = 0;
+            list_count = 0
             if lead_id.customer_id.contact_no == '0000000000' or len(lead_id.customer_id.contact_no) < 10:
                 messages.error(request, "Contact Number Is Not Valid!!!")
 
                 return redirect('/update_view_lead/' + str(id))
-            if Payment_details.objects.filter(lead_id=id).count() ==0:
+            if Payment_details.objects.filter(lead_id=id).count() == 0:
                 messages.error(request, "Enter Payment Details First!!!")
 
                 return redirect('/update_view_lead/' + str(id))
 
-
-            if (len(delete_id)>0):
+            if (len(delete_id) > 0):
                 current_stage = lead_id.current_stage
                 is_entered_purchase = lead_id.is_entered_purchase
                 if (current_stage == 'PO Issued - Payment Done - Dispatch Pending' and is_entered_purchase == False):
-                    lead_customer = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
-                    if Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name,customer_gst_no=lead_customer.customer_gst_no).count()>0:
-                        sales_customer = Customer_Details.objects.filter(contact_no=lead_customer.contact_no,customer_name=lead_customer.customer_name,customer_gst_no=lead_customer.customer_gst_no).order_by('-id')[0]
+                    lead_customer = Lead_Customer_Details.objects.get(
+                        id=lead_id.customer_id.pk)
+                    if Customer_Details.objects.filter(contact_no=lead_customer.contact_no, customer_name=lead_customer.customer_name, customer_gst_no=lead_customer.customer_gst_no).count() > 0:
+                        sales_customer = Customer_Details.objects.filter(
+                            contact_no=lead_customer.contact_no, customer_name=lead_customer.customer_name, customer_gst_no=lead_customer.customer_gst_no).order_by('-id')[0]
                     else:
                         sales_customer = Customer_Details()
                         sales_customer.contact_no = lead_customer.contact_no
@@ -1651,8 +1694,8 @@ def update_view_lead(request,id):
                         sales_customer.save()
 
                     purchase_det = Purchase_Details()
-                    import datetime
-                    #purchase details
+
+                    # purchase details
                     purchase_det.second_company_name = lead_id.customer_id.company_name  # new2
                     purchase_det.company_address = lead_id.customer_id.address  # new2
                     purchase_det.bill_address = lead_id.customer_id.address  # new2
@@ -1665,18 +1708,20 @@ def update_view_lead(request,id):
                     # purchase_det.date_of_purchase = lead_id.entry_timedate
                     purchase_det.sales_person = lead_id.owner_of_opportunity.name
 
-                    #update pf
-                    
-                    product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                    # update pf
+
+                    product_pf = Pi_product.objects.filter(
+                        lead_id=id).values('pf')
                     pf_total = 0.0
                     for x in product_pf:
                         pf_total += float(x['pf'])
-                    Pi_section.objects.filter(lead_id=lead_id).update(pf_total= F("pf_total") + pf_total)
+                    Pi_section.objects.filter(lead_id=lead_id).update(
+                        pf_total=F("pf_total") + pf_total)
                     # pi_obj = Pi_section.objects.get(lead_id=lead_id)
-                    
+
                     purchase_det.total_pf = pf_total
 
-                    #payment details
+                    # payment details
                     purchase_det.payment_mode = payment_id.payment_mode
                     purchase_det.bank_name = payment_id.bank_name
                     purchase_det.cheque_no = payment_id.cheque_no
@@ -1686,29 +1731,37 @@ def update_view_lead(request,id):
                     purchase_det.reference_no = payment_id.reference_no
                     purchase_det.credit_pending_amount = payment_id.credit_pending_amount
                     purchase_det.credit_authorised_by = payment_id.credit_authorised_by
-                    if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT'  :
+                    if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT':
                         purchase_det.is_gst = True
-                    purchase_det.user_id = SiteUser.objects.get(name=lead_id.owner_of_opportunity.name)
-                    if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile!="":
-                        purchase_det.upload_op_file = Payment_details.objects.get(lead_id=id).upload_pofile
+                    purchase_det.user_id = SiteUser.objects.get(
+                        name=lead_id.owner_of_opportunity.name)
+                    if Payment_details.objects.get(lead_id=id).upload_pofile != None and Payment_details.objects.get(lead_id=id).upload_pofile != "":
+                        purchase_det.upload_op_file = Payment_details.objects.get(
+                            lead_id=id).upload_pofile
 
                     purchase_det.channel_of_sales = ''
-                    purchase_det.channel_of_dispatch = DynamicDropdown.objects.filter(type="CHANNEL OF DISPATCH").latest('id')
-                   
-                   
-                    purchase_det.industry_id = DynamicDropdown.objects.get(type="INDUSTRY",name=lead_id.customer_id.customer_industry)
+                    purchase_det.channel_of_dispatch = DynamicDropdown.objects.filter(
+                        type="CHANNEL OF DISPATCH").latest('id')
+
+                    purchase_det.industry_id = DynamicDropdown.objects.get(
+                        type="INDUSTRY", name=lead_id.customer_id.customer_industry)
                     purchase_det.value_of_goods = 0.0
                     # purchase_det.channel_of_marketing = lead_id.channel
-                    purchase_det.channel_of_marketing_id = DynamicDropdown.objects.get(type="CHANNEL OF MARKETING",name=lead_id.channel)
+                    purchase_det.channel_of_marketing_id = DynamicDropdown.objects.get(
+                        type="CHANNEL OF MARKETING", name=lead_id.channel)
                     purchase_det.notes = "Entry From Lead Module\n"
                     purchase_det.feedback_form_filled = False
-                    purchase_det.manager_id = SiteUser.objects.get(id=request.user.pk).group
-                    purchase_det.purchase_no = Purchase_Details.objects.latest('purchase_no').purchase_no + 1
+                    purchase_det.manager_id = SiteUser.objects.get(
+                        id=request.user.pk).group
+                    purchase_det.purchase_no = Purchase_Details.objects.latest(
+                        'purchase_no').purchase_no + 1
                     purchase_det.log_entered_by = request.user.profile_name
                     purchase_det.save()
 
-                    Lead.objects.filter(id=id).update(purchase_id=purchase_det.pk)
-                    Lead_Customer_Details.objects.filter(id=lead_id.customer_id.pk).update(is_entered_in_purchased=True)
+                    Lead.objects.filter(id=id).update(
+                        purchase_id=purchase_det.pk)
+                    Lead_Customer_Details.objects.filter(
+                        id=lead_id.customer_id.pk).update(is_entered_in_purchased=True)
 
                     # dispatch = Dispatch()
                     # dispatch.crm_no = Lead_Customer_Details.objects.get(id=lead_id.customer_id.pk)
@@ -1726,13 +1779,14 @@ def update_view_lead(request,id):
                     #     dispatch.dispatch_no = Dispatch.objects.latest('dispatch_no').dispatch_no + 1
                     # dispatch.save()
 
-                    customer_id = Purchase_Details.objects.get(id=purchase_det.pk)
+                    customer_id = Purchase_Details.objects.get(
+                        id=purchase_det.pk)
                     # customer_id.dispatch_id_assigned = Dispatch.objects.get(id=dispatch.pk)  # str(dispatch.pk + 00000)
                     # customer_id.save(update_fields=['dispatch_id_assigned'])
 
                     # pi_pro = Pi_product.objects.filter(pk__in=delete_id)
                     total_purchase_product_cost = 0.0
-                    list_count=0
+                    list_count = 0
                     for item in pi_pro:
                         item_pro = Product_Details()
 
@@ -1745,7 +1799,8 @@ def update_view_lead(request,id):
                         item_pro.brand = 'HSCO'
                         item_pro.capacity = item.product_id.max_capacity
                         item_pro.unit = 'Kg'
-                        item_pro.godown_id = Godown.objects.get(id=godown_ids[list_count])
+                        item_pro.godown_id = Godown.objects.get(
+                            id=godown_ids[list_count])
                         if (item.product_total_cost == None or item.product_total_cost == ''):
                             item_pro.amount = 0.0
                             total_purchase_product_cost = total_purchase_product_cost + 0.0
@@ -1755,8 +1810,10 @@ def update_view_lead(request,id):
                             total_purchase_product_cost = total_purchase_product_cost + item.product_total_cost
 
                         item_pro.purchase_id_id = customer_id
-                        item_pro.user_id = SiteUser.objects.get(id=request.user.pk)
-                        item_pro.manager_id = SiteUser.objects.get(id=request.user.pk).group
+                        item_pro.user_id = SiteUser.objects.get(
+                            id=request.user.pk)
+                        item_pro.manager_id = SiteUser.objects.get(
+                            id=request.user.pk).group
                         item_pro.log_entered_by = request.user.name
 
                         item_pro.save()
@@ -1774,12 +1831,15 @@ def update_view_lead(request,id):
                                                      product_id=product_id).update(
                             quantity=F("quantity") - item.quantity)
                         new_transaction = GodownTransactions()
-                        new_transaction.purchase_product_id = Product_Details.objects.get(id=item_pro.id)
+                        new_transaction.purchase_product_id = Product_Details.objects.get(
+                            id=item_pro.id)
                         new_transaction.purchase_quantity = item.quantity
-                        new_transaction.notes = 'Product Transferred to Sales From Lead Module by Emp id:' + request.user.employee_number if request.user.employee_number else '' + '(' + request.user.profile_name if request.user.profile_name else '' + ' - ' + request.user.mobile if request.user.mobile else '' + ')'
+                        new_transaction.notes = 'Product Transferred to Sales From Lead Module by Emp id:' + request.user.employee_number if request.user.employee_number else '' + \
+                            '(' + request.user.profile_name if request.user.profile_name else '' + \
+                            ' - ' + request.user.mobile if request.user.mobile else '' + ')'
                         new_transaction.save()
 
-                        list_count=list_count+1
+                        list_count = list_count+1
                     # for item in pi_pro:
                     #
                     #     list_count = list_count + 1
@@ -1817,16 +1877,22 @@ def update_view_lead(request,id):
                     try:
 
                         # Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=Pi_section.objects.get(lead_id=id).grand_total)
-                        Purchase_Details.objects.filter(id=customer_id.pk).update(value_of_goods=total_purchase_product_cost)
-                        Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=total_purchase_product_cost)
-                        if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT'  :
-                            tax_amt =  round(total_purchase_product_cost * 0.18)
-                            Purchase_Details.objects.filter(id=customer_id.pk).update(tax_amount=tax_amt)
-                            Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=(total_purchase_product_cost+tax_amt))
+                        Purchase_Details.objects.filter(id=customer_id.pk).update(
+                            value_of_goods=total_purchase_product_cost)
+                        Purchase_Details.objects.filter(id=customer_id.pk).update(
+                            total_amount=total_purchase_product_cost)
+                        if payment_id.payment_mode == 'Cheque' or payment_id.payment_mode == 'Razorpay' or payment_id.payment_mode == 'NEFT':
+                            tax_amt = round(total_purchase_product_cost * 0.18)
+                            Purchase_Details.objects.filter(
+                                id=customer_id.pk).update(tax_amount=tax_amt)
+                            Purchase_Details.objects.filter(id=customer_id.pk).update(
+                                total_amount=(total_purchase_product_cost+tax_amt))
                         else:
-                            Purchase_Details.objects.filter(id=customer_id.pk).update(total_amount=total_purchase_product_cost)
-                        Lead.objects.filter(id=id).update(is_entered_purchase=True,current_stage='Dispatch Done - Closed')
-                    except Exception as e :
+                            Purchase_Details.objects.filter(id=customer_id.pk).update(
+                                total_amount=total_purchase_product_cost)
+                        Lead.objects.filter(id=id).update(
+                            is_entered_purchase=True, current_stage='Dispatch Done - Closed')
+                    except Exception as e:
                         # context22 = {
                         #     'error': "Submit PI Details First!!!",
                         #     'error_exist': True,
@@ -1837,15 +1903,16 @@ def update_view_lead(request,id):
                         # except:
                         #     pass
                         # request.session['context_sess'] = context22
-                        messages.error(request,"Submit PI Details First!!!")
+                        messages.error(request, "Submit PI Details First!!!")
                         return redirect('/update_view_lead/' + str(id))
 
-
                     if True:
-                        Purchase_Details.objects.filter(id=id).update(is_last_product=True)
+                        Purchase_Details.objects.filter(
+                            id=id).update(is_last_product=True)
 
                         product_list = ''' '''
-                        pro_lis = Product_Details.objects.filter(purchase_id_id=customer_id)
+                        pro_lis = Product_Details.objects.filter(
+                            purchase_id_id=customer_id)
 
                         for idx, item in enumerate(pro_lis):
                             email_body_text = (
@@ -1863,7 +1930,8 @@ def update_view_lead(request,id):
                                 item.capacity,
                                 item.amount,
                             )
-                            product_list = product_list + '' + str(email_body_text)
+                            product_list = product_list + \
+                                '' + str(email_body_text)
                         try:
                             import smtplib
                             sent_from = settings.EMAIL_HOST_USER
@@ -1892,9 +1960,11 @@ def update_view_lead(request,id):
                                         """ % (sent_from, customer_id.company_email, subject, body)
 
                             try:
-                                server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                                server = smtplib.SMTP_SSL(
+                                    'smtp.gmail.com', 465)
                                 server.ehlo()
-                                server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                                server.login(settings.EMAIL_HOST_USER,
+                                             settings.EMAIL_HOST_PASSWORD)
                                 server.sendmail(sent_from, to, email_text)
                                 server.close()
                                 print('Email sent!')
@@ -1916,18 +1986,23 @@ def update_view_lead(request,id):
                             customer_id.crm_no.pk) + '/' + str(
                             customer_id.id) + '\n For more details contact us on - 7045922250'
 
-                        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.second_contact_no + "&message=" + message + "&senderid=" + settings.senderid + "&type=txt"
+                        url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + \
+                            customer_id.second_contact_no + "&message=" + message + \
+                            "&senderid=" + settings.senderid + "&type=txt"
                         payload = ""
-                        headers = {'content-type': 'application/x-www-form-urlencoded'}
+                        headers = {
+                            'content-type': 'application/x-www-form-urlencoded'}
 
-                        response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                        response = requests.request(
+                            "GET", url, data=json.dumps(payload), headers=headers)
                         x = response.text
                         del_all_sessions(request)
                         request.session['expand_deal_detail'] = True
                         return redirect('/update_customer_details/' + str(purchase_det.pk))
 
             else:
-                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
+                messages.error(
+                    request, "No Product Selected\nPlease Select Products And Try Again")
                 context22 = {
                     'error': "No Product Selected\nPlease Select Products And Try Again",
                     'error_exist': True,
@@ -1939,7 +2014,9 @@ def update_view_lead(request,id):
                     pass
                 request.session['context_sess'] = context22
                 return redirect('/update_view_lead/' + str(id))
-
+        print('post request --->')
+        print(email)
+        print(email_type)
         # send pi mail manually
         if 'file_pdf' in request.POST and (email == 'True' or email == True) and email_type == 'internal_pi':
             try:
@@ -1953,13 +2030,14 @@ def update_view_lead(request,id):
             request.session['is_file_pdf'] = True
             val = request.POST
             try:
-                if request.user.professional_email == None or request.user.professional_email =='' or request.user.professional_email == 'None':
-                    messages.error(request, "Invalid Professional Email ID\nplease update professional email id and try again")
+                if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
+                    messages.error(
+                        request, "Invalid Professional Email ID\nplease update professional email id and try again")
                     return redirect('/update_view_lead/' + str(lead_id.id))
                 if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
-                    messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                    messages.error(
+                        request, "Invalid Email Id\nplease update customer's email Id and try agin")
                     return redirect('/update_view_lead/' + str(lead_id.id))
-
 
                 with get_connection(
                         host=host_file,
@@ -1974,39 +2052,43 @@ def update_view_lead(request,id):
                     We thank you for showing interest in HSCo  products. Attached is the Proforma Invoice that you have requested.
     
                     '''
-                    #adding optional emails in cc for internal pi
-                    optional_email = re.sub(r"[\n\t\s]*", "", lead_id.customer_id.optional_email)           # remove tabs,spaces and new lines in optional email
+                    # adding optional emails in cc for internal pi
+                    # remove tabs,spaces and new lines in optional email
+                    optional_email = re.sub(
+                        r"[\n\t\s]*", "", lead_id.customer_id.optional_email)
                     optional_email = optional_email.split(",")
                     if optional_email != '' or optional_email != 'None':
                         for _email in optional_email:
                             cc_list.append(_email)
 
-
-                    
-
-                    email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request,extra),
-                                          settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id,],connection=connection,cc=cc_list)
+                    email_send = EmailMessage('Proforma Invoice for Enquiry Number '+email_pi_id, user(request, extra),
+                                              settings.EMAIL_HOST_USER, [lead_id.customer_id.customer_email_id,], connection=connection, cc=cc_list)
                     email_send.content_subtype = 'html'
-                    email_send.attach('ProformaInvoice.pdf', val.get('file_pdf'), 'application/pdf')
-                    
-                    #add brochure and product document in pi email
+
+                    pdf_filename = f"PI {email_pi_id} - {lead_id.customer_id.company_name}.pdf"
+
+                    email_send.attach(pdf_filename,  val.get('file_pdf'), 'application/pdf')
+
+                    # add brochure and product document in pi email
                     pi_products = Pi_product.objects.filter(lead_id=lead_id)
                     for pi_product in pi_products:
                         try:
                             if pi_product.add_brochure == True:
-                                email_send.attach_file(pi_product.product_id.product_brochure.path)
+                                email_send.attach_file(
+                                    pi_product.product_id.product_brochure.path)
                         except:
                             print('attach error')
                             pass
                         try:
                             if pi_product.add_product_document == True:
-                                email_send.attach_file(pi_product.product_id.product_document.path)
+                                email_send.attach_file(
+                                    pi_product.product_id.product_document.path)
                         except:
                             print('attach error')
                             pass
 
                     email_send.send()
-                
+
                 history = Pi_History()
                 lead_id = Lead.objects.get(id=id)
                 todays_date = str(datetime.now().strftime("%Y-%m-%d"))
@@ -2030,13 +2112,13 @@ def update_view_lead(request,id):
                 history.medium_of_selection = 'Email'
                 history.call_detail = ''
                 history.save()
-                messages.success(request, "Email Sent on email Id: "+customer_id.customer_email_id)
+                messages.success(
+                    request, "Email Sent on email Id: "+customer_id.customer_email_id)
             except Exception as e:
                 messages.error(request, str(e))
-                print(e)
+                print(f"Error while sending pi email manually: {e}")
                 print('error')
             print("mail sending...")
-
 
             try:
                 del request.session['email']
@@ -2060,18 +2142,15 @@ def update_view_lead(request,id):
             customer_gst_no = request.POST.get('customer_gst_no')
             optional_email = request.POST.get('optional_email')
 
-
             del_all_sessions(request)
             request.session['expand_customer'] = True
-
-
-
 
             item2 = Lead.objects.get(id=id)
 
             item3 = Lead_Customer_Details.objects.get(id=lead_id.customer_id)
-            if Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).count()>0:
-                item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,contact_no=contact_no).order_by('-id')[0]
+            if Lead_Customer_Details.objects.filter(customer_name=customer_name, contact_no=contact_no).count() > 0:
+                item3 = Lead_Customer_Details.objects.filter(
+                    customer_name=customer_name, contact_no=contact_no).order_by('-id')[0]
                 # if customer_name != '' and customer_name != None:
                 #     item3.customer_name = customer_name
                 #     item3.save(update_fields=['customer_name'])
@@ -2129,13 +2208,14 @@ def update_view_lead(request,id):
             return redirect('/update_view_lead/'+str(id))
 
         # deal details form
-        if 'submit1' in request.POST:                                            #for customer and deal details section
+        if 'submit1' in request.POST:  # for customer and deal details section
 
             new_existing_customer = request.POST.get('new_existing_customer')
             date_of_initiation = request.POST.get('date_of_initiation')
             channel = request.POST.get('channel')
             requirement = request.POST.get('requirement')
-            upload_requirement_file = request.FILES.get('upload_requirement_file')
+            upload_requirement_file = request.FILES.get(
+                'upload_requirement_file')
             owner_of_opportunity = request.POST.get('owner_of_opportunity')
             lost_reason = request.POST.get('lost_reason')
             postponed_reason = request.POST.get('postponed_reason')
@@ -2150,11 +2230,10 @@ def update_view_lead(request,id):
             del_all_sessions(request)
             request.session['expand_deal_detail'] = True
 
-
             item2 = Lead.objects.get(id=id)
 
-            if (current_stage=='Dispatch Done - Closed'):
-                if(not item2.is_entered_purchase):
+            if (current_stage == 'Dispatch Done - Closed'):
+                if (not item2.is_entered_purchase):
                     # context22 = {
                     #     'error': 'Make Entry In Purchase Module And Try Again!!!',
                     #     'error_exist': True,
@@ -2165,7 +2244,8 @@ def update_view_lead(request,id):
                     # except:
                     #     pass
                     # request.session['context_sess'] = context22
-                    messages.error(request,'Make Entry In Purchase Module And Try Again!!!')
+                    messages.error(
+                        request, 'Make Entry In Purchase Module And Try Again!!!')
                     return redirect('/update_view_lead/' + str(id))
 
             item2.current_stage = current_stage
@@ -2183,22 +2263,22 @@ def update_view_lead(request,id):
                 item2.postpond_time_date = postpond_time_date
             item2.log_entered_by = request.user.name
             if owner_of_opportunity != None and owner_of_opportunity != 'None':
-                item2.owner_of_opportunity = SiteUser.objects.get(profile_name=owner_of_opportunity)
-            item2.save(update_fields=['current_stage','new_existing_customer','date_of_initiation','channel',
-                                      'requirement','upload_requirement_file','owner_of_opportunity','log_entered_by',
-                                      'lost_reason','postponed_reason','postpond_time_date','channel_id'])
+                item2.owner_of_opportunity = SiteUser.objects.get(
+                    profile_name=owner_of_opportunity)
+            item2.save(update_fields=['current_stage', 'new_existing_customer', 'date_of_initiation', 'channel',
+                                      'requirement', 'upload_requirement_file', 'owner_of_opportunity', 'log_entered_by',
+                                      'lost_reason', 'postponed_reason', 'postpond_time_date', 'channel_id'])
 
             messages.success(request, 'Deal Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/'+str(id))
 
-        #pi section form
+        # pi section form
         elif 'submit2' in request.POST:
             del_all_sessions(request)
             request.session['expand_pi_section'] = True
 
-
-            #for pi section
+            # for pi section
             discount = request.POST.get('discount')
             upload_pi_file = request.FILES.get('upload_pi_file')
             select_pi_template = request.POST.get('select_pi_template')
@@ -2226,10 +2306,12 @@ def update_view_lead(request,id):
 
             if email_type == 'internal_pi':
                 request.session['email_type'] = 'internal_pi'
-                Pi_section.objects.filter(lead_id=id).update(show_external_pi_first=False)
+                Pi_section.objects.filter(lead_id=id).update(
+                    show_external_pi_first=False)
             elif email_type == 'external_pi':
                 request.session['email_type'] = 'external_pi'
-                Pi_section.objects.filter(lead_id=id).update(show_external_pi_first=True)
+                Pi_section.objects.filter(lead_id=id).update(
+                    show_external_pi_first=True)
 
             if call2 == 'on':
                 call2 = 'True'
@@ -2265,7 +2347,8 @@ def update_view_lead(request,id):
                                   '''
 
                 if email == 'True' and upload_pi_file == None and email_type == 'external_pi':
-                    pi_file = Pi_section.objects.filter(lead_id=id).latest('pk').upload_pi_file
+                    pi_file = Pi_section.objects.filter(
+                        lead_id=id).latest('pk').upload_pi_file
 
                     pi_file = pi_file
                     history = Pi_History()
@@ -2277,7 +2360,9 @@ def update_view_lead(request,id):
                     history.save()
 
                     # adding optional emails in cc for external pi
-                    optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
+                    # remove tabs,spaces and new lines in optional email
+                    optional_email = re.sub(
+                        r"[\n\t\s]*", "", lead_id.customer_id.optional_email)
                     optional_email = optional_email.split(",")
                     if optional_email != '' or optional_email != 'None':
                         for _email in optional_email:
@@ -2289,7 +2374,8 @@ def update_view_lead(request,id):
                                            "Invalid Professional Email ID\nplease update professional email id and try again")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
-                            messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                            messages.error(
+                                request, "Invalid Email Id\nplease update customer's email Id and try agin")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         with get_connection(
                                 host=host_file,
@@ -2299,31 +2385,36 @@ def update_view_lead(request,id):
                                 use_tls=True
                         ) as connection:
 
-                            
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
-                                                      connection=connection,cc=cc_list)
+                                                      settings.EMAIL_HOST_USER3, [
+                                                          lead_id.customer_id.customer_email_id],
+                                                      connection=connection, cc=cc_list)
                             email_send.content_subtype = 'html'
-                            email_send.attach_file(history.pi_history_file.path)
+                            email_send.attach_file(
+                                history.pi_history_file.path)
                             # add brochure and product document in pi email
-                            pi_products = Pi_product.objects.filter(lead_id=lead_id)
+                            pi_products = Pi_product.objects.filter(
+                                lead_id=lead_id)
                             try:
                                 for pi_product in pi_products:
                                     if pi_product.add_brochure == True:
-                                        email_send.attach_file(pi_product.product_id.product_brochure.path)
+                                        email_send.attach_file(
+                                            pi_product.product_id.product_brochure.path)
                                     if pi_product.add_product_document == True:
-                                        email_send.attach_file(pi_product.product_id.product_document.path)
+                                        email_send.attach_file(
+                                            pi_product.product_id.product_document.path)
                             except:
                                 pass
                             email_send.send()
-                        messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                        messages.success(
+                            request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
                         print('exception')
                         print(e)
                         messages.error(request, str(e))
 
-                elif email == 'True' and upload_pi_file !=None and email_type == 'external_pi':
+                elif email == 'True' and upload_pi_file != None and email_type == 'external_pi':
                     pi_file = upload_pi_file
                     history = Pi_History()
 
@@ -2334,19 +2425,22 @@ def update_view_lead(request,id):
                     history.save()
 
                     # adding optional emails in cc for external pi
-                    optional_email = re.sub(r"[\n\t\s]*", "",lead_id.customer_id.optional_email)  # remove tabs,spaces and new lines in optional email
+                    # remove tabs,spaces and new lines in optional email
+                    optional_email = re.sub(
+                        r"[\n\t\s]*", "", lead_id.customer_id.optional_email)
                     optional_email = optional_email.split(",")
                     if optional_email != '' or optional_email != 'None':
                         for _email in optional_email:
                             cc_list.append(_email)
-                    
+
                     try:
                         if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
                             messages.error(request,
                                            "Invalid Professional Email ID\nplease update professional email id and try again")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         if lead_id.customer_id.customer_email_id == None or lead_id.customer_id.customer_email_id == '' or lead_id.customer_id.customer_email_id == 'None':
-                            messages.error(request, "Invalid Email Id\nplease update customer's email Id and try agin")
+                            messages.error(
+                                request, "Invalid Email Id\nplease update customer's email Id and try agin")
                             return redirect('/update_view_lead/' + str(lead_id.id))
                         with get_connection(
                                 host=host_file,
@@ -2358,27 +2452,30 @@ def update_view_lead(request,id):
 
                             email_send = EmailMessage('Proforma Invoice for Enquiry Number ' + email_pi_id,
                                                       user(request, extra),
-                                                      settings.EMAIL_HOST_USER3, [lead_id.customer_id.customer_email_id],
-                                                      connection=connection,cc=cc_list)
+                                                      settings.EMAIL_HOST_USER3, [
+                                                          lead_id.customer_id.customer_email_id],
+                                                      connection=connection, cc=cc_list)
                             email_send.content_subtype = 'html'
-                            email_send.attach_file(history.pi_history_file.path)
+                            email_send.attach_file(
+                                history.pi_history_file.path)
                             # add brochure and product document in pi email
-                            pi_products = Pi_product.objects.filter(lead_id=lead_id)
+                            pi_products = Pi_product.objects.filter(
+                                lead_id=lead_id)
                             for pi_product in pi_products:
                                 if pi_product.add_brochure == True:
-                                    email_send.attach_file(pi_product.product_id.product_brochure.path)
+                                    email_send.attach_file(
+                                        pi_product.product_id.product_brochure.path)
                                 if pi_product.add_product_document == True:
-                                    email_send.attach_file(pi_product.product_id.product_document.path)
+                                    email_send.attach_file(
+                                        pi_product.product_id.product_document.path)
                             email_send.send()
-                        messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                        messages.success(
+                            request, "Email Sent on email Id: " + customer_id.customer_email_id)
                     except Exception as e:
                         messages.error(request, str(e))
 
-
             except Exception as pi_file_error:
                 print(pi_file_error)
-
-
 
             if Pi_section.objects.filter(lead_id=id).count() > 0:
 
@@ -2388,7 +2485,7 @@ def update_view_lead(request,id):
                 if upload_pi_file != None and select_pi_template != '':
                     item2.upload_pi_file = upload_pi_file
 
-                if select_pi_template != None and select_pi_template !=  '':
+                if select_pi_template != None and select_pi_template != '':
                     item2.select_pi_template = select_pi_template
                 item2.call = call
                 item2.email = email
@@ -2403,47 +2500,55 @@ def update_view_lead(request,id):
 
                 else:
                     try:
-                        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                        total = Pi_product.objects.filter(
+                            lead_id=id).values('product_total_cost')
                         total_cost = 0.0
                         for x in total:
                             total_cost += x['product_total_cost']
                         item2.total_cost = total_cost
 
-
-                        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                        product_pf = Pi_product.objects.filter(
+                            lead_id=id).values('pf')
                         pf_total = 0.0
                         for x in product_pf:
                             pf_total += float(x['pf'])
                         item2.pf_total = pf_total
                         if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
-                            total_discount = (float(total_cost) * float(discount))/100.0  #converting discount percentage to discount total
-                            net_total = float(total_cost) - float(total_discount)
+                            # converting discount percentage to discount total
+                            total_discount = (
+                                float(total_cost) * float(discount))/100.0
+                            net_total = float(total_cost) - \
+                                float(total_discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * (net_total + pf_total)) / 100.0
-                            igst = (18.0 * (net_total+ pf_total)) / 100.0
+                            item2.cgst_sgst = (
+                                9.0 * (net_total + pf_total)) / 100.0
+                            igst = (18.0 * (net_total + pf_total)) / 100.0
                             item2.igst = igst
-                            item2.round_up_total = round(net_total + pf_total + igst)
-                            item2.grand_total = round(net_total + pf_total + igst)
+                            item2.round_up_total = round(
+                                net_total + pf_total + igst)
+                            item2.grand_total = round(
+                                net_total + pf_total + igst)
                         elif discount_type == 'rupee' and discount != '' and total_cost != '':
                             net_total = float(total_cost) - float(discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * (net_total+ pf_total))/100.0
-                            igst = (18.0 * (item2.net_total+ pf_total))/100.0
+                            item2.cgst_sgst = (
+                                9.0 * (net_total + pf_total))/100.0
+                            igst = (18.0 * (item2.net_total + pf_total))/100.0
                             item2.igst = igst
-                            item2.round_up_total = round(item2.net_total + pf_total + igst)
-                            item2.grand_total = round(item2.net_total + pf_total + igst)
+                            item2.round_up_total = round(
+                                item2.net_total + pf_total + igst)
+                            item2.grand_total = round(
+                                item2.net_total + pf_total + igst)
                     except:
                         print("product not added or debugging needed")
 
                 messages.success(request, 'PI Details Saved Successfully!!!')
 
-                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call','net_total','cgst_sgst','igst',
-                                          'round_up_total','grand_total','total_cost','notes','pf_total',
-                                        'email', 'whatsapp','call2','select_gst_type','discount_type','log_entered_by','first_submit','grand_total'  ])
+                item2.save(update_fields=['discount', 'upload_pi_file', 'select_pi_template', 'call', 'net_total', 'cgst_sgst', 'igst',
+                                          'round_up_total', 'grand_total', 'total_cost', 'notes', 'pf_total',
+                                          'email', 'whatsapp', 'call2', 'select_gst_type', 'discount_type', 'log_entered_by', 'first_submit', 'grand_total'])
 
-
-
-            else :
+            else:
 
                 item2 = Pi_section()
                 if email_type == 'internal_pi':
@@ -2466,17 +2571,19 @@ def update_view_lead(request,id):
                 item2.lead_id = Lead.objects.get(id=id)
                 item2.log_entered_by = request.user.name
 
-                if grand_total != None and grand_total != '' and grand_total != 'None' :
+                if grand_total != None and grand_total != '' and grand_total != 'None':
                     item2.grand_total = float(grand_total)
                 else:
                     try:
-                        total = Pi_product.objects.filter(lead_id=id).values('product_total_cost')
+                        total = Pi_product.objects.filter(
+                            lead_id=id).values('product_total_cost')
                         total_cost = 0.0
                         for x in total:
                             total_cost += x['product_total_cost']
                         item2.total_cost = total_cost
 
-                        product_pf = Pi_product.objects.filter(lead_id=id).values('pf')
+                        product_pf = Pi_product.objects.filter(
+                            lead_id=id).values('pf')
                         pf_total = 0.0
                         for x in product_pf:
                             pf_total += float(x['pf'])
@@ -2485,20 +2592,25 @@ def update_view_lead(request,id):
                         if discount_type == 'percent' and discount != '' and discount != 0 and total_cost != '':
                             total_discount = (float(total_cost) * float(
                                 discount)) / 100.0  # converting discount percentage to discount total
-                            net_total = float(total_cost) - float(total_discount)
+                            net_total = float(total_cost) - \
+                                float(total_discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * (net_total+ pf_total)) / 100.0
-                            igst = (18.0 * (net_total+ pf_total)) / 100.0
+                            item2.cgst_sgst = (
+                                9.0 * (net_total + pf_total)) / 100.0
+                            igst = (18.0 * (net_total + pf_total)) / 100.0
                             item2.igst = igst
-                            item2.round_up_total = round(net_total + pf_total + igst)
+                            item2.round_up_total = round(
+                                net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
                         elif discount_type == 'rupee' and discount != '' and total_cost != '':
                             net_total = float(total_cost) - float(discount)
                             item2.net_total = net_total
-                            item2.cgst_sgst = (9.0 * (net_total+ pf_total)) / 100.0
-                            igst = (18.0 * (net_total+ pf_total)) / 100.0
+                            item2.cgst_sgst = (
+                                9.0 * (net_total + pf_total)) / 100.0
+                            igst = (18.0 * (net_total + pf_total)) / 100.0
                             item2.igst = igst
-                            item2.round_up_total = round(item2.net_total + pf_total + igst)
+                            item2.round_up_total = round(
+                                item2.net_total + pf_total + igst)
                             item2.grand_total = item2.round_up_total
                     except:
                         print("product not added or debugging needed")
@@ -2508,18 +2620,18 @@ def update_view_lead(request,id):
 
             return redirect('/update_view_lead/'+str(lead_id.id))
 
-        #follow up section form
+        # follow up section form
         elif 'submit3' in request.POST:
             selected_fields = request.POST.getlist('checks[]')
-            Follow_up_section.objects.filter(lead_id=id).update(fields=selected_fields)
+            Follow_up_section.objects.filter(
+                lead_id=id).update(fields=selected_fields)
             del_all_sessions(request)
             request.session['expand_followup'] = True
-            messages.success(request,"Products Fields Saved")
+            messages.success(request, "Products Fields Saved")
             return redirect('/update_view_lead/' + str(id))
 
-
         elif 'submit56' in request.POST:
-            if(request.session['wa_msg']):
+            if (request.session['wa_msg']):
                 wa_msg = request.session['wa_msg']
                 sms_content = request.session['wa_content']
                 wa_no = request.session['wa_no']
@@ -2529,7 +2641,7 @@ def update_view_lead(request,id):
                     pass
                 return redirect('https://api.whatsapp.com/send?phone=+91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
 
-        #payment form
+        # payment form
         if 'submit_payment' in request.POST:
             payment_channel = request.POST.get("payment_channel")
             payment_receipt = request.FILES.get("payment_receipt")
@@ -2550,15 +2662,14 @@ def update_view_lead(request,id):
 
             credit_pending_amount = request.POST.get('credit_pending_amount')
             credit_authorised_by = request.POST.get('credit_authorised_by')
-            
+
             if Payment_details.objects.filter(lead_id__id=id).count() == 0:
                 item10 = Payment_details()
             else:
                 item10 = Payment_details.objects.get(lead_id__id=id)
-            
+
             item10.payment_mode = payment_mode
-            
-            
+
             item10.bank_name = bank_name
             item10.cheque_no = cheque_no
             if cheque_date != None and cheque_date != '':
@@ -2577,7 +2688,7 @@ def update_view_lead(request,id):
                 item10.credit_pending_amount = float(credit_pending_amount)
             item10.credit_authorised_by = credit_authorised_by
 
-            item10.lead_id=Lead.objects.get(id=id)
+            item10.lead_id = Lead.objects.get(id=id)
             item10.payment_channel = payment_channel
             if payment_receipt != None and payment_receipt != '':
                 item10.payment_receipt = payment_receipt
@@ -2586,18 +2697,17 @@ def update_view_lead(request,id):
             # item10.payment_recived_date = payment_recived_date
             item10.Payment_notes = Payment_notes
 
-            if Payment_details.objects.filter(lead_id=id).count()==0:
+            if Payment_details.objects.filter(lead_id=id).count() == 0:
                 item10.save()
             else:
                 item10.save(
-                    update_fields=['payment_mode','bank_name','cheque_no','cheque_date','neft_bank_name','reference_no','neft_date','credit_pending_amount','credit_authorised_by','payment_channel', 'payment_receipt', 'upload_pofile', 'Payment_notes'])
+                    update_fields=['payment_mode', 'bank_name', 'cheque_no', 'cheque_date', 'neft_bank_name', 'reference_no', 'neft_date', 'credit_pending_amount', 'credit_authorised_by', 'payment_channel', 'payment_receipt', 'upload_pofile', 'Payment_notes'])
 
             del_all_sessions(request)
             request.session['expand_payment'] = True
             messages.success(request, 'Payment Details Saved Successfully!!!')
 
             return redirect('/update_view_lead/' + str(id))
-
 
         elif 'submit5' in request.POST:
 
@@ -2619,21 +2729,25 @@ def update_view_lead(request,id):
                 messages.error(request, "Contact Number Is  Invalid!!!")
                 return redirect('/update_view_lead/' + str(id))
 
-            if (selected_products!=None and len(selected_products)<5 and email_auto_manual == 'Manual' and not (is_call!='on' or is_call!='is_call')):
+            if (selected_products != None and len(selected_products) < 5 and email_auto_manual == 'Manual' and not (is_call != 'on' or is_call != 'is_call')):
 
-                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
+                messages.error(
+                    request, "No Product Selected\nPlease Select Products And Try Again")
                 return redirect('/update_view_lead/' + str(id))
-            elif not (is_call!='on' or is_call!='is_call'):
-                messages.error(request, "No Product Selected\nPlease Select Products And Try Again")
+            elif not (is_call != 'on' or is_call != 'is_call'):
+                messages.error(
+                    request, "No Product Selected\nPlease Select Products And Try Again")
                 return redirect('/update_view_lead/' + str(id))
 
-            if(is_call!='on' and is_sms!='on' and is_whatsapp!='on' and is_email!='on' and is_call!='is_call' and is_sms!='is_sms' and is_whatsapp!='is_whatsapp' and is_email !='is_email'):
+            if (is_call != 'on' and is_sms != 'on' and is_whatsapp != 'on' and is_email != 'on' and is_call != 'is_call' and is_sms != 'is_sms' and is_whatsapp != 'is_whatsapp' and is_email != 'is_email'):
 
-                messages.error(request, "Please Select Atleast One Medium For Followup")
+                messages.error(
+                    request, "Please Select Atleast One Medium For Followup")
                 return redirect('/update_view_lead/' + str(id))
 
             if (selected_fields != None and len(selected_fields) < 6):
-                messages.error(request, "Please Select Atleast One Product Field")
+                messages.error(
+                    request, "Please Select Atleast One Product Field")
                 return redirect('/update_view_lead/' + str(id))
 
             if (email_auto_manual == 'Select Mode'):
@@ -2650,14 +2764,17 @@ def update_view_lead(request,id):
                 # request.session['context_sess']=context28
                 messages.error(request, "Please Select Follow Up Mode")
                 return redirect('/update_view_lead/' + str(id))
-            if(email_auto_manual == 'Manual'):
+            if (email_auto_manual == 'Manual'):
 
                 final_list = []
-                Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no,)
-                Follow_up_section.objects.filter(lead_id=id).update(auto_manual_mode=email_auto_manual,)
+                Follow_up_section.objects.filter(
+                    lead_id=id).update(whatsappno=wa_no,)
+                Follow_up_section.objects.filter(lead_id=id).update(
+                    auto_manual_mode=email_auto_manual,)
 
-                history_follow= History_followup()
-                history_follow.follow_up_section=Follow_up_section.objects.get(id=hfu.id)
+                history_follow = History_followup()
+                history_follow.follow_up_section = Follow_up_section.objects.get(
+                    id=hfu.id)
                 history_follow.lead_id = Lead.objects.get(id=id)
                 selected_fields2 = selected_fields.replace("'", "").strip('][').split(
                     ', ') if selected_fields != None and len(selected_fields) > 4 else None
@@ -2666,78 +2783,109 @@ def update_view_lead(request,id):
                 history_follow.product_ids = selected_products
                 length_of_list = 1
                 count_list = 0
-                if selected_fields2!= None:
-
+                if selected_fields2 != None:
 
                     html_head = '''<thead> '''
                     for item in selected_fields2:
-                        pro_list = Followup_product.objects.filter(lead_id=id,pk__in=selected_products).values_list(item, flat=True)
+                        pro_list = Followup_product.objects.filter(
+                            lead_id=id, pk__in=selected_products).values_list(item, flat=True)
                         list_pro = []
-                        item=item.replace('product_id_id__','').replace('_',' ').title().replace('Category','Model')
+                        item = item.replace('product_id_id__', '').replace(
+                            '_', ' ').title().replace('Category', 'Model')
                         if (count_list == 0):
                             for ite, lt in enumerate(pro_list):
                                 if (ite == 0):
-                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                    html_head = html_head + \
+                                        '''<th style="border: solid gray; background-color: gray; color: white;">''' + \
+                                        item + '''</th>'''
                                 final_list.append([item + ' : ' + str(lt)])
                             count_list = count_list + 1
                         else:
                             for ite, lt in enumerate(pro_list):
                                 if (ite == 0):
-                                    html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                                final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                                    html_head = html_head + \
+                                        '''<th style="border: solid gray; background-color: gray; color: white;">''' + \
+                                        item + '''</th>'''
+                                final_list[ite] = final_list[ite] + \
+                                    [item + ' : ' + str(lt)]
                                 # final_list[ite].append(list_pro)
                     html_head = html_head + '''</thead> '''
 
                     html_rows = ''''''
                     count = 1
-                    sms_content=''''''
-                    wa_content=''''''
-                    for count_for,single in enumerate(final_list):
+                    sms_content = ''''''
+                    wa_content = ''''''
+                    for count_for, single in enumerate(final_list):
                         html_rows = html_rows + '''<tr> '''
                         count = count + 1
-                        sms_content=sms_content+'''\nProduct No-'''+str(count_for+1)+''':'''
-                        wa_content=wa_content+'''\nProduct No - '''+str(count_for+1)+''':\n______________________________________________________\n'''
+                        sms_content = sms_content + \
+                            '''\nProduct No-'''+str(count_for+1)+''':'''
+                        wa_content = wa_content+'''\nProduct No - ''' + \
+                            str(count_for+1) + \
+                            ''':\n______________________________________________________\n'''
                         for item in single:
                             if item.partition(":")[0] == 'Product Image ':
-                                img_path = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
-                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + img_path + '''\n'''
-                                html_rows = html_rows + '''<td> <img height="150" width="150" src="'''+img_path+'''"> </td>'''
-
+                                img_path = 'http://139.59.76.87/media/' + \
+                                    item.partition(":")[2][1:]
+                                sms_content = sms_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + img_path + '''\n'''
+                                wa_content = wa_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + img_path + '''\n'''
+                                html_rows = html_rows + '''<td> <img height="150" width="150" src="''' + \
+                                    img_path+'''"> </td>'''
 
                             elif item.partition(":")[0] == 'Product Brochure ':
-                                bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                                html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                                bro_link = 'http://139.59.76.87/media/' + \
+                                    item.partition(":")[2][1:]
+                                sms_content = sms_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + bro_link + '''\n'''
+                                wa_content = wa_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + bro_link + '''\n'''
+                                html_rows = html_rows + '''<td> <a href="'''+bro_link + \
+                                    '''" target="_blank">View Brochure</a> </td>'''
                             elif item.partition(":")[0] == 'Product Document ':
-                                bro_link = 'http://139.59.76.87/media/'+item.partition(":")[2][1:]
-                                sms_content = sms_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                                wa_content = wa_content + item.partition(":")[0] + ''' :''' + bro_link + '''\n'''
-                                html_rows = html_rows + '''<td> <a href="'''+bro_link+'''" target="_blank">View Brochure</a> </td>'''
+                                bro_link = 'http://139.59.76.87/media/' + \
+                                    item.partition(":")[2][1:]
+                                sms_content = sms_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + bro_link + '''\n'''
+                                wa_content = wa_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :''' + bro_link + '''\n'''
+                                html_rows = html_rows + '''<td> <a href="'''+bro_link + \
+                                    '''" target="_blank">View Brochure</a> </td>'''
                             else:
-                                sms_content = sms_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                                wa_content = wa_content + item.partition(":")[0] +''' :'''+item.partition(":")[2]+'''\n'''
-                                html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                                sms_content = sms_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :'''+item.partition(":")[2]+'''\n'''
+                                wa_content = wa_content + \
+                                    item.partition(
+                                        ":")[0] + ''' :'''+item.partition(":")[2]+'''\n'''
+                                html_rows = html_rows + '''<td>''' + \
+                                    item.partition(":")[2] + '''</td>'''
 
                         html_rows = html_rows + '''</tr>'''
-                    context_session={}
+                    context_session = {}
                 else:
                     html_rows = ''''''
                     count = 1
                     sms_content = ''''''
                     wa_content = ''''''
 
-
-                if(is_email=='on' or is_email =='is_email'):
+                if (is_email == 'on' or is_email == 'is_email'):
                     email_subject = request.POST.get('email_subject')
                     email_msg = request.POST.get('email_msg')
-                    history_follow.is_email=True
-                    history_follow.email_subject=email_subject
-                    history_follow.email_msg=email_msg
-                    Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
+                    history_follow.is_email = True
+                    history_follow.email_subject = email_subject
+                    history_follow.email_msg = email_msg
+                    Follow_up_section.objects.filter(lead_id=id).update(
+                        email_subject=email_subject, )
                     if selected_fields2 != None:
-                        html_content='''<html>
+                        html_content = '''<html>
         <head>
           <title>
             HSCO
@@ -2798,7 +2946,7 @@ def update_view_lead(request,id):
         <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
             <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
             
-            <h4>'''+email_msg.replace('\n','<br>')+'''</h4>
+            <h4>'''+email_msg.replace('\n', '<br>')+'''</h4>
             
             <table style="font-size: 14px;">
             
@@ -2815,7 +2963,8 @@ def update_view_lead(request,id):
         </html>'''
 
                         file = ContentFile(html_content)
-                        history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
+                        history_follow.followup_history_file.save(
+                            'AutoFollowup.html', file, save=False)
                         history_follow.html_content = html_content
                         try:
                             if request.user.professional_email == None or request.user.professional_email == '' or request.user.professional_email == 'None':
@@ -2843,7 +2992,8 @@ def update_view_lead(request,id):
 
                                 email_send.content_subtype = 'html'
                                 email_send.send()
-                            messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                            messages.success(
+                                request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
                         except Exception as e:
                             messages.error(request, str(e))
@@ -2869,7 +3019,8 @@ def update_view_lead(request,id):
                                     use_tls=True
                             ) as connection:
                                 email_send = EmailMessage(email_subject,
-                                                          user(request,email_msg.replace('\n','<br>')),
+                                                          user(request, email_msg.replace(
+                                                              '\n', '<br>')),
                                                           settings.EMAIL_HOST_USER,
                                                           [customer_id.customer_email_id, ],
                                                           connection=connection,
@@ -2878,16 +3029,15 @@ def update_view_lead(request,id):
 
                                 email_send.content_subtype = 'html'
                                 email_send.send()
-                                messages.success(request, "Email Sent on email Id: " + customer_id.customer_email_id)
+                                messages.success(
+                                    request, "Email Sent on email Id: " + customer_id.customer_email_id)
 
                         except Exception as e:
                             messages.error(request, str(e))
 
                         # send_text_mail(email_subject, email_msg, settings.EMAIL_HOST_USER3, [customer_id.customer_email_id, ],connection=connection)
 
-
-
-                if(is_whatsapp=='on' or is_whatsapp=='is_whatsapp'):
+                if (is_whatsapp == 'on' or is_whatsapp == 'is_whatsapp'):
                     history_follow.is_whatsapp = True
                     history_follow.wa_msg = wa_msg
                     history_follow.wa_no = wa_no
@@ -2906,28 +3056,32 @@ def update_view_lead(request,id):
                         del request.session['wa_no']
                     except:
                         pass
-                    request.session['wa_msg']=wa_msg
-                    request.session['wa_content']=wa_content
-                    request.session['wa_no']=wa_no
+                    request.session['wa_msg'] = wa_msg
+                    request.session['wa_content'] = wa_content
+                    request.session['wa_no'] = wa_no
                     # context28 = {
                     #     'success_2': "WhatsApp Redirect Successful On WhatsApp No : " + wa_no,
                     #     'success_exist_2': True,
                     # }
                     # context_session.update(context28)
-                    messages.success(request,"WhatsApp Redirect Successful On WhatsApp No : " + wa_no)
+                    messages.success(
+                        request, "WhatsApp Redirect Successful On WhatsApp No : " + wa_no)
 
-
-                if(is_sms=='on' or is_sms=='is_sms'):
+                if (is_sms == 'on' or is_sms == 'is_sms'):
                     sms_msg = request.POST.get('sms_msg')
                     history_follow.is_sms = True
                     history_follow.sms_msg = sms_msg
                     history_follow.sms_con = sms_content
 
-                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + customer_id.contact_no + "&message=" + sms_msg+'\n'+sms_content + "&senderid=" + settings.senderid + "&type=txt"
+                    url = "http://smshorizon.co.in/api/sendsms.php?user=" + settings.user + "&apikey=" + settings.api + "&mobile=" + \
+                        customer_id.contact_no + "&message=" + sms_msg+'\n' + \
+                        sms_content + "&senderid=" + settings.senderid + "&type=txt"
                     payload = ""
-                    headers = {'content-type': 'application/x-www-form-urlencoded'}
+                    headers = {
+                        'content-type': 'application/x-www-form-urlencoded'}
 
-                    response = requests.request("GET", url, data=json.dumps(payload), headers=headers)
+                    response = requests.request(
+                        "GET", url, data=json.dumps(payload), headers=headers)
                     x = response.text
                     print(x)
                     # context28 = {
@@ -2935,10 +3089,10 @@ def update_view_lead(request,id):
                     #     'success_exist_4': True,
                     # }
                     # context_session.update(context28)
-                    messages.success(request,"SMS Sent Successfully To : " + customer_id.contact_no)
+                    messages.success(
+                        request, "SMS Sent Successfully To : " + customer_id.contact_no)
 
-
-                if(is_call=='on' or is_call=='is_call'):
+                if (is_call == 'on' or is_call == 'is_call'):
                     call_response = request.POST.get('call_response')
                     history_follow.is_call = True
                     history_follow.call_response = call_response
@@ -2947,8 +3101,8 @@ def update_view_lead(request,id):
                     #     'success_exist_5': True,
                     # }
                     # context_session.update(context28)
-                    messages.success(request,"Call Response Recorded Successfully")
-
+                    messages.success(
+                        request, "Call Response Recorded Successfully")
 
                 history_follow.log_entered_by = request.user.name
 
@@ -2956,17 +3110,18 @@ def update_view_lead(request,id):
 
                 return redirect('/update_view_lead/' + str(id))
 
-
-
             if (email_auto_manual == 'Automatic'):
 
-                if(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()==0):
+                if (Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count() == 0):
                     final_list = []
-                    Follow_up_section.objects.filter(lead_id=id).update(whatsappno=wa_no, )
-                    Follow_up_section.objects.filter(lead_id=id).update(auto_manual_mode=email_auto_manual, )
+                    Follow_up_section.objects.filter(
+                        lead_id=id).update(whatsappno=wa_no, )
+                    Follow_up_section.objects.filter(lead_id=id).update(
+                        auto_manual_mode=email_auto_manual, )
 
                     history_follow = History_followup()
-                    history_follow.follow_up_section = Follow_up_section.objects.get(id=hfu.id)
+                    history_follow.follow_up_section = Follow_up_section.objects.get(
+                        id=hfu.id)
                     history_follow.lead_id = Lead.objects.get(id=id)
 
                     selected_fields2 = selected_fields.replace("'", "").strip('][').split(
@@ -2977,7 +3132,8 @@ def update_view_lead(request,id):
                     history_follow.is_manual_mode = False
                     history_follow.is_call = False
                     history_follow.is_whatsapp = False
-                    Lead.objects.filter(id=id).update(is_manual_mode_followup=False)
+                    Lead.objects.filter(id=id).update(
+                        is_manual_mode_followup=False)
 
                     length_of_list = 1
                     count_list = 0
@@ -2993,14 +3149,19 @@ def update_view_lead(request,id):
                             if (count_list == 0):
                                 for ite, lt in enumerate(pro_list):
                                     if (ite == 0):
-                                        html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
+                                        html_head = html_head + \
+                                            '''<th style="border: solid gray; background-color: gray; color: white;">''' + \
+                                            item + '''</th>'''
                                     final_list.append([item + ' : ' + str(lt)])
                                 count_list = count_list + 1
                             else:
                                 for ite, lt in enumerate(pro_list):
                                     if (ite == 0):
-                                        html_head = html_head + '''<th style="border: solid gray; background-color: gray; color: white;">''' + item + '''</th>'''
-                                    final_list[ite] = final_list[ite] + [item + ' : ' + str(lt)]
+                                        html_head = html_head + \
+                                            '''<th style="border: solid gray; background-color: gray; color: white;">''' + \
+                                            item + '''</th>'''
+                                    final_list[ite] = final_list[ite] + \
+                                        [item + ' : ' + str(lt)]
                                     # final_list[ite].append(list_pro)
                         html_head = html_head + '''</thead> '''
 
@@ -3011,7 +3172,8 @@ def update_view_lead(request,id):
                         for count_for, single in enumerate(final_list):
                             html_rows = html_rows + '''<tr> '''
                             count = count + 1
-                            sms_content = sms_content + '''\nProduct No-''' + str(count_for + 1) + ''':'''
+                            sms_content = sms_content + '''\nProduct No-''' + \
+                                str(count_for + 1) + ''':'''
                             wa_content = wa_content + '''\nProduct No - ''' + str(
                                 count_for + 1) + ''':\n______________________________________________________\n'''
                             for item in single:
@@ -3019,7 +3181,8 @@ def update_view_lead(request,id):
                                     2] + '''\n'''
                                 wa_content = wa_content + item.partition(":")[0] + ''' :''' + item.partition(":")[
                                     2] + '''\n'''
-                                html_rows = html_rows + '''<td>''' + item.partition(":")[2] + '''</td>'''
+                                html_rows = html_rows + '''<td>''' + \
+                                    item.partition(":")[2] + '''</td>'''
                             html_rows = html_rows + '''</tr>'''
                     else:
                         html_rows = ''''''
@@ -3027,14 +3190,14 @@ def update_view_lead(request,id):
                         sms_content = ''''''
                         wa_content = ''''''
 
-
-                    if(is_email=='on' or is_email =='is_email'):
+                    if (is_email == 'on' or is_email == 'is_email'):
                         email_subject = request.POST.get('email_subject')
                         email_msg = request.POST.get('email_msg')
                         history_follow.is_email = True
                         history_follow.email_subject = email_subject
                         history_follow.email_msg = email_msg
-                        Follow_up_section.objects.filter(lead_id=id).update(email_subject=email_subject, )
+                        Follow_up_section.objects.filter(lead_id=id).update(
+                            email_subject=email_subject, )
                         if selected_fields2 != None:
                             html_content = '''<html>
                             <head>
@@ -3097,7 +3260,7 @@ def update_view_lead(request,id):
                             <div class="card-body row" style="padding: 15px;color: black; font-weight: 300; font-size: 14px;">
                                 <!--<div class="col-xl-4 col-md-1 mb-1" style="border-right: 1px solid black;"><center> Product Name: {{list.product_name}} </center></div>-->
     
-                                <h4>''' + email_msg.replace('\n','<br>') + '''</h4>
+                                <h4>''' + email_msg.replace('\n', '<br>') + '''</h4>
     
                                 <table style="font-size: 14px;">
     
@@ -3114,10 +3277,11 @@ def update_view_lead(request,id):
                             </html>'''
 
                             file = ContentFile(html_content)
-                            history_follow.followup_history_file.save('AutoFollowup.html', file, save=False)
-                            history_follow.html_content= html_content
+                            history_follow.followup_history_file.save(
+                                'AutoFollowup.html', file, save=False)
+                            history_follow.html_content = html_content
 
-                    if(is_sms=='on' or is_sms=='is_sms'):
+                    if (is_sms == 'on' or is_sms == 'is_sms'):
                         sms_msg = request.POST.get('sms_msg')
                         history_follow.is_sms = True
                         history_follow.sms_msg = sms_msg
@@ -3126,8 +3290,9 @@ def update_view_lead(request,id):
                     history_follow.log_entered_by = request.user.name
 
                     history_follow.save()
-                    afd= Auto_followup_details()
-                    afd.follow_up_history = History_followup.objects.get(id=history_follow.pk)
+                    afd = Auto_followup_details()
+                    afd.follow_up_history = History_followup.objects.get(
+                        id=history_follow.pk)
                     afd.save()
                     # context28 = {
                     #     'success_6': "Followup Will Be Done Automatically After Every 2 Days",
@@ -3137,19 +3302,21 @@ def update_view_lead(request,id):
                     #     del request.session['context_sess']
                     # except:
                     #     pass
-                    messages.success(request,"Followup Will Be Done Automatically After Every 2 Days")
+                    messages.success(
+                        request, "Followup Will Be Done Automatically After Every 2 Days")
 
                     # request.session['context_sess'] = context28
                     return redirect('/update_view_lead/' + str(id))
-                elif(Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count()>0):
+                elif (Auto_followup_details.objects.filter(follow_up_history__follow_up_section__lead_id__id=lead_id.id).count() > 0):
                     context28 = {
                         'error': "Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section",
                         'error_exist': True,
                     }
                     context.update(context28)
-                    messages.error(request,"Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section")
+                    messages.error(
+                        request, "Auto Follow-Up is Already Set For This Lead\nTo Edit Auto Follow-Up Click On History Button In Follow-Up Section")
 
-    return render(request, 'lead_management/update_view_lead.html',context)
+    return render(request, 'lead_management/update_view_lead.html', context)
 
 
 @login_required(login_url='/')
@@ -3175,14 +3342,17 @@ def del_all_sessions(request):
     except:
         pass
 
+
 @login_required(login_url='/')
-def load_wa(wa_no,wa_msg,sms_content):
+def load_wa(wa_no, wa_msg, sms_content):
     return redirect('https://api.whatsapp.com/send?phone=91' + wa_no + '&text=' + wa_msg + '\n' + sms_content)
+
 
 @login_required(login_url='/')
 def lead_report(request):
 
-    return render(request,'lead_management/report_lead.html')
+    return render(request, 'lead_management/report_lead.html')
+
 
 @login_required(login_url='/')
 def report_2(request):
@@ -3196,7 +3366,7 @@ def report_2(request):
         del request.session['string_pay_detail']
     except:
         pass
-    if request.method =='POST' :
+    if request.method == 'POST':
         cust_detail = request.POST.getlist('cust_detail[]')
         deal_detail = request.POST.getlist('deal_detail[]')
         pi_history = request.POST.getlist('pi_history[]')
@@ -3225,7 +3395,7 @@ def report_2(request):
 
         # return redirect('/final_lead_report/')
         return redirect('/final_lead_report_test/')
-    return render(request,'lead_management/report_2.html')
+    return render(request, 'lead_management/report_2.html')
 
 
 @login_required(login_url='/')
@@ -3240,51 +3410,57 @@ def final_lead_report_test(request):
     string_deal_detail = request.session.get('string_deal_detail')
     string_deal_detail_list = request.session.get('string_deal_detail_list')
     string_pi_history = request.session.get('string_pi_history')
-    string_pi_history_list = ['pi_history_file', 'entry_timedate_time', 'call_detail', 'medium_of_selection']
+    string_pi_history_list = [
+        'pi_history_file', 'entry_timedate_time', 'call_detail', 'medium_of_selection']
     string_follow_up = request.session.get('string_follow_up')
-    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject', 'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
+    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject',
+                             'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
     string_pay_detail = request.session.get('string_pay_detail')
     string_pay_detail_list = request.session.get('string_pay_detail_list')
-    if  string_cust_detail_list:
-        string_cust_detail_list=['id'] + string_cust_detail_list
-    if  string_deal_detail_list:
-        string_deal_detail_list=['id'] + ['customer_id_id']+ string_deal_detail_list
+    if string_cust_detail_list:
+        string_cust_detail_list = ['id'] + string_cust_detail_list
+    if string_deal_detail_list:
+        string_deal_detail_list = ['id'] + \
+            ['customer_id_id'] + string_deal_detail_list
     if string_pay_detail != '':
-        string_pay_detail_list=['lead_id_id'] +string_pay_detail_list
-    context ={}
+        string_pay_detail_list = ['lead_id_id'] + string_pay_detail_list
+    context = {}
 
     is_follow_up = False
     is_pi_history = False
     is_pay_details = False
     is_cust = False
-    if string_follow_up != '' and len(string_follow_up)>0:
+    if string_follow_up != '' and len(string_follow_up) > 0:
         is_follow_up = True
-    if string_pi_history != '' and len(string_pi_history)>0:
+    if string_pi_history != '' and len(string_pi_history) > 0:
         is_pi_history = True
-    if string_pay_detail != '' and len(string_pay_detail)>0:
+    if string_pay_detail != '' and len(string_pay_detail) > 0:
         is_pay_details = True
-    if string_cust_detail_list!=None and len(string_cust_detail_list)>0:
+    if string_cust_detail_list != None and len(string_cust_detail_list) > 0:
         is_cust = True
 
     lead_list = []
-    if string_deal_detail_list!=None and string_deal_detail_list!="" and len(string_deal_detail_list)>0:
-        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values(*string_deal_detail_list).order_by('-id')
+    if string_deal_detail_list != None and string_deal_detail_list != "" and len(string_deal_detail_list) > 0:
+        lead_list = Lead.objects.filter(entry_timedate__range=(
+            start_date, end_date)).values(*string_deal_detail_list).order_by('-id')
     else:
-        lead_list = Lead.objects.filter(entry_timedate__range=(start_date, end_date)).values('id','customer_id_id')
+        lead_list = Lead.objects.filter(entry_timedate__range=(
+            start_date, end_date)).values('id', 'customer_id_id')
 
     for lead in lead_list:
         if is_pi_history:
             lead['pi_history'] = list(Pi_History.objects.filter(lead_id_id=lead['id']).values('id', 'pi_history_file', 'medium_of_selection',
-                                                                            'call_detail', 'entry_timedate_time',
-                                                                            'pi_history_file'))
+                                                                                              'call_detail', 'entry_timedate_time',
+                                                                                              'pi_history_file'))
         if is_follow_up:
-            lead['followup_history'] = list(History_followup.objects.filter(lead_id_id=lead['id']).values())
+            lead['followup_history'] = list(
+                History_followup.objects.filter(lead_id_id=lead['id']).values())
         if is_pay_details:
             lead['payment_details'] = list(Payment_details.objects.filter(lead_id_id=lead['id']).values('id', 'lead_id', 'payment_channel',
-                                                                              'Payment_notes', 'entry_timedate'))
+                                                                                                        'Payment_notes', 'entry_timedate'))
         if is_cust:
-            lead.update(list(Lead_Customer_Details.objects.filter(id=lead['customer_id_id']).values(*string_cust_detail_list))[0])
-
+            lead.update(list(Lead_Customer_Details.objects.filter(
+                id=lead['customer_id_id']).values(*string_cust_detail_list))[0])
 
     # if string_follow_up != '' and string_pi_history != '' and string_pay_detail != '' and string_cust_detail_list and string_deal_detail_list:
     #     print("string_cust_detail_list")
@@ -3516,8 +3692,8 @@ def final_lead_report_test(request):
     # except:
     #     pass
 
+    return render(request, "report/final_lead_report_test.html", context)
 
-    return render(request,"report/final_lead_report_test.html",context)
 
 @login_required(login_url='/')
 def final_lead_report(request):
@@ -3528,14 +3704,16 @@ def final_lead_report(request):
     string_deal_detail = request.session.get('string_deal_detail')
     string_deal_detail_list = request.session.get('string_deal_detail_list')
     string_pi_history = request.session.get('string_pi_history')
-    string_pi_history_list = ['pi_history_file', 'time', 'call_detail', 'medium_of_selection']
+    string_pi_history_list = ['pi_history_file',
+                              'time', 'call_detail', 'medium_of_selection']
     string_follow_up = request.session.get('string_follow_up')
-    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject', 'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
+    string_follow_up_list = ['wa_no', 'wa_msg', 'email_subject',
+                             'email_msg', 'followup_history_file', 'sms_msg', 'call_response']
     string_pay_detail = request.session.get('string_pay_detail')
     string_pay_detail_list = request.session.get('string_pay_detail_list')
     final_row_product = []
-    final_row=[]
-    selected_list=[]
+    final_row = []
+    selected_list = []
 
     if string_pi_history != '':
         string_pi_history = 'pi_history_file, time, call_detail, medium_of_selection'
@@ -3544,14 +3722,15 @@ def final_lead_report(request):
     with connection.cursor() as cursor:
         if string_cust_detail != '' and string_deal_detail != '' and string_pi_history != '' and string_follow_up != '' and string_pay_detail != '':
 
-            selected_list = string_cust_detail_list + string_deal_detail_list + string_pi_history_list + string_follow_up_list + string_pay_detail_list
+            selected_list = string_cust_detail_list + string_deal_detail_list + \
+                string_pi_history_list + string_follow_up_list + string_pay_detail_list
 
             cursor.execute("SELECT " + (
-            string_cust_detail + "," + string_deal_detail+ "," + string_pi_history+ "," + string_follow_up+ "," + string_pay_detail) +
-            " from customer_app_lead_customer_details , lead_management_lead  , lead_management_pi_history  ,"
-            " lead_management_history_followup  , lead_management_payment_details  where lead_management_pi_history.lead_id_id = lead_management_lead.id "
-            " and lead_management_history_followup.lead_id_id = lead_management_lead.id and lead_management_payment_details.lead_id_id = lead_management_lead.id and lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and "
-            " lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                string_cust_detail + "," + string_deal_detail + "," + string_pi_history + "," + string_follow_up + "," + string_pay_detail) +
+                " from customer_app_lead_customer_details , lead_management_lead  , lead_management_pi_history  ,"
+                " lead_management_history_followup  , lead_management_payment_details  where lead_management_pi_history.lead_id_id = lead_management_lead.id "
+                " and lead_management_history_followup.lead_id_id = lead_management_lead.id and lead_management_payment_details.lead_id_id = lead_management_lead.id and lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and "
+                " lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
 
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
@@ -3563,13 +3742,14 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-        elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '' and string_follow_up != '':
-            selected_list =  string_cust_detail_list + string_deal_detail_list + string_pi_history_list + string_follow_up_list
+        elif string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '' and string_follow_up != '':
+            selected_list = string_cust_detail_list + string_deal_detail_list + \
+                string_pi_history_list + string_follow_up_list
 
-            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history+ "," + string_follow_up )+ " from  "
-            "lead_management_lead , customer_app_lead_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
-            "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and PI.lead_id_id = lead_management_lead.id "
-            "and FOLLOWUP.lead_id_id = lead_management_lead.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT " + (string_cust_detail + "," + string_deal_detail + "," + string_pi_history + "," + string_follow_up) + " from  "
+                           "lead_management_lead , customer_app_lead_customer_details, lead_management_pi_history PI , lead_management_history_followup FOLLOWUP "
+                           "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and PI.lead_id_id = lead_management_lead.id "
+                           "and FOLLOWUP.lead_id_id = lead_management_lead.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -3579,12 +3759,13 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-        elif  string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '':
-            selected_list =string_cust_detail_list +string_deal_detail_list +   string_pi_history_list
+        elif string_deal_detail != '' and string_cust_detail != '' and string_pi_history != '':
+            selected_list = string_cust_detail_list + \
+                string_deal_detail_list + string_pi_history_list
 
-            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail+ ","+ string_pi_history )+ " from  lead_management_lead  , customer_app_lead_customer_details, lead_management_pi_history  "
-            "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
-            "and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT " + (string_cust_detail + "," + string_deal_detail + "," + string_pi_history) + " from  lead_management_lead  , customer_app_lead_customer_details, lead_management_pi_history  "
+                           "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_pi_history.lead_id_id = lead_management_lead.id "
+                           "and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -3595,11 +3776,11 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-        elif  string_deal_detail != '' and string_cust_detail != '':
-            selected_list =  string_cust_detail_list + string_deal_detail_list
+        elif string_deal_detail != '' and string_cust_detail != '':
+            selected_list = string_cust_detail_list + string_deal_detail_list
 
-            cursor.execute("SELECT " +(string_cust_detail + ","+ string_deal_detail )+ " from  lead_management_lead  , customer_app_lead_customer_details  "
-                                "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+            cursor.execute("SELECT " + (string_cust_detail + "," + string_deal_detail) + " from  lead_management_lead  , customer_app_lead_customer_details  "
+                           "  where lead_management_lead.customer_id_id = customer_app_lead_customer_details.id and lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -3610,11 +3791,11 @@ def final_lead_report(request):
             repairing_data = []
             for i in row:
                 repairing_data.append(list(i))
-        elif  string_deal_detail != '' :
+        elif string_deal_detail != '':
             selected_list = string_deal_detail_list
 
             cursor.execute("SELECT " + string_deal_detail + " from  lead_management_lead "
-                                "  where lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
+                           "  where lead_management_lead.entry_timedate between '" + start_date + "' and '" + end_date + "';")
             row = cursor.fetchall()
             final_row_product = [list(x) for x in row]
             repairing_data = []
@@ -3770,24 +3951,23 @@ def final_lead_report(request):
         del request.session['string_pay_detail']
     except:
         pass
-    context={
-        'final_row':final_row,
-        'final_row_product':final_row_product,
-        'selected_list':selected_list,
+    context = {
+        'final_row': final_row,
+        'final_row_product': final_row_product,
+        'selected_list': selected_list,
     }
-    return render(request,"report/final_lead_report.html",context)
-
+    return render(request, "report/final_lead_report.html", context)
 
 
 @login_required(login_url='/')
-def select_product_followup(request,id):
-    type_of_purchase_list =type_purchase.objects.all() #1
+def select_product_followup(request, id):
+    type_of_purchase_list = type_purchase.objects.all()  # 1
     lead_id = Lead.objects.get(id=id)
     # products = Product.objects.all()
-    context={}
+    context = {}
     del_all_sessions(request)
     request.session['expand_followup'] = True
-    if request.method == 'POST' or request.method == 'FILES' :
+    if request.method == 'POST' or request.method == 'FILES':
         if 'submit' in request.POST:
             is_last_product_yes = request.POST.get('is_last_product_yes')
             model_of_purchase_str = request.POST.get('model_of_purchase')
@@ -3797,13 +3977,13 @@ def select_product_followup(request,id):
             try:
                 if (sub_sub_model_str == None or sub_sub_model_str == ""):
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
-                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=None)
+                                                        sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category=None)
                     print(product_avail)
                     print(product_avail)
                     print(product_avail)
                 elif (sub_sub_model_str != None or sub_sub_model_str != ""):
                     product_avail = Product.objects.get(scale_type__id=type_purchase.objects.get(id=type_of_scale_str).id, main_category__id=main_model.objects.get(id=model_of_purchase_str).id,
-                                                 sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
+                                                        sub_category__id=sub_model.objects.get(id=sub_model_str).id, sub_sub_category__id=sub_sub_model.objects.get(id=sub_sub_model_str).id)
                 requested_product = product_avail
                 fol_pro = Followup_product()
                 fol_pro.product_id = requested_product
@@ -3824,7 +4004,6 @@ def select_product_followup(request,id):
 
                 fol_pro.save()
 
-
                 context23 = {
                     'product_avail': True,
                 }
@@ -3832,7 +4011,8 @@ def select_product_followup(request,id):
 
             except Exception as e:
                 print(e)
-                messages.success(request, "Selected Product does not exist in product master !!!")
+                messages.success(
+                    request, "Selected Product does not exist in product master !!!")
 
                 return redirect('/select_product_followup/' + str(id))
             if is_last_product_yes == 'yes':
@@ -3840,16 +4020,17 @@ def select_product_followup(request,id):
             elif is_last_product_yes == 'no':
                 return redirect('/select_product_followup/' + str(id))
 
-    context2={
-        'lead_id':lead_id,
-        'type_purchase':type_of_purchase_list,
+    context2 = {
+        'lead_id': lead_id,
+        'type_purchase': type_of_purchase_list,
 
     }
     context.update(context2)
-    return render(request,'lead_management/select_product_followup.html', context)
+    return render(request, 'lead_management/select_product_followup.html', context)
+
 
 def upload_requirement_hsc(request):
-    context={}
+    context = {}
     if request.method == 'POST' or request.method == 'FILES':
         customer_name = request.POST.get('full_name')
         contact_no = request.POST.get('phone_no')
@@ -3861,23 +4042,22 @@ def upload_requirement_hsc(request):
 
         item2 = Lead()
         if Lead_Customer_Details.objects.filter(customer_name=customer_name,
-                                           contact_no=contact_no).count() > 0:
+                                                contact_no=contact_no).count() > 0:
 
-
-            item2.customer_id = Lead_Customer_Details.objects.filter(contact_no=contact_no).first()
+            item2.customer_id = Lead_Customer_Details.objects.filter(
+                contact_no=contact_no).first()
 
             item3 = Lead_Customer_Details.objects.filter(customer_name=customer_name,
-                                                    contact_no=contact_no).first()
+                                                         contact_no=contact_no).first()
 
             if customer_email_id != '' and customer_email_id != None:
                 item3.customer_email_id = customer_email_id
                 item3.save(update_fields=['customer_email_id'])
-            if company_name != '' :
+            if company_name != '':
                 item3.company_name = company_name
                 item3.save(update_fields=['company_name'])
 
             item2.new_existing_customer = 'New'
-
 
         else:
             new_cust = Lead_Customer_Details()
@@ -3887,11 +4067,12 @@ def upload_requirement_hsc(request):
             new_cust.contact_no = contact_no
             if customer_email_id != '':
                 new_cust.customer_email_id = customer_email_id
-            if company_name != '' :
+            if company_name != '':
                 new_cust.company_name = company_name
             try:
                 new_cust.save()
-                item2.customer_id = Lead_Customer_Details.objects.get(id=new_cust.pk)
+                item2.customer_id = Lead_Customer_Details.objects.get(
+                    id=new_cust.pk)
             except Exception as e:
                 context22 = {
                     'error_65': str(e),
@@ -3901,33 +4082,32 @@ def upload_requirement_hsc(request):
                 context.update(context22)
             item2.new_existing_customer = 'Existing'
 
-
         item2.current_stage = 'Not Yet Initiated'
         from datetime import datetime
-
 
         item2.date_of_initiation = datetime.today().strftime('%Y-%m-%d')
         item2.channel = 'Website'
         item2.requirement = requirement
         item2.requirement_indiamart_unique = requirement[:115]
         item2.upload_requirement_file = upload_requirement_file
-        if SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Employee').count()>0:
+        if SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads', role='Employee').count() > 0:
             item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
                                                                  role='Employee').first()
 
             item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
                                                            role='Employee').first().name
-        elif SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Manager').count()>0:
+        elif SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads', role='Manager').count() > 0:
             item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
                                                                  role='Manager').first()
 
             item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',
                                                            role='Manager').first().name
         else:
-            item2.owner_of_opportunity = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first()
+            item2.owner_of_opportunity = SiteUser.objects.filter(
+                modules_assigned__icontains='Hsco Website Leads', role='Admin').first()
 
-            item2.log_entered_by = SiteUser.objects.filter(modules_assigned__icontains='Hsco Website Leads',role='Admin').first().name
-
+            item2.log_entered_by = SiteUser.objects.filter(
+                modules_assigned__icontains='Hsco Website Leads', role='Admin').first().name
 
         try:
             item2.save()
@@ -3942,7 +4122,6 @@ def upload_requirement_hsc(request):
 
             context.update(context22)
 
-
         except Exception as e:
             context22 = {
                 'error_65': str(e),
@@ -3950,18 +4129,17 @@ def upload_requirement_hsc(request):
             }
 
             context.update(context22)
-        #return redirect('/requirement.hindustanscale.com/')
+        # return redirect('/requirement.hindustanscale.com/')
 
-
-    return render(request,'lead_management/upload_requirement_hsc.html',context)
+    return render(request, 'lead_management/upload_requirement_hsc.html', context)
 
 
 @login_required(login_url='/')
-def select_product(request,id):
-    type_of_purchase_list =type_purchase.objects.all() #1
+def select_product(request, id):
+    type_of_purchase_list = type_purchase.objects.all()  # 1
     lead_id = Lead.objects.get(id=id)
     products = Product.objects.all()
-    context={}
+    context = {}
     del_all_sessions(request)
     request.session['expand_pi_section'] = True
     if request.method == 'POST' or request.method == 'FILES':
@@ -3978,19 +4156,20 @@ def select_product(request,id):
         type_of_scale = request.POST.get('scale_type')
         main_category = request.POST.get('main_category')
         sub_category = request.POST.get('sub_category')
-        sub_sub_category = request.POST.get('sub_sub_category')    #product code or sub_sub_category
+        # product code or sub_sub_category
+        sub_sub_category = request.POST.get('sub_sub_category')
         add_brochure = request.POST.get('product_brochure')
         product_document = request.POST.get('product_document')
 
         if add_brochure == 'on':
             add_brochure = True
         else:
-            add_brochure =False
+            add_brochure = False
 
         if product_document == 'on':
             add_product_document = True
         else:
-            add_product_document =False
+            add_product_document = False
 
         item = Pi_product()
         # if sub_sub_category != '':
@@ -4015,7 +4194,8 @@ def select_product(request,id):
                 item.add_product_document = add_product_document
 
                 item.save()
-                Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
+                Pi_section.objects.filter(
+                    lead_id=id).update(select_gst_type=None)
 
             elif (sub_category != None and sub_category != ""):
                 item.product_id = Product.objects.get(scale_type=type_of_scale, main_category=main_category,
@@ -4035,20 +4215,20 @@ def select_product(request,id):
                 item.add_product_document = add_product_document
 
                 item.save()
-                Pi_section.objects.filter(lead_id=id).update(select_gst_type=None)
+                Pi_section.objects.filter(
+                    lead_id=id).update(select_gst_type=None)
             if is_last_product_yes == 'yes':
                 return redirect('/update_view_lead/' + str(id))
             elif is_last_product_yes == 'no':
                 return redirect('/select_product/' + str(id))
         except:
             msg = "Selected Product does not exist in product master !!!"
-            context1={
-                'msg':msg,
+            context1 = {
+                'msg': msg,
             }
             context.update(context1)
         del_all_sessions(request)
         request.session['expand_pi_section'] = True
-
 
     context2 = {
         'lead_id': lead_id,
@@ -4058,12 +4238,14 @@ def select_product(request,id):
     context.update(context2)
     return render(request, 'lead_management/select_product.html', context)
 
+
 @login_required(login_url='/')
 def lead_manager_view(request):
     loggedin_user = SiteUser.objects.get(id=request.user.id).name
 
     if request.user.role == "Super Admin":
-        u_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list("lead_id__owner_of_opportunity").distinct()
+        u_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__super_admin=loggedin_user).values_list(
+            "lead_id__owner_of_opportunity").distinct()
     else:
         u_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__admin=loggedin_user).values_list(
             "lead_id__owner_of_opportunity").distinct()
@@ -4073,50 +4255,56 @@ def lead_manager_view(request):
         for ite in item:
             users_list.append(ite)
     currentMonth = datetime.now().month
-    result_list=[]
+    result_list = []
     from itertools import chain
     for item in users_list:
-        pi_list=Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item,entry_timedate__month=currentMonth).distinct().extra(select={
+        pi_list = Pi_section.objects.filter(lead_id__owner_of_opportunity__id=item, entry_timedate__month=currentMonth).distinct().extra(select={
             'converted': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
                          "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
-                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='"+str(item)+"' "
-                         "and lead_management_lead.current_stage = 'PO Issued - Payment Done - Dispatch Pending'",
+                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" +
+            str(item)+"' "
+            "and lead_management_lead.current_stage = 'PO Issued - Payment Done - Dispatch Pending'",
             'lost': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
-                         "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
-                         "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" + str(
+            "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
+            "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" + str(
                 item) + "' "
-                        "and lead_management_lead.current_stage = 'Lost'",
+            "and lead_management_lead.current_stage = 'Lost'",
             'postponed': "select SUM(grand_total) from lead_management_pi_section INNER JOIN lead_management_lead on "
                          "lead_management_lead.id=lead_management_pi_section.lead_id_id INNER JOIN user_app_siteuser on "
                          "user_app_siteuser.id=lead_management_lead.owner_of_opportunity_id where user_app_siteuser.id='" + str(
-                item) + "' "
-                        "and lead_management_lead.current_stage = 'Postponed'",
+                             item) + "' "
+            "and lead_management_lead.current_stage = 'Postponed'",
 
         }).values_list('lead_id__owner_of_opportunity__profile_name', 'converted', 'lost', 'postponed')
         result_list.append(list(chain(pi_list,)))
 
-    context={
-        'pi_list':result_list,
+    context = {
+        'pi_list': result_list,
     }
-    return render(request,'lead_management/lead_manager.html',context)
-
+    return render(request, 'lead_management/lead_manager.html', context)
 
 
 @login_required(login_url='/')
-def lead_follow_up_histroy(request,follow_up_id):
-    context={}
-    obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
+def lead_follow_up_histroy(request, follow_up_id):
+    context = {}
+    obj_list = History_followup.objects.filter(
+        follow_up_section=follow_up_id).order_by("-entry_timedate")
     del_all_sessions(request)
     request.session['expand_followup'] = True
     if request.method == 'POST':
         if 'sub1' in request.POST:
             delete_id = request.POST.get('delete_id')
 
-            Auto_followup_details.objects.filter(follow_up_history__pk=delete_id).delete()
-            History_followup.objects.filter(id=delete_id).update(is_auto_follow_deleted=True)
-            Lead.objects.filter(id=Follow_up_section.objects.get(id=History_followup.objects.get(id=delete_id).follow_up_section).lead_id).update(is_manual_mode_followup=True)
-            obj_list = History_followup.objects.filter(follow_up_section=follow_up_id).order_by("-entry_timedate")
-            Follow_up_section.objects.filter(id=History_followup.objects.get(id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
+            Auto_followup_details.objects.filter(
+                follow_up_history__pk=delete_id).delete()
+            History_followup.objects.filter(
+                id=delete_id).update(is_auto_follow_deleted=True)
+            Lead.objects.filter(id=Follow_up_section.objects.get(id=History_followup.objects.get(
+                id=delete_id).follow_up_section).lead_id).update(is_manual_mode_followup=True)
+            obj_list = History_followup.objects.filter(
+                follow_up_section=follow_up_id).order_by("-entry_timedate")
+            Follow_up_section.objects.filter(id=History_followup.objects.get(
+                id=delete_id).follow_up_section.pk).update(auto_manual_mode='Select Mode')
             context2 = {
                 'obj_list': obj_list,
                 'is_deleted': True,
@@ -4124,17 +4312,16 @@ def lead_follow_up_histroy(request,follow_up_id):
             }
             context.update(context2)
 
-
-
-    context23={
-        'obj_list':obj_list,
+    context23 = {
+        'obj_list': obj_list,
     }
     context.update(context23)
 
-    return render(request,'lead_management/follow_up_history.html',context)
+    return render(request, 'lead_management/follow_up_history.html', context)
+
 
 @login_required(login_url='/')
-def pi_section_history(request,id):
+def pi_section_history(request, id):
     try:
         lead_id = Lead.objects.get(id=id)
         # lead_pi_id = Pi_section.objects.get(lead_id=id)
@@ -4148,12 +4335,13 @@ def pi_section_history(request,id):
         }
     except:
         pass
-    return render(request,'lead_management/lead_history.html',context)
+    return render(request, 'lead_management/lead_history.html', context)
+
 
 @login_required(login_url='/')
-def lead_delete_product(request,id):
+def lead_delete_product(request, id):
     leads = Pi_product.objects.filter(lead_id=id).order_by('-id')
-    if request.method == 'POST' or request.method=='FILES':
+    if request.method == 'POST' or request.method == 'FILES':
         delete_id = request.POST.getlist('check[]')
         for i in delete_id:
             Pi_product.objects.filter(id=i).delete()
@@ -4163,15 +4351,16 @@ def lead_delete_product(request,id):
         request.session['expand_pi_section'] = True
 
         return redirect('/update_view_lead/'+str(id))
-    context={
-        'leads':leads,
+    context = {
+        'leads': leads,
     }
-    return render(request,'lead_management/lead_delete_product.html',context)
+    return render(request, 'lead_management/lead_delete_product.html', context)
+
 
 @login_required(login_url='/')
-def followup_delete_product(request,id):
+def followup_delete_product(request, id):
     followup_products_list = Followup_product.objects.filter(lead_id=id)
-    if request.method == 'POST' :
+    if request.method == 'POST':
         delete_id = request.POST.getlist('check[]')
         for i in delete_id:
             Followup_product.objects.filter(id=i).delete()
@@ -4181,22 +4370,24 @@ def followup_delete_product(request,id):
         request.session['expand_followup'] = True
 
         return redirect('/update_view_lead/'+str(id))
-    context={
-        'followup_products_list':followup_products_list,
+    context = {
+        'followup_products_list': followup_products_list,
     }
-    return render(request,'lead_management/followup_delete_product.html',context)
+    return render(request, 'lead_management/followup_delete_product.html', context)
+
 
 @login_required(login_url='/')
 def lead_analytics(request):
     try:
-        highest_lead_day_list = Pi_section.objects.filter().values('entry_timedate').order_by('entry_timedate').annotate(data_sum=Sum('grand_total'))
+        highest_lead_day_list = Pi_section.objects.filter().values(
+            'entry_timedate').order_by('entry_timedate').annotate(data_sum=Sum('grand_total'))
         print(highest_lead_day_list)
         maxPricedItem = max(highest_lead_day_list, key=lambda x: x['data_sum'])
         minPricedItem = min(highest_lead_day_list, key=lambda x: x['data_sum'])
 
-        context={
-            'maxPricedItem':maxPricedItem,
-            'minPricedItem':minPricedItem,
+        context = {
+            'maxPricedItem': maxPricedItem,
+            'minPricedItem': minPricedItem,
         }
 
         mon = (datetime.now().month)
@@ -4205,20 +4396,18 @@ def lead_analytics(request):
         else:
             previous_mon = (datetime.now().month) - 1
 
-        #this month lead
+        # this month lead
         current_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                    entry_timedate__month=datetime.now().month) \
+                                                       entry_timedate__month=datetime.now().month) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
-
-        #previous month lead
+        # previous month lead
         previous_month_lead = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                       entry_timedate__month=previous_mon) \
+                                                        entry_timedate__month=previous_mon) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
-
-        if request.method=='POST'   :
-            if 'date1' in request.POST :
+        if request.method == 'POST':
+            if 'date1' in request.POST:
                 start_date = request.POST.get('date1')
                 lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
                                                             entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
@@ -4228,9 +4417,9 @@ def lead_analytics(request):
                 lead_conversion_sum = []
                 for i in lead_conversion:
                     x = i
-                    lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+                    lead_conversion_date.append(
+                        x['entry_timedate'].strftime('%Y-%m-%d'))
                     lead_conversion_sum.append(x['data_sum'])
-
 
                 context = {
 
@@ -4347,17 +4536,17 @@ def lead_analytics(request):
                     entry_timedate__month=previous_mon) \
                     .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
-
         if request.user.role == 'Super Admin':
-            total_stages = Lead.objects.all().values('current_stage').annotate(dcount=Count('current_stage'))
+            total_stages = Lead.objects.all().values(
+                'current_stage').annotate(dcount=Count('current_stage'))
         else:
             admin = SiteUser.objects.get(id=request.user.pk).admin
-            total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values('current_stage').annotate(dcount=Count('current_stage'))
+            total_stages = Lead.objects.filter(Q(owner_of_opportunity__admin=admin)).values(
+                'current_stage').annotate(dcount=Count('current_stage'))
         admin = SiteUser.objects.get(id=request.user.pk).admin
 
-
         po_no_payment = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment not done',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                  lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_no_payment_total = 0.0
         try:
@@ -4367,7 +4556,7 @@ def lead_analytics(request):
             pass
 
         po_payment_done = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                    lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         po_payment_done_total = 0.0
         try:
@@ -4377,7 +4566,7 @@ def lead_analytics(request):
             pass
 
         dispatch_done_stage = Pi_section.objects.filter(lead_id__current_stage='Dispatch Done - Closed',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                        lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         dispatch_done_stage_total = 0.0
         try:
@@ -4386,7 +4575,7 @@ def lead_analytics(request):
         except:
             pass
         lost_stage = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                               lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         lost_stage_total = 0.0
         try:
@@ -4395,7 +4584,7 @@ def lead_analytics(request):
         except:
             pass
         not_relevant_stage = Pi_section.objects.filter(lead_id__current_stage='Not Relevant',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                       lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         not_relevant_stage_total = 0.0
         try:
@@ -4404,7 +4593,7 @@ def lead_analytics(request):
         except:
             pass
         postponed_stage = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                    lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         postponed_stage_total = 0.0
         try:
@@ -4413,7 +4602,7 @@ def lead_analytics(request):
         except:
             pass
         pi_sent_stage = Pi_section.objects.filter(lead_id__current_stage='PI Sent & Follow-up',
-                                                   lead_id__owner_of_opportunity__admin=admin).values(
+                                                  lead_id__owner_of_opportunity__admin=admin).values(
             'grand_total').annotate(data_sum=Sum('grand_total'))
         pi_sent_stage_total = 0.0
         try:
@@ -4421,7 +4610,7 @@ def lead_analytics(request):
                 pi_sent_stage_total += float(x['data_sum'])
         except:
             pass
-        context13={
+        context13 = {
             'po_no_payment_total': po_no_payment_total,
             'lost_stage_total': lost_stage_total,
             'po_payment_done_total': po_payment_done_total,
@@ -4494,13 +4683,14 @@ def lead_analytics(request):
         current_month_lead_sum = []
         for i in current_month_lead:
             x = i
-            current_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            current_month_lead_date.append(
+                x['entry_timedate'].strftime('%Y-%m-%d'))
             current_month_lead_sum.append(x['data_sum'])
         for i in previous_month_lead:
             x = i
-            previous_month_lead_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            previous_month_lead_date.append(
+                x['entry_timedate'].strftime('%Y-%m-%d'))
             previous_month_lead_sum.append(x['data_sum'])
-
 
         context14 = {
             'current_month_lead_date': current_month_lead_date,
@@ -4515,12 +4705,13 @@ def lead_analytics(request):
     except:
         pass
 
-    return render(request,'lead_management/lead_analytics.html',)
+    return render(request, 'lead_management/lead_analytics.html',)
+
 
 @login_required(login_url='/')
-def lead_employee_graph(request,id):
-    lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),entry_timedate__month=datetime.now().month)\
-            .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
+def lead_employee_graph(request, id):
+    lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending', lead_id__owner_of_opportunity=SiteUser.objects.get(id=id), entry_timedate__month=datetime.now().month)\
+        .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
     lead_conversion_date = []
     lead_conversion_sum = []
@@ -4530,8 +4721,9 @@ def lead_employee_graph(request,id):
         lead_conversion_sum.append(x['data_sum'])
 
     lead_lost = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                                lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
-                                                entry_timedate__month=datetime.now().month) \
+                                          lead_id__owner_of_opportunity=SiteUser.objects.get(
+                                              id=id),
+                                          entry_timedate__month=datetime.now().month) \
         .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
     lead_lost_date = []
@@ -4542,8 +4734,9 @@ def lead_employee_graph(request,id):
         lead_lost_sum.append(x['data_sum'])
 
     lead_postponed = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                                lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
-                                                entry_timedate__month=datetime.now().month) \
+                                               lead_id__owner_of_opportunity=SiteUser.objects.get(
+                                                   id=id),
+                                               entry_timedate__month=datetime.now().month) \
         .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
     lead_postponed_date = []
     lead_postponed_sum = []
@@ -4560,21 +4753,23 @@ def lead_employee_graph(request,id):
         'lead_postponed_date': lead_postponed_date,
         'lead_postponed_sum': lead_postponed_sum,
     }
-    if request.method=='POST' and 'date1' in request.POST :
+    if request.method == 'POST' and 'date1' in request.POST:
         start_date = request.POST.get('date1')
         lead_conversion = Pi_section.objects.filter(lead_id__current_stage='PO Issued - Payment Done - Dispatch Pending',
-            lead_id__owner_of_opportunity=SiteUser.objects.get(id=id), entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
+                                                    lead_id__owner_of_opportunity=SiteUser.objects.get(id=id), entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
         lead_conversion_date = []
         lead_conversion_sum = []
         for i in lead_conversion:
             x = i
-            lead_conversion_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_conversion_date.append(
+                x['entry_timedate'].strftime('%Y-%m-%d'))
             lead_conversion_sum.append(x['data_sum'])
 
         lead_lost = Pi_section.objects.filter(lead_id__current_stage='Lost',
-                                              lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
+                                              lead_id__owner_of_opportunity=SiteUser.objects.get(
+                                                  id=id),
                                               entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
 
@@ -4586,14 +4781,16 @@ def lead_employee_graph(request,id):
             lead_lost_sum.append(x['data_sum'])
 
         lead_postponed = Pi_section.objects.filter(lead_id__current_stage='Postponed',
-                                                   lead_id__owner_of_opportunity=SiteUser.objects.get(id=id),
+                                                   lead_id__owner_of_opportunity=SiteUser.objects.get(
+                                                       id=id),
                                                    entry_timedate__month=datetime.strptime(start_date, '%Y-%m-%d').month) \
             .values('entry_timedate').annotate(data_sum=Sum('grand_total'))
         lead_postponed_date = []
         lead_postponed_sum = []
         for i in lead_postponed:
             x = i
-            lead_postponed_date.append(x['entry_timedate'].strftime('%Y-%m-%d'))
+            lead_postponed_date.append(
+                x['entry_timedate'].strftime('%Y-%m-%d'))
             lead_postponed_sum.append(x['data_sum'])
         context = {
 
@@ -4605,24 +4802,22 @@ def lead_employee_graph(request,id):
             'lead_postponed_sum': lead_postponed_sum,
         }
 
-    return render(request,'lead_management/lead_employee_graph.html', context)
+    return render(request, 'lead_management/lead_employee_graph.html', context)
+
 
 @login_required(login_url='/')
 def lead_pi_form(request):
-    return render(request,'lead_management/lead_pi_form.html')
+    return render(request, 'lead_management/lead_pi_form.html')
+
 
 @login_required(login_url='/')
 def alpha_pi_form(request):
-    return render(request,'lead_management/alpha_pi_template.html')
-
-
+    return render(request, 'lead_management/alpha_pi_template.html')
 
 
 @login_required(login_url='/')
 def download_pi_image(request):
-    return render(request,'lead_management/download_pi_image.html')
-
-
+    return render(request, 'lead_management/download_pi_image.html')
 
 
 @login_required(login_url='/')
@@ -4632,19 +4827,18 @@ def lead_logs(request):
     page = request.GET.get('page')
     lead_logs = paginator.get_page(page)
 
-    context={
-    'lead_logs': lead_logs,
+    context = {
+        'lead_logs': lead_logs,
 
     }
-    return render(request,"logs/lead_logs.html",context)
-
+    return render(request, "logs/lead_logs.html", context)
 
 
 @receiver(pre_save, sender=Lead)
 def lead_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4656,13 +4850,13 @@ def lead_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4671,7 +4865,6 @@ def lead_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -4679,11 +4872,12 @@ def lead_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -4699,11 +4893,12 @@ def lead_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Pi_section)
 def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4715,13 +4910,13 @@ def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4730,7 +4925,6 @@ def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -4738,11 +4932,12 @@ def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -4758,11 +4953,12 @@ def Pi_section_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Pi_product)
 def pi_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4774,13 +4970,13 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4789,7 +4985,6 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -4797,11 +4992,12 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -4817,11 +5013,12 @@ def pi_product_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(post_save, sender=Pi_History)
 def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4833,13 +5030,13 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4855,11 +5052,12 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
                 log.entered_by = instance.log_entered_by
                 log.module_name = 'Lead Module'
@@ -4874,11 +5072,12 @@ def Pi_History_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Follow_up_section)
 def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4890,13 +5089,13 @@ def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4905,7 +5104,6 @@ def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -4913,11 +5111,12 @@ def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -4933,11 +5132,12 @@ def Follow_up_section_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=History_followup)
 def History_followup_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -4949,13 +5149,13 @@ def History_followup_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -4964,7 +5164,6 @@ def History_followup_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -4972,11 +5171,12 @@ def History_followup_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -4992,11 +5192,12 @@ def History_followup_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Followup_product)
 def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -5008,13 +5209,13 @@ def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -5023,7 +5224,6 @@ def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
             #     string = string+str(key)+','
             #     print('New value:'+str(key) + old_instance.key)
 
-
             # with connection.cursor() as cursor:
                 # if new_string != '' :
                 #     print('something 1')
@@ -5031,11 +5231,12 @@ def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -5051,11 +5252,12 @@ def Followup_product_handler(sender, instance, update_fields=None, **kwargs):
     except:
         pass
 
+
 @receiver(pre_save, sender=Payment_details)
 def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
     try:
-        if instance.id == None or instance.id == '' or instance.id == 'None' :
-            #########for insert action##########
+        if instance.id == None or instance.id == '' or instance.id == 'None':
+            ######### for insert action##########
             new_instance = instance
             log = Log()
             # log.entered_by = instance.entered_by
@@ -5067,13 +5269,13 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
 
             # log.action = old_list
             log.save()
-        elif instance.id != None or instance.id !='' or instance.id !='None':
-            #########for update action##########
+        elif instance.id != None or instance.id != '' or instance.id != 'None':
+            ######### for update action##########
             old_instance = instance
             new_instance = Lead.objects.get(id=instance.id)
 
             track = instance.tracker.changed()
-            if 'log_entered_by' in track :
+            if 'log_entered_by' in track:
                 del track['log_entered_by']
             # string = ''
             # new_list = []
@@ -5089,11 +5291,12 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
                 #     cursor.execute("SELECT " + (
                 #                 new_string ) + " from  repairing_app_repairing_after_sales_service "
                 #                                                                " where repairing_app_repairing_after_sales_service.repairing_no = '"+new_instance.repairing_no+"' ;")
-            if  track:
+            if track:
                 old_list = []
                 for key, value in track.items():
                     if value != '' and str(value) != getattr(instance, key):
-                        old_list.append(key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
+                        old_list.append(
+                            key + ':Old value= ' + str(value) + ', New value=' + getattr(instance, key))
                 log = Log()
 
                 log.entered_by = instance.log_entered_by
@@ -5110,17 +5313,17 @@ def Payment_details_handler(sender, instance, update_fields=None, **kwargs):
 
 
 @login_required(login_url='/')
-def download_pi_image(request,id):
+def download_pi_image(request, id):
     lead_id = Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-    if len(str(id)) == 1 :
+    if len(str(id)) == 1:
         email_pi_id = '000'+str(id)
-    elif len(str(id)) == 2 :
+    elif len(str(id)) == 2:
         email_pi_id = '00'+str(id)
-    elif len(str(id)) == 3 :
+    elif len(str(id)) == 3:
         email_pi_id = '0'+str(id)
-    elif len(str(id)) == 4 :
+    elif len(str(id)) == 4:
         email_pi_id = str(id)
     else:
         email_pi_id = str(id)
@@ -5132,9 +5335,9 @@ def download_pi_image(request,id):
         'pi_products': pi_products,
         'email_pi_id': email_pi_id,
     }
-    return render(request,'lead_management/download_pi_image.html',context)
+    return render(request, 'lead_management/download_pi_image.html', context)
 
-import os
+
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -5156,35 +5359,35 @@ def link_callback(uri, rel):
 
     # make sure that file exists
     if not os.path.isfile(path):
-            raise Exception(
-                'media URI must start with %s or %s' % (sUrl, mUrl)
-            )
+        raise Exception(
+            'media URI must start with %s or %s' % (sUrl, mUrl)
+        )
     return path
 
 
 @login_required(login_url='/')
-def download_pi_pdf(request,id,download):
-    lead_id=Lead.objects.get(id=id)
+def download_pi_pdf(request, id, download):
+    lead_id = Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-    if len(str(id)) == 1 :
+    if len(str(id)) == 1:
         email_pi_id = '000'+str(id)
-    elif len(str(id)) == 2 :
+    elif len(str(id)) == 2:
         email_pi_id = '00'+str(id)
-    elif len(str(id)) == 3 :
+    elif len(str(id)) == 3:
         email_pi_id = '0'+str(id)
-    elif len(str(id)) == 4 :
+    elif len(str(id)) == 4:
         email_pi_id = str(id)
     else:
         email_pi_id = str(id)
     pi_products = Pi_product.objects.filter(lead_id=id)
-    context={
-        'lead_id':lead_id,
-        'todays_date':todays_date,
-        'pi_id':pi_id,
-        'pi_products':pi_products,
-        'email_pi_id':email_pi_id,
-        'download':True if download == 1 else False,
+    context = {
+        'lead_id': lead_id,
+        'todays_date': todays_date,
+        'pi_id': pi_id,
+        'pi_products': pi_products,
+        'email_pi_id': email_pi_id,
+        'download': True if download == 1 else False,
     }
     try:
         del request.session['download_pdf_exist']
@@ -5209,37 +5412,39 @@ def download_pi_pdf(request,id,download):
     # pi.lead_id = Lead.objects.get(id=id)
     # pi.save()
 
-    return render(request,'lead_management/download_pi_pdf.html',context)
+    return render(request, 'lead_management/download_pi_pdf.html', context)
+
 
 @login_required(login_url='/')
-def download_pi_second_pdf(request,id,download):
-    lead_id=Lead.objects.get(id=id)
+def download_pi_second_pdf(request, id, download):
+    lead_id = Lead.objects.get(id=id)
     todays_date = str(datetime.now().strftime("%Y-%m-%d"))
     pi_id = Pi_section.objects.get(lead_id=id)
-    if len(str(id)) == 1 :
+    if len(str(id)) == 1:
         email_pi_id = '000'+str(id)
-    elif len(str(id)) == 2 :
+    elif len(str(id)) == 2:
         email_pi_id = '00'+str(id)
-    elif len(str(id)) == 3 :
+    elif len(str(id)) == 3:
         email_pi_id = '0'+str(id)
-    elif len(str(id)) == 4 :
+    elif len(str(id)) == 4:
         email_pi_id = str(id)
     else:
         email_pi_id = str(id)
     pi_products = Pi_product.objects.filter(lead_id=id)
-    context={
-        'lead_id':lead_id,
-        'todays_date':todays_date,
-        'pi_id':pi_id,
-        'email_pi_id':email_pi_id,
-        'pi_products':pi_products,
+    context = {
+        'lead_id': lead_id,
+        'todays_date': todays_date,
+        'pi_id': pi_id,
+        'email_pi_id': email_pi_id,
+        'pi_products': pi_products,
         'download': True if download == 1 else False,
     }
     try:
         del request.session['download_pdf_exist']
     except:
         pass
-    return render(request,'lead_management/download_pi_second_pdf.html',context)
+    return render(request, 'lead_management/download_pi_second_pdf.html', context)
+
 
 @login_required(login_url='/')
 def get_pi_product_details(request):
@@ -5248,28 +5453,29 @@ def get_pi_product_details(request):
     sub_model_var = request.GET.get('sub_model')
     sub_sub_model_var = request.GET.get('sub_sub_model')
 
+    context = {}
 
-    context={}
-
-    if sub_sub_model_var != '' and sub_sub_model_var != None  and sub_model_var != 'None':
-        sub_sub_model_var = sub_sub_model.objects.filter(id=sub_sub_model_var).first()
+    if sub_sub_model_var != '' and sub_sub_model_var != None and sub_model_var != 'None':
+        sub_sub_model_var = sub_sub_model.objects.filter(
+            id=sub_sub_model_var).first()
 
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model_var, sub_sub_category__name=sub_sub_model_var)
-        context1={
-            'product_id' : product_id,
+        context1 = {
+            'product_id': product_id,
         }
         context.update(context1)
-    elif sub_model_var != '' and sub_model_var != None  and sub_model_var != 'None':
+    elif sub_model_var != '' and sub_model_var != None and sub_model_var != 'None':
         sub_model_var = sub_model.objects.filter(id=sub_model_var).first()
 
         product_id = Product.objects.get(scale_type__name=type_of_scale, main_category__name=model_of_purchase,
                                          sub_category__name=sub_model_var, sub_sub_category__name=None)
-        context2={
-            'product_id' : product_id,
+        context2 = {
+            'product_id': product_id,
         }
         context.update(context2)
-    return render(request, 'AJAX/get_pi_product_details.html',context)
+    return render(request, 'AJAX/get_pi_product_details.html', context)
+
 
 @login_required(login_url='/')
 def check_admin_roles(request):
