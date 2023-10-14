@@ -1,5 +1,7 @@
 import datetime
+from django.dispatch import receiver
 from django.db import models
+from django.db.models import Sum, F
 from django.db.models.signals import post_save
 from django.utils import timezone
 from customer_app.models import Customer_Details,DynamicDropdown
@@ -143,6 +145,28 @@ class Feedback(models.Model):
     
     class Meta:
         unique_together = ('user_id', 'customer_id', 'purchase_id',)
+
+
+
+
+@receiver(post_save, sender=Product_Details)
+def update_purchase_details(sender, instance, **kwargs):
+    purchase = instance.purchase_id
+
+    if (purchase.value_of_goods in [None, 'None'] and purchase.total_amount in [None, 'None']):
+        pro_sum = Product_Details.objects.filter(purchase_id=purchase.id).aggregate(Sum('amount'))
+        total_value = sum(filter(None, [pro_sum['amount__sum'], purchase.total_pf, purchase.tax_amount]))
+
+        Purchase_Details.objects.filter(id=purchase.id).update(
+            total_amount=total_value,
+            value_of_goods=pro_sum['amount__sum']
+        )
+
+    elif purchase.total_amount in [0, None, 'None']:
+        try:
+            Purchase_Details.objects.filter(id=purchase.id).update(total_amount=F("value_of_goods"))
+        except:
+            pass
 
 
 
