@@ -679,7 +679,7 @@ td {
                     {% for list in lead_list %}
 
 
-{% if list.channel == 'IndiaMart' or list.channel == 'Indiamart' or list.channel == 'India Mart' %}
+        {% if 'mart' in list.channel|lower %}
         {% if list.is_indiamart_purchased_lead %}
             <tr bgcolor="#7CFC00" style="cursor: pointer;" >
         {% else %}

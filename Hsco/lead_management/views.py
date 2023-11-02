@@ -617,7 +617,7 @@ def lead_home(request):
                                     item2.customer_id = Lead_Customer_Details.objects.get(
                                         id=item3.pk)
                                     item2.current_stage = 'Not Yet Initiated'
-                                    if item['QUERY_TYPE'] == 'B':
+                                    if item['QUERY_TYPE'].lower() == 'b':
                                         item2.is_indiamart_purchased_lead = True
                                     else:
                                         item2.is_indiamart_purchased_lead = False
