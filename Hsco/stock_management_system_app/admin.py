@@ -7,9 +7,9 @@ from .models import Product, Godown, GodownProduct, GoodsRequest, RequestedProdu
 
 class Product_Admin(SimpleHistoryAdmin):
 
-    list_display = ('scale_type','main_category','sub_category','sub_sub_category')
+    list_display = ('id','scale_type','main_category','sub_category','sub_sub_category')
 
-    search_fields = ('scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
+    search_fields = ('id','scale_type__name','main_category__name','sub_category__name','sub_sub_category__name')
 
 class GodownProduct_Admin(SimpleHistoryAdmin):
 
