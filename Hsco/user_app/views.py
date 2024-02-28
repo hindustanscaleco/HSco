@@ -1189,7 +1189,7 @@ def profit_calculation(request):
         # 'graph_name': str(datetime.now().strftime("%B"))+" "+str(datetime.now().year-1)
 
     }
-    return render(request, "profit_calculation\profit_calculation.html", context)
+    return render(request, "dashboardnew\profit_calculation.html", context)
 
 
 def graph(request):
