@@ -47,7 +47,7 @@ class Godown(models.Model):
 
 
 class GodownProduct(models.Model):
-    godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE)
+    godown_id = models.ForeignKey(Godown,on_delete=models.CASCADE, related_name='godown_products')
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
     added_by_id = models.ForeignKey(SiteUser,on_delete=models.CASCADE)
     quantity = models.FloatField(default=0.0)
