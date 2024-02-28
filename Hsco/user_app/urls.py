@@ -26,7 +26,7 @@ from .views import user_logs, home
 from .views import onsite_rep_form, home, assign_module_to_emp
 from .views import rep_mod_form,  assign_man_to_admin, create_employee, employee_list, assign_emp_to_manager
 from .views import restamping_form, home, admin_list, create_admin, create_manager,manager_list,update_admin
-from .views import update_manager,update_employee, forgotpassword,load_modules
+from .views import update_manager,update_employee, forgotpassword,load_modules, profit_calculation
 
 
 urlpatterns = [
@@ -43,6 +43,7 @@ path('navbar/', navbar, name='navbar'),
 path('', LoginView.as_view(), name='login'),
 path('logout/', logout_page, name='logout'),
 path('dashboard/', dashboard, name='dashboard'),
+path('profit-calculation/', profit_calculation, name='profit_calculation'),
 path('graph/', graph, name='graph'),
 path('admin_list/', admin_list, name='admin_list'),
 path('create_admin/', create_admin, name='create_admin'),
