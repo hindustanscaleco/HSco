@@ -1091,26 +1091,26 @@ def profit_calculation(request):
 
     # 3. Net Profit & Gross Profit Comparison (Current Year)
 
-    if request.user.role == "Super Admin":
-        qs = Purchase_Details.objects.filter(
-            date_of_purchase__year=datetime.now().year) \
-            .order_by('date_of_purchase__month') \
-            .values('date_of_purchase__month')
-        # .annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()) - Cast(Sum('product_details__amount'), FloatField()))
-    elif request.user.role == "Admin" or request.user.role == "Manager":
-        qs = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
-                                             date_of_purchase__year=datetime.now().year) \
-            .order_by('date_of_purchase__month') \
-            .values('date_of_purchase__month') \
-            .annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
-    else:  # for employee
-        qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
-                                             date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    # if request.user.role == "Super Admin":
+    #     qs = Purchase_Details.objects.filter(
+    #         date_of_purchase__year=datetime.now().year) \
+    #         .order_by('date_of_purchase__month') \
+    #         .values('date_of_purchase__month')
+    #     # .annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()) - Cast(Sum('product_details__amount'), FloatField()))
+    # elif request.user.role == "Admin" or request.user.role == "Manager":
+    #     qs = Purchase_Details.objects.filter(Q(user_id__name=request.user.name) | Q(user_id__group__icontains=request.user.name),
+    #                                          date_of_purchase__year=datetime.now().year) \
+    #         .order_by('date_of_purchase__month') \
+    #         .values('date_of_purchase__month') \
+    #         .annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
+    # else:  # for employee
+    #     qs = Purchase_Details.objects.filter(sales_person=SiteUser.objects.get(id=request.user.id).profile_name,
+    #                                          date_of_purchase__year=datetime.now().year).order_by('date_of_purchase__month').values('date_of_purchase__month').annotate(data_sum=Cast(Sum('value_of_goods'), FloatField()))
 
-    # Fetch data from the database
-    purchase_details = Purchase_Details.objects.filter(
-        date_of_purchase__year=current_year
-    ).prefetch_related('product_details')
+    # # Fetch data from the database
+    # purchase_details = Purchase_Details.objects.filter(
+    #     date_of_purchase__year=current_year
+    # ).prefetch_related('product_details')
 
     # Initialize variables to store the monthly sums
     # monthly_sums = {}
@@ -1143,15 +1143,15 @@ def profit_calculation(request):
     # # Now, 'monthly_gross_date' and 'monthly_gross' contain the desired format
     # print("monthly_gross_date", monthly_gross_date)
     # print("monthly_gross", monthly_gross)
-    lis_date = []
-    lis_sum = []
-    for i in qs:
-        x = i
-        # print(x['date_of_purchase'].strftime('%B-%Y'))
-        lis_date.append(calendar.month_name[x['date_of_purchase__month']])
-        lis_sum.append(x['data_sum'])
-    print(lis_date)
-    print(lis_sum)
+    # lis_date = []
+    # lis_sum = []
+    # for i in qs:
+    #     x = i
+    #     # print(x['date_of_purchase'].strftime('%B-%Y'))
+    #     lis_date.append(calendar.month_name[x['date_of_purchase__month']])
+    #     lis_sum.append(x['data_sum'])
+    # print(lis_date)
+    # print(lis_sum)
 
     # 4. Percentage Comparison for Net Profit & Gross Profit (Current Year)
 
@@ -1177,8 +1177,8 @@ def profit_calculation(request):
         smly_lis_sum.append(x['data_sum'])
 
     context = {
-        'monthly_sums_gross_date': lis_date,
-        'monthly_sums_gross': lis_sum,
+        'monthly_sums_gross_date': smly_lis_date,
+        'monthly_sums_gross': smly_lis_sum,
         'smly_lis_date': smly_lis_date,
         'smly_lis_sum': smly_lis_sum,
         'current_month_gross_date': current_month_gross_date,
