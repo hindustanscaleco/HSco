@@ -145,37 +145,100 @@ color:;
                 <!-- Card Body -->
 <div class="card-body" id="myDIV" style="display: block; height:auto;">
     <div class="form-group row">
+
+      <!-- <div class="col-md-2 inputGroupContainer"> -->
+        <!-- <div class="input-group">
+        <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+          <input name="customer_number" id="cust_id" list="display_limit1" onchange="choice1(this)" class="form-control">
+              <datalist id="display_limit1">
+             {% for item in cust_sugg %}
+        <option value="{{item.pk}}">{{item.pk}}</option>
+      
+         {% endfor %}
+                  </datalist>
+      
+          </div>
+      Format : (crm no)
+        </div> -->
+
     <label class="col-md-2 control-label">Customer Number
 
 
 </label>
 
-    <div class="col-md-3 inputGroupContainer">
+    <!-- <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+  <input name="customer_number" id="cust_id" list="display_limit"  onchange="choice1(this)" class="form-control">
+              <datalist id="display_limit">
+             {% for item in cust_sugg %}
+             <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+      
+         {% endfor %}
+                  </datalist> -->
+    <!-- <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option> -->
 
-   {% endfor %}
-</select>
+   <!-- {% endfor %} -->
+<!-- </select> -->
 
-    </div>
+    <!-- </div>
 Format : (crm no)
-  </div>
-
+  </div> -->
+  <div class="col-md-3 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <input name="customer_number" id="cust_id1" list="display_limit"  onchange="choice1(this)" class="form-control">
+                <datalist id="display_limit">
+               {% for item in cust_sugg %}
+               <option value="{{item.id}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
+        
+           {% endfor %}
+                    </datalist>
+      <!-- <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
+      <option value="-----">---------</option>
+         {% for item in cust_sugg %}
+    <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option> -->
+  
+     <!-- {% endfor %} -->
+  <!-- </select> -->
+  
+      </div>
+  Format : (crm no)
+    </div>
+  <!-- <div class="col-md-3 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+      <input name="customer_number" id="cust_id1" list="display_limit2" onchange="choice2(this)" class="form-control">
+          <datalist id="display_limit2">
+         {% for item in cust_sugg %}
+    <option value="{{item.pk}}">{{item.customer_name}}</option>
+     {% endfor %}
+              </datalist>
+  
+      </div>
+  Format : (customer name)
+    </div> -->
 
     <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit2" onchange="choice1(this)" class="form-control">
+  <input name="customer_number" id="cust_id2" list="display_limit2"  onchange="choice2(this)" class="form-control">
+              <datalist id="display_limit2">
+             {% for item in cust_sugg %}
+             <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}} - {{item.pk}}</option>
+      
+         {% endfor %}
+                  </datalist>
+    <!-- <select name="customer_number" id="display_limit2" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}}</option>
 
    {% endfor %}
-</select>
+</select> -->
 
     </div>
 Format : (customer name)
@@ -185,13 +248,20 @@ Format : (customer name)
       <div class="col-md-3 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-    <select name="customer_number" id="display_limit3" onchange="choice1(this)" class="form-control">
+  <input name="customer_number" id="cust_id3" list="display_limit3"  onchange="choice3(this)" class="form-control">
+              <datalist id="display_limit3">
+             {% for item in cust_sugg %}
+             <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
+      
+         {% endfor %}
+                  </datalist>
+    <!-- <select name="customer_number" id="display_limit3" onchange="choice1(this)" class="form-control">
     <option value="-----">---------</option>
        {% for item in cust_sugg %}
   <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
 
    {% endfor %}
-</select>
+</select> -->
 
     </div>
 Format : (company name)
@@ -961,11 +1031,12 @@ function change( el )
   </script>
 <script>
 function choice1(select) {
+  var cust_id = document.getElementById('cust_id1').value;
      //alert(select.options[select.selectedIndex].value);
     $.ajax({                       // initialize an AJAX request
         url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
-          'item_id': select.options[select.selectedIndex].value,       // add the country id to the GET parameters
+          'item_id': cust_id,       // add the country id to the GET parameters
           'type' :  'lead'
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
@@ -975,6 +1046,69 @@ function choice1(select) {
     alert("Customer details loaded sucessfully!");
         }
       });
+}
+// function choice2(select) {
+//   var cust_id = document.getElementById('cust_id2').value;
+//      //alert(select.options[select.selectedIndex].value);
+//     $.ajax({                       // initialize an AJAX request
+//         url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+//         data: {
+//           'item_id': cust_id,       // add the country id to the GET parameters
+//           'type' :  'lead'
+//         },
+//         success: function (data) {   // `data` is the return of the `load_cities` view function
+//     $("#loaded_customer").html(data);
+//       $("#new_existing_customer_id").val('Existing');
+//       $("#channel").val($("#latest_lead_channel_id").val());
+//     alert("Customer details loaded sucessfully!");
+//         }
+//       });
+// }
+
+function choice3(select) {
+  var cust_id = document.getElementById('cust_id3').value;
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id,       // add the country id to the GET parameters
+          'type' :  'lead'
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+      $("#new_existing_customer_id").val('Existing');
+      $("#channel").val($("#latest_lead_channel_id").val());
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
+
+function choice2(select) {
+     //alert(select.options[select.selectedIndex].value);
+     var cust_id1 = document.getElementById('cust_id2').value;
+    console.log('cust id--->', cust_id1)
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id1 ,    // add the country id to the GET parameters
+          'type' :  'lead'
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+    $("#new_existing_customer_id").val('Existing');
+      $("#channel").val($("#latest_lead_channel_id").val());
+    alert("Customer details loaded sucessfully!");
+      // $("#industry_id").val($("#latest_sale_industry_id").val());
+      // $("#channel_of_dispatch_id").val($("#latest_sale_channel_dispatch_id").val());
+      // $("#channel_of_sales_id").val($("#latest_sale_channel_sales_id").val());
+      // $("#notes_id").val($("#latest_sale_notes_id").val());
+      // $("#shipping_address_id").val($("#latest_sale_shipping_id").val());
+      // $("#bill_address_id").val($("#latest_sale_billing_id").val());
+    // alert("Customer details loaded sucessfully!");
+        }
+      });
+            // document.getElementById('channel_of_marketing').value = 'Existing Customer';
+
 }
 
 $('document').ready(function(){
