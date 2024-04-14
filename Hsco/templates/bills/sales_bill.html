@@ -90,11 +90,7 @@ td {
     <p style="float: right;">Ph:<b> 7045922250, 7045922252</b> <br>
 
     </p>
-    <b style="background-color: black; color: white; 
-        font-size: 45px;
-        position: absolute;
-        top: 50%;
-        right: 0;">ATTACH CC</b>
+
     </div>
     </div>
 
@@ -103,7 +99,18 @@ td {
          <div class="col-md-12" style="padding:5px;">
         <center><h1 style="font-weight:bold; font-size:70px; font-family: Calibri;"> Hindustan Sales and Consultancy</h1>
         </center>
-        
+        <div style="position: relative;">
+          <b style="background-color: black; color: white; 
+        padding: 1vw;
+        font-size: 2vw; 
+        font-weight: bold;
+        position: absolute;
+        top: 50%;
+        padding: 10px; /* Add padding to create space around the text */
+        border: 2px solid black; /* Add border around the box */
+        border-radius: 5px; /* Add border radius to make corners rounded */
+        right: 0;">ATTACH CC</b>
+        </div>
       </div>
         </div>
         <div class="row">
@@ -380,7 +387,7 @@ th {
 
         	
 
-{% if invoice_details.crm_no__customer_gst_no|slice:":2" == 27 or invoice_details.crm_no__customer_gst_no|slice:":2" == '27' or invoice_details.crm_no__customer_gst_no == None or invoice_details.crm_no__customer_gst_no == 'None' or invoice_details.crm_no__customer_gst_no == ''  %}
+{% if invoice_details.crm_no__customer_gst_no|slice:":2" == 27 or invoice_details.crm_no__customer_gst_no|slice:":2" == '27' or invoice_details.crm_no__customer_gst_no == None or invoice_details.crm_no__customer_gst_no == 'None' or invoice_details.crm_no__customer_gst_no == '' or invoice_details.crm_no__customer_gst_no == 'NA'  %}
         	<tr>
         		<td>&nbsp;</td>
         		<td></td>
