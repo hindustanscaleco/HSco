@@ -146,48 +146,14 @@ color:;
 <div class="card-body" id="myDIV" style="display: block; height:auto;">
     <div class="form-group row">
 
-      <!-- <div class="col-md-2 inputGroupContainer"> -->
-        <!-- <div class="input-group">
-        <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-          <input name="customer_number" id="cust_id" list="display_limit1" onchange="choice1(this)" class="form-control">
-              <datalist id="display_limit1">
-             {% for item in cust_sugg %}
-        <option value="{{item.pk}}">{{item.pk}}</option>
-      
-         {% endfor %}
-                  </datalist>
-      
-          </div>
-      Format : (crm no)
-        </div> -->
 
     <label class="col-md-2 control-label">Customer Number
 
 
 </label>
 
-    <!-- <div class="col-md-3 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-  <input name="customer_number" id="cust_id" list="display_limit"  onchange="choice1(this)" class="form-control">
-              <datalist id="display_limit">
-             {% for item in cust_sugg %}
-             <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
-      
-         {% endfor %}
-                  </datalist> -->
-    <!-- <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
-       {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option> -->
 
-   <!-- {% endfor %} -->
-<!-- </select> -->
-
-    <!-- </div>
-Format : (crm no)
-  </div> -->
-  <div class="col-md-3 inputGroupContainer">
+  <div class="col-md-2 inputGroupContainer">
     <div class="input-group">
     <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
     <input name="customer_number" id="cust_id1" list="display_limit"  onchange="choice1(this)" class="form-control">
@@ -197,32 +163,13 @@ Format : (crm no)
         
            {% endfor %}
                     </datalist>
-      <!-- <select name="customer_number" id="display_limit" onchange="choice1(this)" class="form-control">
-      <option value="-----">---------</option>
-         {% for item in cust_sugg %}
-    <option value="{{item.pk}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option> -->
-  
-     <!-- {% endfor %} -->
-  <!-- </select> -->
   
       </div>
   Format : (crm no)
     </div>
-  <!-- <div class="col-md-3 inputGroupContainer">
-    <div class="input-group">
-    <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
-      <input name="customer_number" id="cust_id1" list="display_limit2" onchange="choice2(this)" class="form-control">
-          <datalist id="display_limit2">
-         {% for item in cust_sugg %}
-    <option value="{{item.pk}}">{{item.customer_name}}</option>
-     {% endfor %}
-              </datalist>
-  
-      </div>
-  Format : (customer name)
-    </div> -->
 
-    <div class="col-md-3 inputGroupContainer">
+
+    <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input name="customer_number" id="cust_id2" list="display_limit2"  onchange="choice2(this)" class="form-control">
@@ -232,20 +179,14 @@ Format : (crm no)
       
          {% endfor %}
                   </datalist>
-    <!-- <select name="customer_number" id="display_limit2" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
-       {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}}</option>
 
-   {% endfor %}
-</select> -->
 
     </div>
 Format : (customer name)
   </div>
 
 
-      <div class="col-md-3 inputGroupContainer">
+      <div class="col-md-2 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
   <input name="customer_number" id="cust_id3" list="display_limit3"  onchange="choice3(this)" class="form-control">
@@ -255,17 +196,25 @@ Format : (customer name)
       
          {% endfor %}
                   </datalist>
-    <!-- <select name="customer_number" id="display_limit3" onchange="choice1(this)" class="form-control">
-    <option value="-----">---------</option>
-       {% for item in cust_sugg %}
-  <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
-
-   {% endfor %}
-</select> -->
 
     </div>
 Format : (company name)
   </div>
+
+  <div class="col-md-2 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-users faicons"></i></span>
+    <input name="contact_no" id="cust_id4" list="display_limit4"  onchange="choice4(this)" class="form-control">
+                <datalist id="display_limit4">
+               {% for item in cust_sugg %}
+               <option value="{{item.pk}}">{{item.contact_no}}</option>
+        
+           {% endfor %}
+                    </datalist>
+  
+      </div>
+  Format : (contact no)
+    </div>
 
 </div>
 
@@ -1064,6 +1013,23 @@ function choice1(select) {
 //         }
 //       });
 // }
+function choice4(select) {
+  var cust_id = document.getElementById('cust_id4').value;
+     //alert(select.options[select.selectedIndex].value);
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_customer/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'item_id': cust_id,       // add the country id to the GET parameters
+          'type' :  'lead'
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+    $("#loaded_customer").html(data);
+      $("#new_existing_customer_id").val('Existing');
+      $("#channel").val($("#latest_lead_channel_id").val());
+    alert("Customer details loaded sucessfully!");
+        }
+      });
+}
 
 function choice3(select) {
   var cust_id = document.getElementById('cust_id3').value;

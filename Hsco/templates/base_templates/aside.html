@@ -801,6 +801,8 @@ nav ul li a .fa {
 											</a>
 										</div>
 										{% endif %}
+									
+										
 
 
 
@@ -828,7 +830,7 @@ nav ul li a .fa {
 											</div>
 											</a>
 										</div>
-
+										
 
 										<div class="list-item hoverable p-2 p-lg-3 mb-2">
 											<a href="/product_master_list/">
@@ -854,6 +856,51 @@ nav ul li a .fa {
 											</div>
 											</a>
 										</div>
+										{% if request.user.is_authenticated and 'Customer Module' in user.modules_assigned %}
+
+										<div class="list-item hoverable p-2 p-lg-3 mb-2">
+											<div class="d-flex align-items-center">
+												<!--begin::Symbol-->
+												<div class="symbol symbol-30 symbol-light mr-4">
+													<span class="symbol-label bg-hover-white">
+														<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo3\dist/../src/media/svg/icons\Communication\Clipboard-list.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3"/>
+														<path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000"/>
+														<rect fill="#000000" opacity="0.3" x="10" y="9" width="7" height="2" rx="1"/>
+														<rect fill="#000000" opacity="0.3" x="7" y="9" width="2" height="2" rx="1"/>
+														<rect fill="#000000" opacity="0.3" x="7" y="13" width="2" height="2" rx="1"/>
+														<rect fill="#000000" opacity="0.3" x="10" y="13" width="7" height="2" rx="1"/>
+														<rect fill="#000000" opacity="0.3" x="7" y="17" width="2" height="2" rx="1"/>
+														<rect fill="#000000" opacity="0.3" x="10" y="17" width="7" height="2" rx="1"/>
+													</g>
+												</svg><!--end::Svg Icon--></span>
+													</span>
+												</div>
+												<!--end::Symbol-->
+												<!--begin::Text-->
+
+												<nav class='animated bounceInDown'>
+													<ul>
+														<li class='sub-menu'><a href='#settings'>Informational Master &nbsp;<div class='fa fa-caret-down right'></div></a>
+															<ul>
+																<li><a href='/add_customer_details'>Add New Record</a></li>
+
+																	<li><a href='/view_customer_information'>Find Existing Customer</a></li>
+
+																	 <li><a href='/'>Reports</a></li>
+															</ul>
+														</li>
+													</ul>
+												</nav>
+												
+												
+												<!--begin::End-->
+											</div>
+										</div>
+
+										{% endif %}
 
 
 										<div class="list-item hoverable p-2 p-lg-3 mb-2">
@@ -878,6 +925,9 @@ nav ul li a .fa {
 												</div>
 												<!--end::Symbol-->
 												<!--begin::Text-->
+										
+												
+												
 												<nav class='animated bounceInDown'>
 													<ul>
 														<li class='sub-menu'><a href='#settings'>Employee Self Service &nbsp;<div class='fa fa-caret-down right'></div></a>
@@ -894,7 +944,7 @@ nav ul li a .fa {
 																	<li><a href='/ess_all_user'>All Employee</a></li>
 																	 {% endif %}
 																	 {% if user.role == 'Super Admin' %}
-																	<li><a href='/ess_home'>Aprove Leaves</a></li>
+																	<li><a href='/ess_home'>Approve Leaves</a></li>
 																	{% endif %}
               													 {% endif %}
 															</ul>
@@ -904,6 +954,8 @@ nav ul li a .fa {
 												<!--begin::End-->
 											</div>
 										</div>
+
+										
 
 
 										 {% if request.user.is_authenticated and user.role == 'Super Admin' %}
