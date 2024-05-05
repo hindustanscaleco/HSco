@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--begin::Head-->
+	<head><base href="">
+		{% load static %}
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="Updates and statistics" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<!--begin::Fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+		<!--end::Fonts-->
+		<!--begin::Page Vendors Styles(used by this page)-->
+		<link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<!--end::Page Vendors Styles-->
+		<!--begin::Global Theme Styles(used by all pages)-->
+		<link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'plugins/custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css" />
+		<link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+		        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!--end::Global Theme Styles-->
+		<!--begin::Layout Themes(used by all pages)-->
+		<!--end::Layout Themes-->
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+		<!--begin::Main-->
+		<!--begin::Header Mobile-->
+		<div id="kt_header_mobile" class="header-mobile">
+			<!--begin::Logo-->
+			<a href="/">
+				<h1>HSCo</h1>
+			</a>
+			<!--end::Logo-->
+			<!--begin::Toolbar-->
+			<div class="d-flex align-items-center">
+				<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+					<span></span>
+				</button>
+			</div>
+			<!--end::Toolbar-->
+		</div>
+		<!--end::Header Mobile-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="d-flex flex-row flex-column-fluid page">
+				<!--begin::Aside-->
+					{% include 'base_templates/aside.html' %}
+
+
+				<!--end::Aside-->
+				<!--begin::Wrapper-->
+				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="" id="kt_subheader">
+							<div class="container-fluid">
+
+
+<style>
+  .faicons {
+  font-size: 18px;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #5a5c69;
+  }
+
+  .icon-border {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px 1px 1px 5px;
+  border-right: none;
+
+
+  }
+
+  .control-label {
+  color: black;
+
+  }
+
+</style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column" style="background-color: white;">
+
+      <!-- Main Content -->
+      <div id="content" style="margin-top: 3%;">
+
+
+        <!-- Topbar -->
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <center><h3>Add Customer Details</h3></center>
+
+        <div class="" >
+
+          <!--<div class="row" style="padding:20px;">-->
+               <!--&lt;!&ndash;<label class="col-md-6 control-label">CRM Number:</label>&ndash;&gt;-->
+
+          <!--</div>-->
+<br>
+
+{% if messages %}
+{% for message in messages %}
+         {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% endif %}
+
+
+         {% endfor %}
+
+{% endif %}
+    <form class="well form-horizontal" ion="" method="POST"  id="customer_form" style="padding:20px;" enctype="multipart/form-data" >{% csrf_token %}
+
+
+        
+    <!--<input type="text" id="id_input"   >-->
+
+  <!--<div class="col-md-4 inputGroupContainer">-->
+  <!--<div class="input-group">-->
+  <!--<span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>-->
+  <!--<input name="crm_no" placeholder="Enter CRM NO"  class="form-control"  type="text" list="crm_no">-->
+    <!--<datalist style="height:20px;" id="crm_no">-->
+      <!--<option value="Energy industry"></option>-->
+    <!--</datalist>-->
+  <!--</div></div>-->
+
+
+
+
+
+<div id="loaded_customer">
+
+  <div class="form-group row">
+  <label class="col-md-2 control-label ">Name Of Customer *
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="customer_name" placeholder="Full Name" required class="form-control" id="customer_name"  type="text">
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Contact Number *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
+  <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="" id="contact_no" pattern="[0-9]{10}" maxlength="10" minlength="10" required type="number" >
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Company Name
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="company_name" placeholder="Company Name" class="form-control" id="company_name"  type="text">
+    </div>
+  </div>
+        <label class="col-md-2 control-label">Address *
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="customer_address" id="customer_address"  placeholder="Address"/>
+    </div>
+  </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">City
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="city" placeholder="City" class="form-control" id="city"  type="text">
+    </div>
+  </div>
+        <label class="col-md-2 control-label">State
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="state" id="state"  placeholder="State"/>
+    </div>
+  </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 control-label">Pincode
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
+  <input  name="pincode" placeholder="Pincode" class="form-control" id="pincode" pattern="[0-9]{6}" minlength="6" maxlength="6" type="number">
+    </div>
+  </div>
+        <!-- <label class="col-md-2 control-label">Address *
+
+</label>
+
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+  <input class="form-control" name="customer_address" id="customer_address"  placeholder="Address"/>
+    </div>
+  </div> -->
+  <label class="col-md-2 control-label">Email Id
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="email" name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" >
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+
+
+  <label id="label_customer_gst_no" class="col-md-2 control-label">Customer GST No.
+  </label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+  <input type="text" name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" >
+    </div>
+  </div>
+
+  <label class="col-md-2 control-label">New/Repeat Sale *
+  </label>
+    <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
+  <select name="new_repeat_purchase" id="new_repeat_purchase_id" required class="form-control">
+    <option value="New">New</option>
+    <option value="Repeat">Repeat</option>
+  </select>
+      </div>
+
+</div>
+
+
+
+
+
+
+    <!-- <label id="label_bill_no" class="col-md-2 control-label">Bill No
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <input  name="bill_no" id="bill_no" placeholder="Bill No" class="form-control"  type="text">
+    </div>
+  </div> -->
+  </div>
+<hr style="background-color: gray;">
+
+
+
+
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Marketing
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+      <select name="channel_of_marketing" id="channel_of_marketing" class="form-control">
+  <option value="">Select Channel of Marketing</option>
+  {% for item in channel_marketing %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--    <input  type="text"  name="channel_of_marketing" id="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">-->
+<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel110">-->
+<!--      <option value="Phone"></option>-->
+<!--      <option value="Whatsapp"></option>-->
+<!--      <option value="Email"></option>-->
+<!--&lt;!&ndash;      <option value="Hsc"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;      <option value="Sales"></option>&ndash;&gt;-->
+<!--      <option value="Google"></option>-->
+<!--      <option value="Justdial"></option>-->
+<!--      <option value="Reference"></option>-->
+<!--      <option value="Existing Customer"></option>-->
+<!--      <option value="BNI"></option>-->
+<!--      <option value="Others"></option>-->
+<!--    </datalist>-->
+
+    </div>
+  </div>
+
+
+
+    <label class="col-md-2 control-label">Industry *
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+        <select name="industry" id="industry" required class="form-control">
+  <option value="">Select Industry</option>
+  {% for item in indutry %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+<!--    <input id="industry_id" type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">-->
+<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel2">-->
+<!--      <option value="Energy industry"></option>-->
+<!--      <option value="Chemicals"></option>-->
+<!--      <option value="Industrial Metals "></option>-->
+<!--      <option value="Gold/Gems and precious Metals "></option>-->
+<!--      <option value="Home and Heavy Construction companies "></option>-->
+<!--      <option value="Electrical and Electronic Manufacturers"></option>-->
+<!--      <option value="Industrial Transportation"></option>-->
+<!--      <option value="Agriculture"></option>-->
+<!--      <option value="Poultry/Livestock"></option>-->
+<!--      <option value="Healthcare Equipment and Services"></option>-->
+<!--      <option value="Textiles"></option>-->
+<!--      <option value="Hotels"></option>-->
+<!--      <option value="Grocery/Retail"></option>-->
+<!--      <option value="Bakery"></option>-->
+<!--      <option value="Supplier"></option>-->
+<!--      <option value="BNI"></option>-->
+<!--      <option value="Online Promotion"></option>-->
+<!--      <option value="Fishing"></option>-->
+<!--      <option value="Dealer"></option>-->
+<!--    </datalist>-->
+    </div>
+  </div>
+</div>
+
+
+
+<div class="form-group row">
+
+<label class="col-md-2 control-label">Channel of Sales *
+
+
+</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+ <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+
+            <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control">
+  <option value="">Select Channel of Sales</option>
+  {% for item in channel_sales %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--    <input  type="text" required name="channel_of_sales" id="channel_of_sales_id" placeholder="Channel of Sales" class="form-control" list="channel10">-->
+<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+<!--    <datalist style="height:20px;" id="channel10">-->
+<!--      <option value="Retail through Physical Store"></option>-->
+<!--      <option value="Online Market Places"></option>-->
+<!--      <option value="Website"></option>-->
+<!--      <option value="Indiamart"></option>-->
+<!--      <option value="App"></option>-->
+<!--      <option value="Field Salesmen"></option>-->
+<!--      <option value="Fairs and Trade Shows"></option>-->
+<!--    </datalist>-->
+    </div>
+  </div>
+
+    <label class="col-md-2 control-label">Channel of Dispatch *
+
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+
+
+           <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control">
+  <option value="">Select Channel of Dispatch</option>
+  {% for item in channel_dispatch %}
+          <option value="{{item.id}}">{{item.name}}</option>
+          {% endfor %}
+</select>
+
+
+<!--  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">-->
+<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
+
+<!--    <datalist style="height:20px;" id="channel">-->
+<!--              <option value="Franchisee Store">-->
+<!--              <option value="Transport">-->
+<!--      <option value="Courier">-->
+<!--      <option value="Online Market Places">-->
+<!--      <option value="Delivery Boys">-->
+<!--    </datalist>-->
+    </div>
+  </div>
+      </div>
+    </div>
+
+
+
+  
+
+<hr style="background-color: gray;">
+
+
+
+              <div class="form-group row">
+  <label class="col-md-2 control-label">Bill Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+  <textarea id="bill_address_id" name="bill_address" placeholder="Bill Address" class="form-control"></textarea>
+    </div>
+  </div>
+<label class="col-md-2 control-label">Shipping Address
+
+</label>
+
+    <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+    <textarea id="shipping_address_id" name="shipping_address" placeholder="Shipping Address" class="form-control"></textarea>
+
+    </div>
+  </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-2 control-label">Billing Notes
+                </label>
+                  <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                    <span class="input-group-addon icon-border"><i class="fa fa-user faicons"></i></span>
+                    <textarea id="bill_note_id" name="bill_notes" placeholder="Bill Notes" class="form-control"></textarea>
+                  </div>
+                </div>
+
+                <label class="col-md-2 control-label">Notes
+                </label>
+                  <div class="col-md-4 inputGroupContainer">
+                  <div class="input-group">
+                  <span class="input-group-addon icon-border"><i class="fa fa-file faicons" style="margin-top: 20px;"></i></span>
+                <textarea name="notes" id="notes_id" placeholder="Name of Transporter" class="form-control"></textarea>
+                </div>
+                
+                  </div>
+
+              </div>
+              <hr style="background-color: gray;">
+
+              <div class="form-group row">
+                <label class="col-md-2 control-label">Marketing WhatsApp</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="marketing_whatsapp_id" name="marketing_whatsapp" checked>
+                        <label class="custom-control-label" for="marketing_whatsapp_id"></label>
+                    </div>
+                </div>
+                <label class="col-md-2 control-label">Lead WhatsApp</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="lead_whatsapp_id" name="lead_whatsapp" checked>
+                        <label class="custom-control-label" for="lead_whatsapp_id"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-md-2 control-label">Sales WhatsApp</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="sales_whatsapp_id" name="sales_whatsapp" checked>
+                        <label class="custom-control-label" for="sales_whatsapp_id"></label>
+                    </div>
+                </div>
+                <label class="col-md-2 control-label">Repairing WhatsApp</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="repairing_whatsapp_id" name="repairing_whatsapp" checked>
+                        <label class="custom-control-label" for="repairing_whatsapp_id"></label>
+                    </div>
+                </div>
+            </div>
+
+
+
+        <hr style="background-color: gray;">
+
+<div class="row" style="
+    margin: 0;
+    position: relative;
+    left:38%;">
+   <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+
+</div>
+
+
+
+  <br>
+</fieldset>
+    </form>
+  <!--Product List-->
+
+
+                </div>
+              </div>
+            </div>
+
+<br>
+
+  <!-- End of Page Wrapper -->
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--end::Purchase-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Demo Panel-->
+		<!--begin::Global Config(global config for global JS scripts)-->
+
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="{% static 'js/pages/widgets.js' %}"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>
