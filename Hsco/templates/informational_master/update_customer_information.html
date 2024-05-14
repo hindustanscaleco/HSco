@@ -175,8 +175,10 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" value="{{customer_id.contact_no}}"  placeholder="Contact No" class="form-control" onkeypress="" id="contact_no" maxlength="10" minlength="10" required type="number"  disabled>
+  <input  name="contact_no" value="{{customer_id.contact_no}}"  placeholder="Contact No" class="form-control" onkeypress="" id="contact_no" pattern="[0-9]{10}" maxlength="10" minlength="10" required type="text"  disabled>
     </div>
+    <small class="form-text text-muted">Please enter a 10-digit mobile number.</small>
+
   </div>
 </div>
 
@@ -205,6 +207,16 @@
 </div>
 
 <div class="form-group row">
+  <label class="col-md-2 control-label">State
+
+  </label>
+  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+    <input class="form-control" value="{{customer_id.state}}"  name="state" id="state"  placeholder="State" disabled/>
+      </div>
+    </div>
     <label class="col-md-2 control-label">City
 </label>
 
@@ -214,16 +226,7 @@
   <input  name="city" value="{{customer_id.city}}"  placeholder="City" class="form-control" id="city"  type="text" disabled>
     </div>
   </div>
-        <label class="col-md-2 control-label">State
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" value="{{customer_id.state}}"  name="state" id="state"  placeholder="State" disabled/>
-    </div>
-  </div>
+        
 </div>
 
 <div class="form-group row">
@@ -233,8 +236,10 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="pincode" value="{{customer_id.pincode}}"  placeholder="Pincode" class="form-control" id="pincode"  type="text" disabled>
+  <input  name="pincode" value="{{customer_id.pincode}}"  placeholder="Pincode" class="form-control" id="pincode" pattern="[0-9]{6}" minlength="6" maxlength="6" type="text" disabled>
     </div>
+    <small class="form-text text-muted">Please enter a 6-digit pin code.</small>
+
   </div>
         <!-- <label class="col-md-2 control-label">Address *
 
@@ -268,6 +273,7 @@
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
   <input type="text" value="{{customer_id.customer_gst_no}}"  name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" disabled>
     </div>
+    <small class="form-text text-muted">Please enter a valid 15-character GSTIN.</small>
   </div>
 
   <label class="col-md-2 control-label">New/Repeat Sale *
@@ -577,13 +583,105 @@
   <br>
 </fieldset>
     </form>
-  <!--Product List-->
+  <!--Sales List-->
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 5px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    <br>
+    </div>
+    
+              <h1 style="font-size: 25px; color: black; text-align: center;"> Sales List </h1>
+      <br>
+      <table class="table">
+
+        <tr style="background-color: gray; color: white;">
+            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No.</td>
+            <td style="border: 0px solid gray;">Date</td>
+            <td style="border: 0px solid gray;">Sales Id </td>
+            <td style="border: 0px solid gray;"> Type of Scale</td>
+            <td style="border: 0px solid gray;">Model</td>
+            <td style="border: 0px solid gray;"> Sub Model </td>
+            <td style="border: 0px solid gray;">Sub Sub Model</td>
+            <td style="border: 0px solid gray;">Dispatch id  </td>
+            <td style="border: 0px solid gray;">Sales Person  </td>
+            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Average Feedback   </td>
+        </tr>
+        {% for sales in product_details_customer %}
+
+        <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+                        <td>{{forloop.counter}}</td>
+                        <td>{{sales.purchase_id.date_of_purchase  }}</td>
+                        <td>{{sales.id}}</td>
+                        <td>{{sales.type_of_scale}}</td>
+                        <td>{{sales.model_of_purchase}}</td>
+                        <td>{{sales.sub_model}}</td>
+                        <td>{{sales.sub_sub_model}}</td>
+                        <td>{{sales.product_dispatch_id_id}}</td>
+                        <td>{{sales.purchase_id.sales_person}}</td>
+                    <td>{{sales.purchase_id.feedback_stars}}</td>
 
 
-                </div>
-              </div>
-            </div>
 
+        </tr>
+                          {% endfor %}
+
+
+        </tr>
+
+    </table>
+<br><br>
+
+    <h1 style="font-size: 25px; color: black; text-align: center;"> Leads List </h1>
+    <br>
+    <table class="table">
+
+      <tr style="background-color: gray; color: white;">
+          <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No.</td>
+          <td style="border: 0px solid gray;">Date</td>
+          <td style="border: 0px solid gray;">Lead Id </td>
+          <td style="border: 0px solid gray;"> Type of Scale</td>
+          <td style="border: 0px solid gray;">Model</td>
+          <td style="border: 0px solid gray;"> Sub Model </td>
+          <td style="border: 0px solid gray;">Sub Sub Model</td>
+          <td style="border: 0px solid gray;">Dispatch id  </td>
+          <td style="border: 0px solid gray;">Sales Person  </td>
+          <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Average Feedback   </td>
+      </tr>
+      {% for sales in product_details_lead %}
+      <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+                      <td>{{forloop.counter}}</td>
+                      <td>{{sales.date_of_purchase  }}</td>
+                      <td>{{sales.lead_id}}</td>
+                      <td>{{sales.type_of_scale}}</td>
+                      <td>{{sales.model_of_purchase}}</td>
+                      <td>{{sales.sub_model}}</td>
+                      <td>{{sales.sub_sub_model}}</td>
+                      <td>{{sales.product_dispatch_id_id}}</td>
+                      <td>{{sales.sales_person}}</td>
+                  <td>{{sales.feedback_stars}}</td>
+
+
+
+      </tr>
+                        {% endfor %}
+
+
+      </tr>
+
+  </table>
 <br>
 
   <!-- End of Page Wrapper -->
