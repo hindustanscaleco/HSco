@@ -144,18 +144,19 @@ $(function() {
             <div class="row">
 
                 <div  class="col-xl-3 col-md-3 col-mb-3">
-                    <!-- <div class="button dropdown">
+                    <div class="button dropdown">
   <select id="divselector" class="form-control">
      <option value="d0">Select Search Type</option>
-     <option value="d1">Search By Date Range</option>
-     <option value="d2">Search By Mobile Number</option>
-     <option value="d3">Search By Email Id</option>
-     <option value="d4">Search By Customer Name</option>
-     <option value="d5">Search By Company Name</option>
-     <option value="d6">Search By CRM No.</option>
-     <option value="d7">Search By Sales No.</option> -->
-     <!--<option value="d7">Search By CRM Number Range</option>-->
-  <!-- </select> -->
+     <option value="d1">Search By Customer Number</option>
+     <option value="d2">Search By Customer Name</option>
+     <option value="d3">Search By Company Address</option>
+     <option value="d4">Search By Mobile Number</option>
+     <option value="d5">Search By GST Number </option>
+     <option value="d6">Search By Industry</option>
+     <option value="d7">Search By City</option>
+     <option value="d8">Search By State</option>
+     <option value="d9">Search By Pincode</option>
+  </select>
 </div>
 
 <br>
@@ -166,81 +167,144 @@ $(function() {
 
 
 <div class="output">
-                                                              <form method="POST" autocomplete="off">{% csrf_token%}
-  <div id="d1" class="divs d1 row">
-
+  <form method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div id="d1" class="divs d1 row">
+  
       <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date1" type="date" placeholder="Search 1" class="form-control">
-
+        <!-- Input field for customer number -->
+        <input name="customer_number" type="text" placeholder="Customer Number" class="form-control">
       </div>
-
-      <div style="float: left;" class="col-xl-0 col-md-0 col-mb-0">
-                <p style="font-weight: 600;">_</p>
-
-      </div>
-
-      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
-                <input name="date2" type="date" placeholder="Search 1" class="form-control">
-
-      </div>
+  
+  
       <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
-                <button name="submit1" type="submit" class="btn btn-primary">Search</button></div>
-
+        <!-- Search button -->
+        <button name="submit1" type="submit" class="btn btn-primary">Search</button>
       </div>
-                               </form>
+  
+    </div>
+  </form>
 
 
   <div id="d2" class="divs d2">
-      <form method="POST" >{% csrf_token%}
-      <input type="number" name="contact" placeholder="Mobile Number" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button  type="submit" name="submit2" class="btn btn-primary">Search</button>
-  </form>
-  </div>
-
-
-
-
-  <div id="d3" class="divs d3">
-      <form method="POST">{% csrf_token%}
-      <input type="text" name="email" placeholder="Email Id" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-
-      <button name="submit3" class="btn btn-primary">Search</button>
-          </form>
-  </div>
-
-
-
-    <div id="d4" class="divs d4">
-        <form method="POST">{% csrf_token%}
-      <input type="text" name="customer"  placeholder="Customer Name" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button name="submit4" class="btn btn-primary">Search</button>
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <input type="text" name="customer_name" placeholder="Customer Name" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <button type="submit" name="submit2" class="btn btn-primary">Search</button>
+      </div>
     </form>
-    </div>
+  </div>
+  
+  <!-- Search form for "Search By Company Address" -->
+  <div id="d3" class="divs d3">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <!-- Input field for company address -->
+        <input type="text" name="company_address" placeholder="Company Address" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <!-- Search button -->
+        <button type="submit" name="submit3" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
 
-                               <form method="POST">{% csrf_token%}
+  <div id="d4" class="divs d4">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <!-- Input field for mobile number -->
+        <input type="text" name="mobile_number" placeholder="Mobile Number" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <!-- Search button -->
+        <button type="submit" name="submit4" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Search form for "Search By GST Number" (d5) -->
   <div id="d5" class="divs d5">
-      <input type="text" name="company" placeholder="Company Name" class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button name="submit5" class="btn btn-primary">Search</button></div>
-</form>
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <!-- Input field for GST number -->
+        <input type="text" name="gst_number" placeholder="GST Number" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <!-- Search button -->
+        <button type="submit" name="submit5" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Search form for "Search By Industry" (d6) -->
+  <div id="d6" class="divs d6">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <!-- Input field for industry -->
+        <input type="text" name="industry" placeholder="Industry" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <!-- Search button -->
+        <button type="submit" name="submit6" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Search form for "Search By City" (d7) -->
+  <div id="d7" class="divs d7">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+        <!-- Input field for city -->
+        <input type="text" name="city" placeholder="City" class="form-control">
+      </div>
+      <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+        <!-- Search button -->
+        <button type="submit" name="submit7" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
 
-                               <form method="POST">{% csrf_token%}
+<!-- Search form for "Search By State" (d8) -->
+<div id="d8" class="divs d8">
+  <form method="POST">
+    {% csrf_token %}
+    <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+      <!-- Input field for state -->
+      <input type="text" name="state" placeholder="State" class="form-control">
+    </div>
+    <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+      <!-- Search button -->
+      <button type="submit" name="submit8" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+</div>
 
-    <div id="d6" class="divs d6">
-      <input type="text" name="crm" placeholder="CRM No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button name="submit6" class="btn btn-primary">Search</button></div>
-</form>
-                       <form method="POST">{% csrf_token%}
+<!-- Search form for "Search By Pincode" (d9) -->
+<div id="d9" class="divs d9">
+  <form method="POST">
+    {% csrf_token %}
+    <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+      <!-- Input field for pincode -->
+      <input type="text" name="pincode" placeholder="Pincode" class="form-control">
+    </div>
+    <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+      <!-- Search button -->
+      <button type="submit" name="submit9" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+</div>
 
-    <div id="d7" class="divs d7">
-      <input type="text" name="purchase_no" placeholder="Sales No." class="form-control" style="width: 25%;float: left;">
-      &nbsp; &nbsp;
-      <button name="submit7" class="btn btn-primary">Search</button></div>
-</form>
+<!-- Repeat the above structure for other search criteria -->
+
+
                                <!--<form method="POST">{% csrf_token%}-->
 
   <!--<div id="d7" class="divs d7 row" style="width: 50%;">-->
@@ -423,7 +487,7 @@ td {
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Existing Customer</td>
         </tr>
         {% for customer in customer_list %}
-        <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+        <tr  style="cursor: pointer; " onclick="location.href='/update_customer_information/{{customer.pk}}'"  id="{{list1.purchase_no}}">
             <td>{{customer.id}}</td>
 
                         <td>{{customer.customer_name}}</td>

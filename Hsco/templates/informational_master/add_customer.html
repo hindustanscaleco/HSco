@@ -175,9 +175,12 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="" id="contact_no" pattern="[0-9]{10}" maxlength="10" minlength="10" required type="number" >
+  <input  name="contact_no" placeholder="Contact No" class="form-control" onkeypress="" id="contact_no" pattern="[0-9]{10}" maxlength="10" minlength="10" required type="text" >
     </div>
+    <small class="form-text text-muted">Please enter a 10-digit mobile number.</small>
+
   </div>
+
 </div>
 
 
@@ -205,6 +208,17 @@
 </div>
 
 <div class="form-group row">
+  <label class="col-md-2 control-label">State
+
+  </label>
+  
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
+    <input class="form-control" name="state" id="state"  placeholder="State"/>
+      </div>
+    </div>
+
     <label class="col-md-2 control-label">City
 </label>
 
@@ -214,16 +228,7 @@
   <input  name="city" placeholder="City" class="form-control" id="city"  type="text">
     </div>
   </div>
-        <label class="col-md-2 control-label">State
-
-</label>
-
-  <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" name="state" id="state"  placeholder="State"/>
-    </div>
-  </div>
+        
 </div>
 
 <div class="form-group row">
@@ -233,8 +238,9 @@
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-building faicons"></i></span>
-  <input  name="pincode" placeholder="Pincode" class="form-control" id="pincode" pattern="[0-9]{6}" minlength="6" maxlength="6" type="number">
+  <input  name="pincode" placeholder="Pincode" class="form-control" id="pincode" pattern="[0-9]{6}" minlength="6" maxlength="6" type="text">
     </div>
+    <small class="form-text text-muted">Please enter a 6-digit pin code.</small>
   </div>
         <!-- <label class="col-md-2 control-label">Address *
 
@@ -268,6 +274,9 @@
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
   <input type="text" name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" >
     </div>
+    <small class="form-text text-muted">Please enter a valid 15-character GSTIN.</small>
+
+    <div id="gst_no_error" class="text-danger"></div> <!-- Error message placeholder -->
   </div>
 
   <label class="col-md-2 control-label">New/Repeat Sale *
@@ -582,6 +591,36 @@
 			</div>
 			<!--end::Content-->
 		</div>
+
+    <script>
+      // Function to validate GST number format
+      function validateGSTNumber(gstNumber) {
+        var gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[0-9]{1}$/;
+        return gstPattern.test(gstNumber);
+      }
+    
+      // Function to handle form submission
+      function handleSubmit(event) {
+        var gstInput = document.getElementById('customer_gst_no');
+        var gstNoError = document.getElementById('gst_no_error');
+    
+        // Retrieve GST number value
+        var gstNumber = gstInput.value.trim();
+    
+        // Perform GST number validation
+        if (!validateGSTNumber(gstNumber)) {
+          // Display error message if GST number is invalid
+          gstNoError.textContent = 'Invalid GST number format!';
+          event.preventDefault(); // Prevent form submission
+        } else {
+          // Clear error message if GST number is valid
+          gstNoError.textContent = '';
+        }
+      }
+    
+      // Add event listener to form submission
+      document.querySelector('form').addEventListener('submit', handleSubmit);
+    </script>
 		<!--end::Demo Panel-->
 		<!--begin::Global Config(global config for global JS scripts)-->
 
