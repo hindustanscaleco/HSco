@@ -187,12 +187,29 @@ def view_customer_information(request):
     print(len(customers))
     page_number = request.GET.get('page', 1)
     paginated_data = paginate_data(customers, page_number)
-    print(paginated_data)
-    print(len(paginated_data))
+
     context = {
         'customer_list': customers,
     }
     return render(request, 'informational_master/view_customer_information.html', context=context)
+
+
+@login_required(login_url='/')
+def customer_reports(request):
+    # search_type = request.GET.get('search_type', None)
+    # search_query = request.GET.get('search_query', None)
+    # print('search -->', search_type, search_query)
+    # Initialize the customer queryset with all customers
+    # customer_queryset = Customer_Details.objects.all().order_by('-id')
+    customers = Customer_Details.objects.all().order_by('-id')[:100]
+    # Apply filters based on the search type and query
+    page_number = request.GET.get('page', 1)
+    paginated_data = paginate_data(customers, page_number)
+
+    context = {
+        'customer_list': customers,
+    }
+    return render(request, 'informational_master/customer_reports.html', context=context)
 
 
 @login_required(login_url='/')
