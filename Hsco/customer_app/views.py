@@ -5,6 +5,7 @@ from django.db.models import Count, F
 import re
 
 from lead_management.models import Lead
+from django.db.models import OuterRef, Subquery, Exists
 
 from .models import Customer_Details
 from .models import type_purchase, main_model, sub_model, sub_sub_model
@@ -132,11 +133,7 @@ def update_customer_information(request, id):
 
 @login_required(login_url='/')
 def view_customer_information(request):
-    # search_type = request.GET.get('search_type', None)
-    # search_query = request.GET.get('search_query', None)
-    # print('search -->', search_type, search_query)
-    # Initialize the customer queryset with all customers
-    # customer_queryset = Customer_Details.objects.all().order_by('-id')
+
     customers = Customer_Details.objects.all().order_by('-id')[:100]
     # Apply filters based on the search type and query
     if request.method == 'POST':
@@ -187,12 +184,84 @@ def view_customer_information(request):
     print(len(customers))
     page_number = request.GET.get('page', 1)
     paginated_data = paginate_data(customers, page_number)
-    print(paginated_data)
-    print(len(paginated_data))
+
     context = {
         'customer_list': customers,
     }
     return render(request, 'informational_master/view_customer_information.html', context=context)
+
+
+@login_required(login_url='/')
+def customer_reports(request):
+
+    customers = Customer_Details.objects.all().order_by('-id')
+
+    # Apply filters based on the search type and query
+    channel_of_marketing = request.GET.get('channel_of_marketing')
+    channel_of_sales = request.GET.get('channel_of_sales')
+    channel_of_dispatch = request.GET.get('channel_of_dispatch')
+    industry = request.GET.get('industry')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    purchase_query = request.GET.get('purchase_query')
+
+    # print('start_date->', start_date)
+    # print('purchase_query->', purchase_query)
+    if channel_of_marketing != '' and channel_of_marketing != None:
+        customers = Customer_Details.objects.filter(
+            channel_of_marketing=channel_of_marketing)
+        print('channel_of_marketing->', channel_of_marketing)
+    if channel_of_sales != '' and channel_of_sales != None:
+        customers = Customer_Details.objects.filter(
+            channel_of_sales=channel_of_sales)
+        print('channel_of_sales->', channel_of_sales)
+    if channel_of_dispatch != '' and channel_of_dispatch != None:
+        customers = Customer_Details.objects.filter(
+            channel_of_dispatch=channel_of_dispatch)
+        print('channel_of_dispatch->', channel_of_dispatch)
+    if industry != '' and industry != None:
+        customers = Customer_Details.objects.filter(industry=industry)
+        print('industry->', industry)
+    if start_date and end_date:
+        print('------> start end', start_date, end_date)
+        customers = Customer_Details.objects.filter(
+            entry_timedate__range=[start_date, end_date])
+    customers = customers.annotate(purchase_exists=Exists(
+        Purchase_Details.objects.filter(crm_no=OuterRef('pk'))))
+    # Filter by purchase status
+    if purchase_query != '':
+
+        if purchase_query == 'purchased':
+            customers = customers.filter(purchase_exists=True)
+        elif purchase_query == 'not_purchased':
+            customers = customers.filter(purchase_exists=False)
+
+    messages.success(request, f"Total customers found: {len(customers)}")
+    # page_number = request.GET.get('page', 1)
+    # paginated_data = paginate_data(customers, page_number)
+    channel_sales = DynamicDropdown.objects.filter(
+        type="CHANNEL OF SALES", is_enabled=True)
+    channel_marketing = DynamicDropdown.objects.filter(
+        type="CHANNEL OF MARKETING", is_enabled=True)
+    channel_dispatch = DynamicDropdown.objects.filter(
+        type="CHANNEL OF DISPATCH", is_enabled=True)
+    industry_list = DynamicDropdown.objects.filter(
+        type="INDUSTRY", is_enabled=True)
+    context = {
+        'channel_sales': channel_sales,
+        'channel_marketing': channel_marketing,
+        'channel_dispatch': channel_dispatch,
+        'industry_list': industry_list,
+        'customer_list': customers,
+        'channel_of_marketing': channel_of_marketing,
+        'channel_of_sales': channel_of_sales,
+        'channel_of_dispatch': channel_of_dispatch,
+        'industry': industry,
+        'start_date': start_date,
+        'end_date': end_date,
+        'purchase_query': purchase_query,
+    }
+    return render(request, 'informational_master/customer_reports.html', context=context)
 
 
 @login_required(login_url='/')

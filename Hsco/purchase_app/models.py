@@ -8,6 +8,7 @@ from customer_app.models import Customer_Details, DynamicDropdown
 from user_app.models import SiteUser
 from model_utils import FieldTracker
 from simple_history.models import HistoricalRecords
+# from stock_management_system_app.models import Product  # Import the Product model
 
 
 choices = (('NO', 'NO'),
@@ -131,6 +132,9 @@ class Product_Details(models.Model):
         Purchase_Details, on_delete=models.CASCADE, null=True, blank=True, related_name='product_details')
     product_dispatch_id = models.ForeignKey(
         'dispatch_app.Product_Details_Dispatch', on_delete=models.CASCADE, null=True, blank=True)
+    # product = models.ForeignKey(
+    #     Product, on_delete=models.CASCADE, null=True, blank=True
+    # )
     # product_name = models.CharField(max_length=30,null=True,blank=True)
     quantity = models.CharField(max_length=30, null=True, blank=True)
     type_of_scale = models.CharField(max_length=30, null=True, blank=True)

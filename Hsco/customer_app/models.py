@@ -1,7 +1,9 @@
 import datetime
 import uuid
 from django.db import models
+from django.dispatch import receiver
 from django.utils import timezone
+
 
 dropdown_choices = (('CHANNEL OF MARKETING', 'CHANNEL OF MARKETING'),
                     ('CHANNEL OF SALES', 'CHANNEL OF SALES'),
@@ -37,15 +39,9 @@ class Customer_Details(models.Model):
         max_digits=22, decimal_places=15, null=True, blank=True)
     api_cal_count = models.FloatField(default=0.0, null=True, blank=True)
 
-    # full_name = models.CharField(max_length=150, null=True, blank=True)
-    # contact_number = models.CharField(max_length=30, null=True, blank=True)
-    # company_name = models.CharField(max_length=150, null=True, blank=True)
-    # address = models.CharField(max_length=250, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
     pincode = models.CharField(max_length=10, null=True, blank=True)
-    # email_id = models.EmailField(max_length=80, null=True, blank=True)
-    # gst_number = models.CharField(max_length=15, null=True, blank=True)
     new_repeat_purchase = models.CharField(
         max_length=10, null=True, blank=True)  # New or Repeat
     channel_of_marketing = models.CharField(
@@ -59,19 +55,10 @@ class Customer_Details(models.Model):
     shipping_address = models.TextField(null=True, blank=True)
     bill_notes = models.TextField(null=True, blank=True)
     # Notes field in the Sales Module
-    # sales_notes = models.TextField(null=True, blank=True)
     marketing_whatsapp = models.BooleanField(default=True)
     lead_whatsapp = models.BooleanField(default=True)
     sales_whatsapp = models.BooleanField(default=True)
     repairing_whatsapp = models.BooleanField(default=True)
-    # sales_channel_of_sales_id = models.ForeignKey(
-    #     DynamicDropdown, on_delete=models.CASCADE, related_name='channel_sales', null=True, blank=True)
-    # sales_channel_of_marketing_id = models.ForeignKey(
-    #     DynamicDropdown, on_delete=models.CASCADE, related_name='channel_marketing', null=True, blank=True)
-    # sales_industry_id = models.ForeignKey(
-    #     DynamicDropdown, on_delete=models.CASCADE, related_name='industry', null=True, blank=True)
-    # sales_channel_of_dispatch_id = models.ForeignKey(
-    #     DynamicDropdown, on_delete=models.CASCADE, related_name='channel_dispatch', null=True, blank=True)
 
     class Meta:
         unique_together = ('customer_name', 'contact_no', 'customer_gst_no')
@@ -82,6 +69,15 @@ class Customer_Details(models.Model):
     def short_address(self):
         address = str(self.address)
         return address
+
+    @property
+    def customer_exists(self):
+        from purchase_app.models import Purchase_Details
+
+        if Purchase_Details.objects.filter(crm_no=self).exists():
+            return True
+        else:
+            return False
 
 
 class Lead_Customer_Details(models.Model):
