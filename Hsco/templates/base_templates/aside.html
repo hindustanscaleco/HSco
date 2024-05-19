@@ -889,7 +889,7 @@ nav ul li a .fa {
 
 																	<li><a href='/view_customer_information'>Find Existing Customer</a></li>
 
-																	{% if request.user.role != 'Super Admin' %} <li><a href='/customer_reports'>Reports</a></li>{% endif %}
+																	{% if request.user.role == 'Super Admin' %} <li><a href='/customer_reports'>Reports</a></li>{% endif %}
 															</ul>
 														</li>
 													</ul>
