@@ -120,134 +120,113 @@
     .border-right-primary{border-right:.25rem solid #4e73df!important}
 </style>
 
-                        <style>
 
 
 
-.divs{
-display:none;
-}
-</style>
 
-
-
-            <script>
-//$( document ).ready(function() {
-  //      $('.divs').hide();});
-$(function() {
-  $('#divselector').change(function(){
-    $('.divs').hide();
-    $('#' + $(this).val()).show();
-  });
-});
-            </script>
-            <style>
+            <!-- <style>
                 /* Custom CSS to change input border color to black */
                 input.form-control {
                     border-color: #000 ;
                 }
-            </style>
+            </style> -->
             
                     <!-- Date range, mob no, email id, customer name, company name, CRM no., CRM Number rnge -->
                     <div class="card-body" id="myDIV" style="display: block; height:auto;">
+                        <form method="get" action="{% url 'customer_reports' %}">
+
                         <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="control-label">  (CRM No)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">  (Channel of Marketing)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id1" list="display_limit" onchange="choice1(this)" class="form-control">
-                                    <datalist id="display_limit">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.id}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="channel_of_marketing" value="{{customer_id.customer_name}}"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <option value="">All</option>
+                                    {% for item in channel_marketing %}
+                                            <option {% if item.id|stringformat:"s" == channel_of_marketing %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Customer Name)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">  (Channel of Sales)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id2" list="display_limit2" onchange="choice2(this)" class="form-control">
-                                    <datalist id="display_limit2">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}} - {{item.pk}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="channel_of_sales" value="{{customer_id.customer_name}}"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <option value="">All</option>
+                                    {% for item in channel_sales %}
+                                            <option {% if item.id|stringformat:"s" == channel_sales %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Company Name)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">  (Channel of Dispatch)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id3" list="display_limit3" onchange="choice3(this)" class="form-control">
-                                    <datalist id="display_limit3">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="channel_of_dispatch" value="{{customer_id.customer_name}}"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <option value="">All</option>
+                                    {% for item in channel_dispatch %}
+                                            <option {% if item.id|stringformat:"s" == channel_of_dispatch %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Contact No)</label>
-                                <div class="input-group">
-                                      
-                                    <input name="contact_no" id="cust_id4" list="display_limit4" onchange="choice4(this)" class="form-control">
-                                    <datalist id="display_limit4">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.contact_no}}</option>
-                                        {% endfor %}
-                                    </datalist>
-                                </div>
-                            </div>
+                            
+                            
+                            
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="control-label">  (CRM No)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">  (Industry)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id1" list="display_limit" onchange="choice1(this)" class="form-control">
-                                    <datalist id="display_limit">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.id}}">{{item.pk}} - {{item.customer_name}} - {{item.company_name}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="industry" value="{{customer_id.customer_name}}"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <option value="">All</option>
+                                    {% for item in industry_list %}
+                                            <option {% if item.id|stringformat:"s" == industry %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Customer Name)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">Date Range</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id2" list="display_limit2" onchange="choice2(this)" class="form-control">
-                                    <datalist id="display_limit2">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.customer_name}} - {{item.company_name}} - {{item.pk}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="form-control">
+                                    <span class="input-group-addon" id="date-range-to">to</span>
+                                    <input type="date" name="end_date" id="end_date" value="{{ end_date }}"  class="form-control">
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Company Name)</label>
+                            <div class="col-md-4">
+                                <label class="control-label">  (Purchased/ Not Purchased)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="customer_number" id="cust_id3" list="display_limit3" onchange="choice3(this)" class="form-control">
-                                    <datalist id="display_limit3">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.company_name}} - {{item.customer_name}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="purchase_query"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <option value="">All</option>
+                                    <option value="purchased" {% if purchase_query == "purchased" %} selected="selected" {% endif %}>Purchased Product</option>
+                                    <option value="not_purchased" {% if purchase_query == "not_purchased" %} selected="selected" {% endif %}>Not Purchased Product</option>
+ 
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="control-label">  (Contact No)</label>
+                        </div>
+                        <div class="form-group row">
+                            
+                            <div class="col-md-4">
+                                <label class="control-label">  (Purchased/ Not Purchased)</label>
                                 <div class="input-group">
-                                      
-                                    <input name="contact_no" id="cust_id4" list="display_limit4" onchange="choice4(this)" class="form-control">
-                                    <datalist id="display_limit4">
-                                        {% for item in cust_sugg %}
-                                            <option value="{{item.pk}}">{{item.contact_no}}</option>
-                                        {% endfor %}
-                                    </datalist>
+                                    <select name="purchase_query" value="{{customer_id.customer_name}}"  id="industry"  class="form-control" >
+
+                                    <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
+                                    <!-- <option value="">All</option>
+                                    <option value="purchased">Purchased Product</option>
+                                    <option value="not_purchased">Not Purchased Product</option> -->
+ 
                                 </div>
                             </div>
                         </div>
@@ -257,9 +236,57 @@ $(function() {
                                 <button type="submit" name="submit3" class="btn btn-primary">Search</button>
                             </div>
                         </div>
+                        </form>
                     </div>
-                    
+                    {% if messages %}
+{% for message in messages %}
+         {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% elif message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error : </strong> {{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+{% endif %}
 
+
+         {% endfor %}
+
+{% endif %}
+                    <!-- <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            let today = new Date();
+                            let todayStr = today.toISOString().split('T')[0];
+                    
+                            let lastMonth = new Date();
+                            lastMonth.setMonth(today.getMonth() - 1);
+                            if (today.getDate() < lastMonth.getDate()) {
+                                lastMonth.setDate(0);
+                            }
+                            let lastMonthStr = lastMonth.toISOString().split('T')[0];
+                    
+                            document.getElementById('start_date').value = lastMonthStr;
+                            document.getElementById('end_date').value = todayStr;
+                        });
+                    </script>
+                     -->
+                    <!-- <style>
+                        .input-group {
+                            display: flex;
+                            align-items: center;
+                        }
+                        .input-group-addon {
+                            margin: 0 5px;
+                            white-space: nowrap;
+                        }
+                    </style> -->
 
 
                <style>
@@ -331,29 +358,7 @@ td {
 
 <div >
 
-    {% if messages %}
-    {% for message in messages %}
-             {% if message.tags == 'success' %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success : </strong> {{ message }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    {% elif message.tags == 'error' %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error : </strong> {{ message }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    {% endif %}
     
-    
-             {% endfor %}
-    
-    {% endif %}
-
 <!--    <form action="" method="post">{% csrf_token %}-->
     
         <div class="row table-responsive" id="id_manager_view">
@@ -391,7 +396,7 @@ td {
                         <td>{{customer.city}}</td>
                         <td>{{customer.state}}</td>
                         <td>{{customer.pincode}}</td>
-                        <td>{{customer.new_repeat_purchase}}</td>
+                        <td>{% if customer.purchase_exists %} Yes {% else %} No {% endif %}</td>
 
 
 
