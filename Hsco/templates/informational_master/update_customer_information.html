@@ -201,7 +201,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-address-card faicons"></i></span>
-  <input class="form-control" value="{{customer_id.customer_address}}"  name="customer_address" id="customer_address"  placeholder="Address" disabled/>
+  <input class="form-control" value="{{customer_id.address}}"  name="customer_address" id="customer_address"  placeholder="Address" disabled/>
     </div>
   </div>
 </div>
@@ -278,16 +278,16 @@
 
   <label class="col-md-2 control-label">New/Repeat Sale *
   </label>
-    <div class="col-md-4 inputGroupContainer">
-      <div class="input-group">
-    <span class="input-group-addon icon-border"><i class="fa fa-address-book faicons"></i></span>
-  <select name="new_repeat_purchase" value="{{customer_id.new_repeat_purchase}}"  id="new_repeat_purchase_id" required class="form-control" disabled>
-    <option value="New">New</option>
-    <option value="Repeat">Repeat</option>
-  </select>
+  <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
+    {% if customer_id.purchase_exists %}
+    <input type="text" value="Yes"   id="purchase_exists"  class="form-control" disabled>
+    {% else %}
+    <input type="text" value="No"   id="purchase_exists"  class="form-control" disabled>
+    {% endif %}
       </div>
-
-</div>
+    </div>
 
 
 
@@ -621,7 +621,7 @@
         </tr>
         {% for sales in product_details_customer %}
 
-        <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+        <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{sales.purchase_id.id}}'" id="{{list1.purchase_no}}">
                         <td>{{forloop.counter}}</td>
                         <td>{{sales.purchase_id.date_of_purchase  }}</td>
                         <td>{{sales.id}}</td>
@@ -661,7 +661,7 @@
           <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Average Feedback   </td>
       </tr>
       {% for sales in product_details_lead %}
-      <tr style="cursor: pointer; " id="{{list1.purchase_no}}">
+      <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{sales.purchase_unique_id}}'" id="{{list1.purchase_no}}">
                       <td>{{forloop.counter}}</td>
                       <td>{{sales.date_of_purchase  }}</td>
                       <td>{{sales.lead_id}}</td>

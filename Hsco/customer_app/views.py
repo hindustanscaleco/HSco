@@ -15,34 +15,23 @@ from utils.common import paginate_data
 
 DEFAULT_PAGE_NUMBER = 1
 DEFAULT_PAGE_SIZE = 10
-# gst_pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[0-9]{1}$'
-# gst_pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9A-Z][0-9]$'
 gst_pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$'
-# @login_required(login_url='/')
-# def add_customer_details(request):
-#     if request.method == 'POST' or request.method == 'FILES':
-#         customer_name = request.POST.get('customer_name')
-#         company_name = request.POST.get('company_name')
-#         address = request.POST.get('address')
-#         contact_no = request.POST.get('contact_no')
-#         customer_email_id = request.POST.get('customer_email_id')
-
-#         item = Customer_Details()
-
-#         item.customer_name = customer_name
-#         item.company_name = company_name
-#         item.address = address
-#         item.contact_no = contact_no
-#         item.customer_email_id = customer_email_id
-
-#         item.save()
-
-#     return render(request, 'informational_master/add_customer.html',)
 
 
 @login_required(login_url='/')
 def update_customer_information(request, id):
-    customer = Customer_Details.objects.get(id=id)
+    customer_qs = Customer_Details.objects.annotate(
+        purchase_exists=Exists(
+            Purchase_Details.objects.filter(crm_no=OuterRef('pk'))
+        )
+    ).filter(id=id)
+
+    # Step 2: Retrieve the single annotated customer object
+    try:
+        customer = customer_qs.get()
+
+    except Customer_Details.DoesNotExist:
+        return None
     if request.method == 'POST':
         customer.customer_name = request.POST.get('customer_name')
         customer.company_name = request.POST.get('company_name')
@@ -57,7 +46,7 @@ def update_customer_information(request, id):
         if not re.match(gst_pattern, customer.customer_gst_no):
             messages.error(request, "Invalid GST number format!")
             return redirect('/update_customer_information/{0}'.format(id))
-        customer.new_repeat_purchase = request.POST.get('new_repeat_purchase')
+        # customer.new_repeat_purchase = request.POST.get('new_repeat_purchase')
         customer.channel_of_marketing = request.POST.get(
             'channel_of_marketing')
         customer.industry = request.POST.get('industry')
@@ -99,7 +88,8 @@ def update_customer_information(request, id):
         lead_id=F('purchase_id__lead__id'),
         sales_person=F('purchase_id__sales_person'),
         date_of_purchase=F('purchase_id__date_of_purchase'),
-        feedback_stars=F('purchase_id__feedback_stars')
+        feedback_stars=F('purchase_id__feedback_stars'),
+        purchase_unique_id=F('purchase_id__id')
     ).values()
     print('lead_count', product_details_lead.count())
     print(product_details_lead)
@@ -118,6 +108,7 @@ def update_customer_information(request, id):
         type="CHANNEL OF DISPATCH", is_enabled=True)
     industry_list = DynamicDropdown.objects.filter(
         type="INDUSTRY", is_enabled=True)
+
     context = {
         'customer_id': customer,
         'channel_sales': channel_sales,
@@ -180,11 +171,24 @@ def view_customer_information(request):
             pincode = request.POST.get('pincode')
             customers = Customer_Details.objects.filter(
                 pincode__icontains=pincode)
+        elif 'submit10' in request.POST:
+            # Search by company name (d10)
+            company_name = request.POST.get('company_name')
+            customers = Customer_Details.objects.filter(
+                company_name__icontains=company_name)
+        elif 'submit11' in request.POST:
+            # Search by date range (d11)
+            start_date = request.POST.get('start_date')
+            end_date = request.POST.get('end_date')
+            if start_date and end_date:
+                customers = Customer_Details.objects.filter(
+                    entry_timedate__range=[start_date, end_date])
 
     print(len(customers))
     page_number = request.GET.get('page', 1)
     paginated_data = paginate_data(customers, page_number)
-
+    customers = customers.annotate(purchase_exists=Exists(
+        Purchase_Details.objects.filter(crm_no=OuterRef('pk'))))
     context = {
         'customer_list': customers,
     }
@@ -252,7 +256,7 @@ def customer_reports(request):
         'channel_marketing': channel_marketing,
         'channel_dispatch': channel_dispatch,
         'industry_list': industry_list,
-        'customer_list': customers,
+        'customer_list': customers[:1000],
         'channel_of_marketing': channel_of_marketing,
         'channel_of_sales': channel_of_sales,
         'channel_of_dispatch': channel_of_dispatch,
