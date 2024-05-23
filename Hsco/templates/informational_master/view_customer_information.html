@@ -156,6 +156,8 @@ $(function() {
      <option value="d7">Search By City</option>
      <option value="d8">Search By State</option>
      <option value="d9">Search By Pincode</option>
+     <option value="d10">Search By Company Name</option>
+     <option value="d11">Search By Date Range</option>
   </select>
 </div>
 
@@ -298,6 +300,39 @@ $(function() {
     <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
       <!-- Search button -->
       <button type="submit" name="submit9" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+</div>
+
+<div id="d10" class="divs d10">
+  <form method="POST">
+    {% csrf_token %}
+    <div style="float: left;" class="col-xl-4 col-md-4 col-mb-4">
+      <!-- Input field for company name -->
+      <input type="text" name="company_name" placeholder="Company Name" class="form-control">
+    </div>
+    <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+      <!-- Search button -->
+      <button type="submit" name="submit10" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+</div>
+
+<div id="d11" class="divs d11">
+  <form method="POST">
+    {% csrf_token %}
+    <div style="float: left;" class="col-xl-5 col-md-5 col-mb-5">
+      <!-- Input field for start date and end date -->
+      <div class="input-group">
+        <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="form-control">
+        <span class="input-group-addon" id="date-range-to">to</span>
+        <input type="date" name="end_date" id="end_date" value="{{ end_date }}"  class="form-control">
+    </div>
+      <!-- <input type="text" name="pincode" placeholder="Pincode" class="form-control"> -->
+    </div>
+    <div style="width: 25%;float: left;" class="col-xl-2 col-md-2 col-mb-2">
+      <!-- Search button -->
+      <button type="submit" name="submit11" class="btn btn-primary">Search</button>
     </div>
   </form>
 </div>
@@ -475,6 +510,7 @@ td {
 
         <tr style="background-color: gray; color: white;">
             <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer Id</td>
+            <td style="border: 0px solid gray;">Date </td>
             <td style="border: 0px solid gray;">Customer Name </td>
             <td style="border: 0px solid gray;">Company Name </td>
             <td style="border: 0px solid gray;"> Address</td>
@@ -490,6 +526,7 @@ td {
         <tr  style="cursor: pointer; " onclick="location.href='/update_customer_information/{{customer.pk}}'"  id="{{list1.purchase_no}}">
             <td>{{customer.id}}</td>
 
+                        <td>{{customer.entry_timedate}}</td>
                         <td>{{customer.customer_name}}</td>
                         <td>{{customer.company_name}}</td>
                         <td>{{customer.address}}</td>
@@ -499,7 +536,7 @@ td {
                         <td>{{customer.city}}</td>
                         <td>{{customer.state}}</td>
                         <td>{{customer.pincode}}</td>
-                        <td>{{customer.new_repeat_purchase}}</td>
+                        <td>{% if customer.purchase_exists %} Yes {% else %} No {% endif %}</td>
 
 
 
