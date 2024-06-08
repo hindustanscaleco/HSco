@@ -144,7 +144,7 @@
                                     <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
                                     <option value="">All</option>
                                     {% for item in channel_marketing %}
-                                            <option {% if item.id|stringformat:"s" == channel_of_marketing %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            <option {% if item.name|stringformat:"s" == channel_of_marketing %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
                                             {% endfor %}
                                     </select>
                                 </div>
@@ -157,7 +157,7 @@
                                     <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
                                     <option value="">All</option>
                                     {% for item in channel_sales %}
-                                            <option {% if item.id|stringformat:"s" == channel_sales %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            <option {% if item.name|stringformat:"s" == channel_of_sales %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
                                             {% endfor %}
                                     </select>
                                 </div>
@@ -170,7 +170,7 @@
                                     <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
                                     <option value="">All</option>
                                     {% for item in channel_dispatch %}
-                                            <option {% if item.id|stringformat:"s" == channel_of_dispatch %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            <option {% if item.name|stringformat:"s" == channel_of_dispatch %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
                                             {% endfor %}
                                     </select>
                                 </div>
@@ -189,7 +189,7 @@
                                     <!-- <input name="customer_number" id="cust_id1" list="display_limit"  class="form-control"> -->
                                     <option value="">All</option>
                                     {% for item in industry_list %}
-                                            <option {% if item.id|stringformat:"s" == industry %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+                                            <option {% if item.name|stringformat:"s" == industry %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
                                             {% endfor %}
                                     </select>
                                 </div>
@@ -368,47 +368,57 @@ td {
                     <button onclick="exportTableToExcel('customerTable', 'customers')">Download as Excel</button>
                 </div>
             </div>
-    <table class="table" id="customerTable">
-
-        <tr style="background-color: gray; color: white;">
-            <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer Id</td>
-            <td style="border: 0px solid gray;">Date </td>
-            <td style="border: 0px solid gray;">Customer Name </td>
-            <td style="border: 0px solid gray;">Company Name </td>
-            <td style="border: 0px solid gray;"> Address</td>
-            <td style="border: 0px solid gray;">Contact No</td>
-            <td style="border: 0px solid gray;"> Customer GST No </td>
-            <td style="border: 0px solid gray;">Industry</td>
-            <td style="border: 0px solid gray;">City  </td>
-            <td style="border: 0px solid gray;">State  </td>
-            <td style="border: 0px solid gray;">Pincode  </td>
-            <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Existing Customer</td>
-        </tr>
-        {% for customer in customer_list %}
-        <tr  style="cursor: pointer; " onclick="location.href='/update_customer_information/{{customer.id}}'" id="{{list1.purchase_no}}">
-            <td>{{customer.id}}</td>
-
-                        <td>{{customer.entry_timedate}}</td>
-                        <td>{{customer.customer_name}}</td>
-                        <td>{{customer.company_name}}</td>
-                        <td>{{customer.address}}</td>
-                        <td>{{customer.contact_no}}</td>
-                        <td>{{customer.customer_gst_no}}</td>
-                        <td>{{customer.customer_industry}}</td>
-                        <td>{{customer.city}}</td>
-                        <td>{{customer.state}}</td>
-                        <td>{{customer.pincode}}</td>
-                        <td>{% if customer.purchase_exists %} Yes {% else %} No {% endif %}</td>
-
-
-
-        </tr>
-                          {% endfor %}
-
-
-        </tr>
-
-    </table>
+            <table class="table" id="customerTable">
+                <tr style="background-color: gray; color: white;">
+                    <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Customer Id</td>
+                    <td style="border: 0px solid gray;">Date</td>
+                    <td style="border: 0px solid gray;">Customer Name</td>
+                    <td style="border: 0px solid gray;">Company Name</td>
+                    <td style="border: 0px solid gray;">Address</td>
+                    <td style="border: 0px solid gray;">Contact No</td>
+                    <td style="border: 0px solid gray;">Customer GST No</td>
+                    <td style="border: 0px solid gray;">Industry</td>
+                    <td style="border: 0px solid gray;">City</td>
+                    <td style="border: 0px solid gray;">State</td>
+                    <td style="border: 0px solid gray;">Pincode</td>
+                    <td style="border: 0px solid gray;">Customer Type</td>
+                    <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Existing Customer</td>
+                </tr>
+                {% for customer in customer_list %}
+                
+                <tr style="cursor: pointer;" onclick="location.href='{% if customer.customer_type == 'lead_customer' %}/update_customer_information/{{ customer.id }}/lead_customer/{%else%}/update_customer_information/{{ customer.id }}/existing_customer/{% endif %}'">
+                    <td>{{customer.id}}</td>
+                    <td>{{customer.entry_timedate}}</td>
+                    <td>{{customer.customer_name}}</td>
+                    <td>{{customer.company_name}}</td>
+                    <td>{{customer.address}}</td>
+                    <td>{{customer.contact_no}}</td>
+                    <td>{{customer.customer_gst_no}}</td>
+                    <td>{{customer.customer_industry}}</td>
+                    <td>{{customer.city}}</td>
+                    <td>{{customer.state}}</td>
+                    <td>{{customer.pincode}}</td>
+                    <td>{{ customer.customer_type }}</td>
+                    <td>{% if customer.purchase_exists %} Yes {% else %} No {% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+<!-- Pagination controls -->
+<div class="pagination">
+    <span class="step-links">
+        {% if customer_list.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ customer_list.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.
+        </span>
+        {% if customer_list.has_next %}
+            <a href="?page={{ customer_list.next_page_number }}">next</a>
+            <a href="?page={{ customer_list.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>            
 <!-- Button to trigger download -->
 
 <script>

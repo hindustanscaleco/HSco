@@ -256,7 +256,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" value="{{customer_id.customer_email_id}}"  name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" disabled>
+  <input type="text" value="{{customer_id.customer_email_id}}"  name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" disabled>
     </div>
   </div>
 </div>
@@ -273,7 +273,7 @@
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
   <input type="text" value="{{customer_id.customer_gst_no}}"  name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" disabled>
     </div>
-    <small class="form-text text-muted">Please enter a valid 15-character GSTIN.</small>
+    <small class="form-text text-muted">Please enter a valid 15-character GSTIN or add 'NA' if not available.</small>
   </div>
 
   <label class="col-md-2 control-label">New/Repeat Sale *
@@ -313,6 +313,27 @@
 
 <div class="form-group row">
 
+  <label class="col-md-2 control-label">Industry *
+
+  </label>
+  
+      <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+    <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
+  
+          <select name="industry" value="{{customer_id.customer_name}}"  id="industry" required class="form-control" disabled>
+    <option value="">Select Industry</option>
+    {% for item in industry_list %}
+            <option {% if item.name|stringformat:"s" == customer_id.customer_industry %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
+            {% endfor %}
+  </select>
+
+
+    </div>
+  </div>
+
+
+{% if customer_type != "lead_customer" %}
 <label class="col-md-2 control-label">Channel of Marketing
 
 
@@ -326,72 +347,14 @@
   <option value="">Select Channel of Marketing</option>
   {% for item in channel_marketing %}
 
-  <option {% if item.id|stringformat:"s" == customer_id.channel_of_marketing %} selected="selected" {% endif %} value="{{ item.id }}" >{{ item.name }}</option>
+  <option {% if item.name|stringformat:"s" == customer_id.channel_of_marketing %} selected="selected" {% endif %} value="{{ item.name }}" >{{ item.name }}</option>
 
           <!-- <option value="{{item.id}}">{{item.name}}</option> -->
           {% endfor %}
 </select>
 
+    
 
-<!--    <input  type="text"  name="channel_of_marketing" id="channel_of_marketing" placeholder="Channel of Marketing" class="form-control" list="channel110">-->
-<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
-<!--    <datalist style="height:20px;" id="channel110">-->
-<!--      <option value="Phone"></option>-->
-<!--      <option value="Whatsapp"></option>-->
-<!--      <option value="Email"></option>-->
-<!--&lt;!&ndash;      <option value="Hsc"></option>&ndash;&gt;-->
-<!--&lt;!&ndash;      <option value="Sales"></option>&ndash;&gt;-->
-<!--      <option value="Google"></option>-->
-<!--      <option value="Justdial"></option>-->
-<!--      <option value="Reference"></option>-->
-<!--      <option value="Existing Customer"></option>-->
-<!--      <option value="BNI"></option>-->
-<!--      <option value="Others"></option>-->
-<!--    </datalist>-->
-
-    </div>
-  </div>
-
-
-
-    <label class="col-md-2 control-label">Industry *
-
-</label>
-
-    <div class="col-md-4 inputGroupContainer">
-  <div class="input-group">
-  <span class="input-group-addon icon-border"><i class="fa fa-angle-double-down faicons"></i></span>
-
-        <select name="industry" value="{{customer_id.customer_name}}"  id="industry" required class="form-control" disabled>
-  <option value="">Select Industry</option>
-  {% for item in industry_list %}
-          <option {% if item.id|stringformat:"s" == customer_id.industry %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
-          {% endfor %}
-</select>
-
-<!--    <input id="industry_id" type="text" required name="industry" placeholder="Industry" class="form-control" list="channel2">-->
-<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
-<!--    <datalist style="height:20px;" id="channel2">-->
-<!--      <option value="Energy industry"></option>-->
-<!--      <option value="Chemicals"></option>-->
-<!--      <option value="Industrial Metals "></option>-->
-<!--      <option value="Gold/Gems and precious Metals "></option>-->
-<!--      <option value="Home and Heavy Construction companies "></option>-->
-<!--      <option value="Electrical and Electronic Manufacturers"></option>-->
-<!--      <option value="Industrial Transportation"></option>-->
-<!--      <option value="Agriculture"></option>-->
-<!--      <option value="Poultry/Livestock"></option>-->
-<!--      <option value="Healthcare Equipment and Services"></option>-->
-<!--      <option value="Textiles"></option>-->
-<!--      <option value="Hotels"></option>-->
-<!--      <option value="Grocery/Retail"></option>-->
-<!--      <option value="Bakery"></option>-->
-<!--      <option value="Supplier"></option>-->
-<!--      <option value="BNI"></option>-->
-<!--      <option value="Online Promotion"></option>-->
-<!--      <option value="Fishing"></option>-->
-<!--      <option value="Dealer"></option>-->
-<!--    </datalist>-->
     </div>
   </div>
 </div>
@@ -411,22 +374,11 @@
             <select name="channel_of_sales" value="{{customer_id.customer_name}}"  id="channel_of_sales_id" required class="form-control" disabled>
   <option value="">Select Channel of Sales</option>
   {% for item in channel_sales %}
-          <option {% if item.id|stringformat:"s" == customer_id.channel_of_sales %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          <option {% if item.name|stringformat:"s" == customer_id.channel_of_sales %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 
 
-<!--    <input  type="text" required name="channel_of_sales" id="channel_of_sales_id" placeholder="Channel of Sales" class="form-control" list="channel10">-->
-<!--    <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
-<!--    <datalist style="height:20px;" id="channel10">-->
-<!--      <option value="Retail through Physical Store"></option>-->
-<!--      <option value="Online Market Places"></option>-->
-<!--      <option value="Website"></option>-->
-<!--      <option value="Indiamart"></option>-->
-<!--      <option value="App"></option>-->
-<!--      <option value="Field Salesmen"></option>-->
-<!--      <option value="Fairs and Trade Shows"></option>-->
-<!--    </datalist>-->
     </div>
   </div>
 
@@ -443,21 +395,11 @@
            <select name="channel_of_dispatch" value="{{customer_id.customer_name}}"  id="channel_of_dispatch_id" required class="form-control" disabled>
   <option value="">Select Channel of Dispatch</option>
   {% for item in channel_dispatch %}
-          <option {% if item.id|stringformat:"s" == customer_id.channel_of_dispatch %} selected="selected" {% endif %} value="{{item.id}}">{{item.name}}</option>
+          <option {% if item.name|stringformat:"s" == customer_id.channel_of_dispatch %} selected="selected" {% endif %} value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 
 
-<!--  <input  type="text" name="channel_of_dispatch" id="channel_of_dispatch_id" placeholder="Channel of Dispatch" required class="form-control" list="channel">-->
-<!--        <i class="fa fa-angle-double-down faicons" style="margin-left: -40px; z-index:9999; width: 10%;"></i>-->
-
-<!--    <datalist style="height:20px;" id="channel">-->
-<!--              <option value="Franchisee Store">-->
-<!--              <option value="Transport">-->
-<!--      <option value="Courier">-->
-<!--      <option value="Online Market Places">-->
-<!--      <option value="Delivery Boys">-->
-<!--    </datalist>-->
     </div>
   </div>
       </div>
@@ -552,7 +494,7 @@
                 </div>
             </div>
 
-
+{% endif %}
 
         <hr style="background-color: gray;">
         <div class="col-md-12 ">
@@ -602,7 +544,7 @@
     </style>
     <br>
     </div>
-    
+    {% if customer_type != "lead_customer" %}
               <h1 style="font-size: 25px; color: black; text-align: center;"> Sales List </h1>
       <br>
       <table class="table">
@@ -643,7 +585,7 @@
 
     </table>
 <br><br>
-
+{% endif %}
     <h1 style="font-size: 25px; color: black; text-align: center;"> Leads List </h1>
     <br>
     <table class="table">
@@ -652,29 +594,18 @@
           <td style="border-radius: 15px 0px 0px 0px; border: 0px solid gray;">Sr No.</td>
           <td style="border: 0px solid gray;">Date</td>
           <td style="border: 0px solid gray;">Lead Id </td>
-          <td style="border: 0px solid gray;"> Type of Scale</td>
-          <td style="border: 0px solid gray;">Model</td>
-          <td style="border: 0px solid gray;"> Sub Model </td>
-          <td style="border: 0px solid gray;">Sub Sub Model</td>
-          <td style="border: 0px solid gray;">Dispatch id  </td>
-          <td style="border: 0px solid gray;">Sales Person  </td>
-          <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Average Feedback   </td>
+          <td style="border: 0px solid gray;">Channel </td>
+          <td style="border: 0px solid gray;"> Current Stage</td>
+          <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Owner of Opportunity  </td>
       </tr>
-      {% for sales in product_details_lead %}
-      <tr style="cursor: pointer; " onclick="location.href='/update_customer_details/{{sales.purchase_unique_id}}'" id="{{list1.purchase_no}}">
+      {% for lead in leads %}
+      <tr style="cursor: pointer; " onclick="location.href='/update_view_lead/{{lead.id}}'" id="{{list1.purchase_no}}">
                       <td>{{forloop.counter}}</td>
-                      <td>{{sales.date_of_purchase  }}</td>
-                      <td>{{sales.lead_id}}</td>
-                      <td>{{sales.type_of_scale}}</td>
-                      <td>{{sales.model_of_purchase}}</td>
-                      <td>{{sales.sub_model}}</td>
-                      <td>{{sales.sub_sub_model}}</td>
-                      <td>{{sales.product_dispatch_id_id}}</td>
-                      <td>{{sales.sales_person}}</td>
-                  <td>{{sales.feedback_stars}}</td>
-
-
-
+                      <td>{{lead.date_of_initiation}}</td>
+                      <td>{{lead.id}}</td>
+                      <td>{{lead.channel}}</td>
+                      <td>{{lead.current_stage}}</td>
+                      <td>{{lead.owner_of_opportunity}}</td>
       </tr>
                         {% endfor %}
 
