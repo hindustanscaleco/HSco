@@ -257,7 +257,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="email" name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" >
+  <input type="text" name="customer_email_id" placeholder="Customer Email Id" id="customer_email_id"  class="form-control" >
     </div>
   </div>
 </div>
@@ -272,7 +272,7 @@
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-envelope faicons"></i></span>
-  <input type="text" name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no"  class="form-control" >
+  <input type="text" name="customer_gst_no" placeholder="Customer GST No" id="customer_gst_no" value="NA"  class="form-control" >
     </div>
     <small class="form-text text-muted">Please enter a valid 15-character GSTIN.</small>
 
@@ -327,7 +327,7 @@
       <select name="channel_of_marketing" id="channel_of_marketing" class="form-control">
   <option value="">Select Channel of Marketing</option>
   {% for item in channel_marketing %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 
@@ -364,7 +364,7 @@
         <select name="industry" id="industry" required class="form-control">
   <option value="">Select Industry</option>
   {% for item in indutry %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 
@@ -410,7 +410,7 @@
             <select name="channel_of_sales" id="channel_of_sales_id" required class="form-control">
   <option value="">Select Channel of Sales</option>
   {% for item in channel_sales %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 
@@ -442,7 +442,7 @@
            <select name="channel_of_dispatch" id="channel_of_dispatch_id" required class="form-control">
   <option value="">Select Channel of Dispatch</option>
   {% for item in channel_dispatch %}
-          <option value="{{item.id}}">{{item.name}}</option>
+          <option value="{{item.name}}">{{item.name}}</option>
           {% endfor %}
 </select>
 

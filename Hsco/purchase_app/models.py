@@ -118,6 +118,31 @@ class Purchase_Details(models.Model):  # cleaned
         else:
             return 0.0
 
+    @staticmethod
+    @receiver(post_save, sender='purchase_app.Purchase_Details')
+    def update_customer_details_on_purchase_update(sender, instance, **kwargs):
+        customer = instance.crm_no
+        if customer:
+            # Update the customer details based on the purchase details
+            customer.customer_name = instance.second_person
+            customer.company_name = instance.second_company_name
+            customer.address = instance.company_address
+            customer.customer_email_id = instance.company_email
+            customer.contact_no = instance.second_contact_no
+            customer.customer_industry = instance.industry_id.name if instance.industry_id else None
+            customer.channel_of_marketing = instance.channel_of_marketing_id.name if instance.channel_of_marketing_id else None
+            customer.channel_of_sales = instance.channel_of_sales_id.name if instance.channel_of_sales_id else None
+            customer.channel_of_dispatch = instance.channel_of_dispatch_id.name if instance.channel_of_dispatch_id else None
+            customer.notes = instance.notes
+            customer.bill_address = instance.bill_address
+            customer.shipping_address = instance.shipping_address
+            customer.bill_notes = instance.bill_notes
+            # for future
+            # customer.city = instance.city
+            # customer.state = instance.state
+            # customer.pincode = instance.pincode
+            customer.save()
+
 
 # def save_purchase_details(sender,instance, **kwargs):
 #

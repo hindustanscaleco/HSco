@@ -520,10 +520,11 @@ td {
             <td style="border: 0px solid gray;">City  </td>
             <td style="border: 0px solid gray;">State  </td>
             <td style="border: 0px solid gray;">Pincode  </td>
+            <td style="border: 0px solid gray;">Customer Type</td>
             <td style="border-radius: 0px 15px 0px 0px; border: 0px solid gray;">Existing Customer</td>
         </tr>
         {% for customer in customer_list %}
-        <tr  style="cursor: pointer; " onclick="location.href='/update_customer_information/{{customer.pk}}'"  id="{{list1.purchase_no}}">
+        <tr  style="cursor: pointer; " onclick="location.href='{% if customer.customer_type == 'lead_customer' %}/update_customer_information/{{ customer.id }}/lead_customer/{%else%}/update_customer_information/{{ customer.id }}/existing_customer/{% endif %}'"  id="{{list1.purchase_no}}">
             <td>{{customer.id}}</td>
 
                         <td>{{customer.entry_timedate}}</td>
@@ -536,6 +537,7 @@ td {
                         <td>{{customer.city}}</td>
                         <td>{{customer.state}}</td>
                         <td>{{customer.pincode}}</td>
+                        <td>{{ customer.customer_type }}</td>
                         <td>{% if customer.purchase_exists %} Yes {% else %} No {% endif %}</td>
 
 
@@ -548,7 +550,22 @@ td {
 
     </table>
 
-
+<!-- Pagination controls -->
+<div class="pagination">
+  <span class="step-links">
+      {% if customer_list.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ customer_list.previous_page_number }}">previous</a>
+      {% endif %}
+      <span class="current">
+          Page {{ customer_list.number }} of {{ customer_list.paginator.num_pages }}.
+      </span>
+      {% if customer_list.has_next %}
+          <a href="?page={{ customer_list.next_page_number }}">next</a>
+          <a href="?page={{ customer_list.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>           
 
 
 
