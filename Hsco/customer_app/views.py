@@ -259,69 +259,107 @@ def view_customer_information(request):
         )
 
     )
-
-    customers = customers.union(lead_customers).order_by('-id')
+    # customers = customers.union(lead_customers).order_by('-id')
     # Apply filters based on the search type and query
     if request.method == 'POST':
         if 'submit1' in request.POST:
+
             # Search by Customer Number (d1)
             customer_number = request.POST.get('customer_number')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(id__icontains=customer_number)
+            lead_customers = lead_customers.filter(
                 id__icontains=customer_number)
+
+            # customers = Customer_Details.objects.filter(
+            #     id__icontains=customer_number)
         elif 'submit2' in request.POST:
             # Search by Customer Name (d2)
             customer_name = request.POST.get('customer_name')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(
                 customer_name__icontains=customer_name)
+            lead_customers = lead_customers.filter(
+                customer_name__icontains=customer_name)
+            print('lead customers -->', lead_customers)
+            # customers = Customer_Details.objects.filter(
+            #     customer_name__icontains=customer_name)
         elif 'submit3' in request.POST:
             # Search by Company Address (d3)
             company_address = request.POST.get('company_address')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(address__icontains=company_address)
+            lead_customers = lead_customers.filter(
                 address__icontains=company_address)
+            # cstomers = Customer_Details.objects.filter(
+            #     address__icontains=company_address)
         elif 'submit4' in request.POST:
             # Search by Mobile Number (d4)
             mobile_number = request.POST.get('mobile_number')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(contact_no__icontains=mobile_number)
+            lead_customers = lead_customers.filter(
                 contact_no__icontains=mobile_number)
+            # customers = Customer_Details.objects.filter(
+            #     contact_no__icontains=mobile_number)
         elif 'submit5' in request.POST:
             # Search by GST Number (d5)
             gst_number = request.POST.get('gst_number')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(customer_gst_no__icontains=gst_number)
+            lead_customers = lead_customers.filter(
                 customer_gst_no__icontains=gst_number)
+            # customers = Customer_Details.objects.filter(
+            #     customer_gst_no__icontains=gst_number)
         elif 'submit6' in request.POST:
             # Search by Industry (d6)
             industry = request.POST.get('industry')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(customer_industry__icontains=industry)
+            lead_customers = lead_customers.filter(
                 customer_industry__icontains=industry)
+            # customers = Customer_Details.objects.filter(
+            #     customer_industry__icontains=industry)
         elif 'submit7' in request.POST:
             # Search by City (d7)
             city = request.POST.get('city')
-            customers = Customer_Details.objects.filter(city__icontains=city)
+            customers = customers.filter(city__icontains=city)
+            lead_customers = lead_customers.filter(
+                city__icontains=city)
+            # customers = Customer_Details.objects.filter(city__icontains=city)
         elif 'submit8' in request.POST:
             # Search by State (d8)
             state = request.POST.get('state')
-            customers = Customer_Details.objects.filter(state__icontains=state)
+            customers = customers.filter(state__icontains=state)
+            lead_customers = lead_customers.filter(
+                state__icontains=state)
+            # customers = Customer_Details.objects.filter(state__icontains=state)
         elif 'submit9' in request.POST:
             # Search by Pincode (d9)
             pincode = request.POST.get('pincode')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(pincode__icontains=pincode)
+            lead_customers = lead_customers.filter(
                 pincode__icontains=pincode)
+            # customers = Customer_Details.objects.filter(
+            #     pincode__icontains=pincode)
         elif 'submit10' in request.POST:
             # Search by company name (d10)
             company_name = request.POST.get('company_name')
-            customers = Customer_Details.objects.filter(
+            customers = customers.filter(company_name__icontains=company_name)
+            lead_customers = lead_customers.filter(
                 company_name__icontains=company_name)
+            # customers = Customer_Details.objects.filter(
+            #     company_name__icontains=company_name)
         elif 'submit11' in request.POST:
             # Search by date range (d11)
             start_date = request.POST.get('start_date')
             end_date = request.POST.get('end_date')
             if start_date and end_date:
-                customers = Customer_Details.objects.filter(
+                customers = customers.filter(
                     entry_timedate__range=[start_date, end_date])
-
+                lead_customers = lead_customers.filter(
+                    entry_timedate__range=[start_date, end_date])
+            # if start_date and end_date:
+            #     customers = Customer_Details.objects.filter(
+            #         entry_timedate__range=[start_date, end_date])
+        customers = customers.union(lead_customers).order_by('-entry_timedate')
     print(len(customers))
     page_number = request.GET.get('page', 1)
-    paginated_data = paginate_data(customers, page_number)
+    # paginated_data = paginate_data(customers, page_number)
     # customers = customers.annotate(purchase_exists=Exists(
     #     Purchase_Details.objects.filter(crm_no=OuterRef('pk'))))
 
@@ -404,20 +442,15 @@ def customer_reports(request):
         purchase_query = request.GET.get('purchase_query')
 
         if customer_industry:
-            print('Industry name --->', customer_industry)
             customers = customers.filter(customer_industry=customer_industry)
             lead_customers = lead_customers.filter(
                 customer_industry=customer_industry)
-            print('Count in customers --->', customers.count())
-            print('Count in lead_customers --->', lead_customers.count())
         if channel_of_marketing:
-            print('channle of markteing')
             customers = customers.filter(
                 channel_of_marketing=channel_of_marketing)
             lead_customers = lead_customers.filter(
                 channel_of_marketing=channel_of_marketing)
         if channel_of_sales:
-            print('fdsakhjfkldsh fdklhs')
             customers = customers.filter(
                 channel_of_sales=channel_of_sales)
             lead_customers = lead_customers.filter(
