@@ -289,7 +289,7 @@ for (var i = 0, len = elements.length; i < len; ++i) {
     <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
   <span class="input-group-addon icon-border"><i class="fa fa-phone faicons"></i></span>
-  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="text" onkeypress="return isNumber(event)" maxlength="10" minlength="10"  pattern="[789][0291]" disabled id="myText4" value="{{purchase_id_id.second_contact_no}}">
+  <input  name="contact_no" placeholder="Contact No" required class="form-control"  type="text"  maxlength="10" minlength="10"  pattern="[0-9]{10}" disabled id="myText4" value="{{purchase_id_id.second_contact_no}}">
 
     </div>
   </div>

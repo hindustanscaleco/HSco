@@ -334,9 +334,7 @@ $(function() {
                        <div  class="col-xl-2 col-md-3 col-mb-3">
                     <div class="button dropdown">
                     <select id="selected_year" class="form-control">
-     <option value="2020">2020</option>
-     <option value="2021">2021</option>
-     <option value="2022">2022</option>
+     
 
                     </select>
                     </div>
@@ -661,6 +659,23 @@ value = !document.getElementById("checker").checked;
       });
 }
 
+function addYearsToDropdown(startYear, endYear) {
+  const selectElement = document.getElementById('selected_year');
+  
+  // Clear existing options
+  selectElement.innerHTML = '';
+
+  // Loop through the years and create option elements
+  for (let year = startYear; year <= endYear; year++) {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    selectElement.appendChild(option);
+  }
+}
+
+// Add years from 2020 to 2030 (you can adjust the range as needed)
+addYearsToDropdown(2020, 2026);
     </script>
 
 
