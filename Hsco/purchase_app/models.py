@@ -118,7 +118,7 @@ class Purchase_Details(models.Model):  # cleaned
         else:
             return 0.0
 
-    @staticmethod
+    # @staticmethod
     @receiver(post_save, sender='purchase_app.Purchase_Details')
     def update_customer_details_on_purchase_update(sender, instance, **kwargs):
         customer = instance.crm_no
@@ -141,7 +141,13 @@ class Purchase_Details(models.Model):  # cleaned
             # customer.city = instance.city
             # customer.state = instance.state
             # customer.pincode = instance.pincode
-            customer.save()
+            # customer.save()
+            customer.save(update_fields=[
+                'customer_name', 'company_name', 'address', 'customer_email_id',
+                'contact_no', 'customer_industry', 'channel_of_marketing',
+                'channel_of_sales', 'channel_of_dispatch', 'notes',
+                'bill_address', 'shipping_address', 'bill_notes'
+            ])
 
 
 # def save_purchase_details(sender,instance, **kwargs):
