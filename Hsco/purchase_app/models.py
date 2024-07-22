@@ -123,31 +123,24 @@ class Purchase_Details(models.Model):  # cleaned
     def update_customer_details_on_purchase_update(sender, instance, **kwargs):
         customer = instance.crm_no
         if customer:
-            # Update the customer details based on the purchase details
-            customer.customer_name = instance.second_person
-            customer.company_name = instance.second_company_name
-            customer.address = instance.company_address
-            customer.customer_email_id = instance.company_email
-            customer.contact_no = instance.second_contact_no
-            customer.customer_industry = instance.industry_id.name if instance.industry_id else None
-            customer.channel_of_marketing = instance.channel_of_marketing_id.name if instance.channel_of_marketing_id else None
-            customer.channel_of_sales = instance.channel_of_sales_id.name if instance.channel_of_sales_id else None
-            customer.channel_of_dispatch = instance.channel_of_dispatch_id.name if instance.channel_of_dispatch_id else None
-            customer.notes = instance.notes
-            customer.bill_address = instance.bill_address
-            customer.shipping_address = instance.shipping_address
-            customer.bill_notes = instance.bill_notes
-            # for future
-            # customer.city = instance.city
-            # customer.state = instance.state
-            # customer.pincode = instance.pincode
-            # customer.save()
-            customer.save(update_fields=[
-                'customer_name', 'company_name', 'address', 'customer_email_id',
-                'contact_no', 'customer_industry', 'channel_of_marketing',
-                'channel_of_sales', 'channel_of_dispatch', 'notes',
-                'bill_address', 'shipping_address', 'bill_notes'
-            ])
+            update_fields = {
+                'customer_name': instance.second_person,
+                'company_name': instance.second_company_name,
+                'address': instance.company_address,
+                'customer_email_id': instance.company_email,
+                'contact_no': instance.second_contact_no,
+                'customer_industry': instance.industry_id.name if instance.industry_id else None,
+                'channel_of_marketing': instance.channel_of_marketing_id.name if instance.channel_of_marketing_id else None,
+                'channel_of_sales': instance.channel_of_sales_id.name if instance.channel_of_sales_id else None,
+                'channel_of_dispatch': instance.channel_of_dispatch_id.name if instance.channel_of_dispatch_id else None,
+                'notes': instance.notes,
+                'bill_address': instance.bill_address,
+                'shipping_address': instance.shipping_address,
+                'bill_notes': instance.bill_notes,
+            }
+
+            Customer_Details.objects.filter(
+                pk=customer.pk).update(**update_fields)
 
 
 # def save_purchase_details(sender,instance, **kwargs):

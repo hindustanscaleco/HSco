@@ -80,6 +80,9 @@ def update_customer_information(request, id, customer_type):
             customer.repairing_whatsapp = request.POST.get(
                 'repairing_whatsapp', False) == 'on'
         customer.save()
+
+        Customer_Details.update_purchase_on_update_customer_detail(customer)
+
         messages.success(request, "Customer details updated successfully!")
         return redirect('/update_customer_information/{0}/{1}'.format(id, customer_type))
 

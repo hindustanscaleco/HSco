@@ -83,9 +83,9 @@ class Customer_Details(models.Model):
         else:
             return False
 
-    @staticmethod
-    @receiver(post_save, sender='customer_app.Customer_Details')
-    def update_purchase_on_update_customer_detail(sender, instance, **kwargs):
+    # @staticmethod
+    # @receiver(post_save, sender='customer_app.Customer_Details')
+    def update_purchase_on_update_customer_detail(instance, **kwargs):
         from purchase_app.models import Purchase_Details
         from customer_app.models import DynamicDropdown
 
@@ -95,15 +95,15 @@ class Customer_Details(models.Model):
         ).first()
 
         channel_of_marketing_instance = DynamicDropdown.objects.filter(
-            name=instance.channel_of_marketing, type='channel_of_marketing', is_enabled=True
+            name=instance.channel_of_marketing, type='channel of marketing', is_enabled=True
         ).first()
 
         channel_of_sales_instance = DynamicDropdown.objects.filter(
-            name=instance.channel_of_sales, type='channel_of_sales', is_enabled=True
+            name=instance.channel_of_sales, type='channel of sales', is_enabled=True
         ).first()
 
         channel_of_dispatch_instance = DynamicDropdown.objects.filter(
-            name=instance.channel_of_dispatch, type='channel_of_dispatch', is_enabled=True
+            name=instance.channel_of_dispatch, type='channel of dispatch', is_enabled=True
         ).first()
 
         # Update Purchase_Details in bulk
