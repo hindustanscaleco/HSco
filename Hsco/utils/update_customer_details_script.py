@@ -110,10 +110,13 @@ def update_customer_details():
 
                     # Update the Customer_Details instance if there are fields to update
                     if update_fields:
-                        Customer_Details.objects.filter(
-                            pk=customer.pk).update(**update_fields)
-                        logging.info(
-                            f"Updated customer {customer.id} from purchase {purchase.id}")
+                        try:
+                            Customer_Details.objects.filter(
+                                pk=customer.pk).update(**update_fields)
+                            logging.info(
+                                f"Updated customer {customer.id} from purchase {purchase.id}")
+                        except Exception as e:
+                            logging.error(f"Error occurred while updating customer details for id - {customer.pk}: {e}")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
