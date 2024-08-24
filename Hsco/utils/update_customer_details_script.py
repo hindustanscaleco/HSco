@@ -48,75 +48,74 @@ logging.basicConfig(
 
 def update_customer_details():
     try:
-        with transaction.atomic():
-            purchases = Purchase_Details.objects.all()
+        purchases = Purchase_Details.objects.all()
 
-            for purchase in purchases:
-                customer = purchase.crm_no
-                if customer:
-                    # Fetch DynamicDropdown instances based on purchase details
-                    industry_instance = DynamicDropdown.objects.filter(
-                        name=purchase.industry_id.name if purchase.industry_id else '',
-                        type='industry',
-                        is_enabled=True
-                    ).first()
+        for purchase in purchases:
+            customer = purchase.crm_no
+            if customer:
+                # Fetch DynamicDropdown instances based on purchase details
+                industry_instance = DynamicDropdown.objects.filter(
+                    name=purchase.industry_id.name if purchase.industry_id else '',
+                    type='industry',
+                    is_enabled=True
+                ).first()
 
-                    channel_of_marketing_instance = DynamicDropdown.objects.filter(
-                        name=purchase.channel_of_marketing_id.name if purchase.channel_of_marketing_id else '',
-                        type='channel of marketing',
-                        is_enabled=True
-                    ).first()
+                channel_of_marketing_instance = DynamicDropdown.objects.filter(
+                    name=purchase.channel_of_marketing_id.name if purchase.channel_of_marketing_id else '',
+                    type='channel of marketing',
+                    is_enabled=True
+                ).first()
 
-                    channel_of_sales_instance = DynamicDropdown.objects.filter(
-                        name=purchase.channel_of_sales_id.name if purchase.channel_of_sales_id else '',
-                        type='channel of sales',
-                        is_enabled=True
-                    ).first()
+                channel_of_sales_instance = DynamicDropdown.objects.filter(
+                    name=purchase.channel_of_sales_id.name if purchase.channel_of_sales_id else '',
+                    type='channel of sales',
+                    is_enabled=True
+                ).first()
 
-                    channel_of_dispatch_instance = DynamicDropdown.objects.filter(
-                        name=purchase.channel_of_dispatch_id.name if purchase.channel_of_dispatch_id else '',
-                        type='channel of dispatch',
-                        is_enabled=True
-                    ).first()
+                channel_of_dispatch_instance = DynamicDropdown.objects.filter(
+                    name=purchase.channel_of_dispatch_id.name if purchase.channel_of_dispatch_id else '',
+                    type='channel of dispatch',
+                    is_enabled=True
+                ).first()
 
-                    # Prepare update fields, only update if fields are None or empty
-                    update_fields = {}
-                    if not customer.customer_name:
-                        update_fields['customer_name'] = purchase.second_person
-                    if not customer.company_name:
-                        update_fields['company_name'] = purchase.second_company_name
-                    if not customer.address:
-                        update_fields['address'] = purchase.company_address
-                    if not customer.customer_email_id:
-                        update_fields['customer_email_id'] = purchase.company_email
-                    if not customer.contact_no:
-                        update_fields['contact_no'] = purchase.second_contact_no
-                    if not customer.customer_industry:
-                        update_fields['customer_industry'] = industry_instance.name if industry_instance else None
-                    if not customer.channel_of_marketing:
-                        update_fields['channel_of_marketing'] = channel_of_marketing_instance.name if channel_of_marketing_instance else None
-                    if not customer.channel_of_sales:
-                        update_fields['channel_of_sales'] = channel_of_sales_instance.name if channel_of_sales_instance else None
-                    if not customer.channel_of_dispatch:
-                        update_fields['channel_of_dispatch'] = channel_of_dispatch_instance.name if channel_of_dispatch_instance else None
-                    if not customer.notes:
-                        update_fields['notes'] = purchase.notes
-                    if not customer.bill_address:
-                        update_fields['bill_address'] = purchase.bill_address
-                    if not customer.shipping_address:
-                        update_fields['shipping_address'] = purchase.shipping_address
-                    if not customer.bill_notes:
-                        update_fields['bill_notes'] = purchase.bill_notes
+                # Prepare update fields, only update if fields are None or empty
+                update_fields = {}
+                if not customer.customer_name:
+                    update_fields['customer_name'] = purchase.second_person
+                if not customer.company_name:
+                    update_fields['company_name'] = purchase.second_company_name
+                if not customer.address:
+                    update_fields['address'] = purchase.company_address
+                if not customer.customer_email_id:
+                    update_fields['customer_email_id'] = purchase.company_email
+                if not customer.contact_no:
+                    update_fields['contact_no'] = purchase.second_contact_no
+                if not customer.customer_industry:
+                    update_fields['customer_industry'] = industry_instance.name if industry_instance else None
+                if not customer.channel_of_marketing:
+                    update_fields['channel_of_marketing'] = channel_of_marketing_instance.name if channel_of_marketing_instance else None
+                if not customer.channel_of_sales:
+                    update_fields['channel_of_sales'] = channel_of_sales_instance.name if channel_of_sales_instance else None
+                if not customer.channel_of_dispatch:
+                    update_fields['channel_of_dispatch'] = channel_of_dispatch_instance.name if channel_of_dispatch_instance else None
+                if not customer.notes:
+                    update_fields['notes'] = purchase.notes
+                if not customer.bill_address:
+                    update_fields['bill_address'] = purchase.bill_address
+                if not customer.shipping_address:
+                    update_fields['shipping_address'] = purchase.shipping_address
+                if not customer.bill_notes:
+                    update_fields['bill_notes'] = purchase.bill_notes
 
-                    # Update the Customer_Details instance if there are fields to update
-                    if update_fields:
-                        try:
-                            Customer_Details.objects.filter(
-                                pk=customer.pk).update(**update_fields)
-                            logging.info(
-                                f"Updated customer {customer.id} from purchase {purchase.id}")
-                        except Exception as e:
-                            logging.error(f"Error occurred while updating customer details for id - {customer.pk}: {e}")
+                # Update the Customer_Details instance if there are fields to update
+                if update_fields:
+                    try:
+                        Customer_Details.objects.filter(
+                            pk=customer.pk).update(**update_fields)
+                        logging.info(
+                            f"Updated customer {customer.id} from purchase {purchase.id}")
+                    except Exception as e:
+                        logging.error(f"Error occurred while updating customer details for id - {customer.pk}: {e}")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
